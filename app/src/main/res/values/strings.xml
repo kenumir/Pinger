@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Pinger</string>
+
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok">OK</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_stop">Stop</string>
+
+    <string name="menu_address_list">Address</string>
+    <string name="menu_cmd">Console</string>
+    <string name="menu_info">My IP</string>
+    <string name="menu_more">More</string>
+
+    <string name="ping_info_start">Ping `%s` start</string>
+    <string name="ping_info_finish">Ping finish</string>
+
+    <string name="placeholder_no_interfaces">No interfaces found</string>
+
+    <string name="label_wifi">WiFi</string>
+    <string name="label_mobile">Mobile</string>
+    <string name="label_copy">Copy</string>
+    <string name="label_copy_ip4">Copy IPv4</string>
+    <string name="label_copy_ip6">Copy IPv6</string>
+    <string name="label_share">Share</string>
+    <string name="label_ip_info">IP Info</string>
+    <string name="label_no_interfaces_found">No interfaces found</string>
+    <string name="label_no_results">No command results</string>
+    <string name="label_no_address">No items on list</string>
+    <string name="label_bytes">bytes</string>
+    <string name="label_default_packet">Default size</string>
+    <string name="label_pings">%d packets</string>
+    <string name="label_address">Address: %s</string>
+    <string name="label_start_stop">Start/Stop</string>
+
+    <string name="label_entry">Entry</string>
+    <string name="label_entry_name">Entry name</string>
+    <string name="label_entry_url">Entry URL</string>
+    <string name="label_entry_display_name">Display name (not required)</string>
+    <string name="label_entry_packet">Packet size (empty for default)</string>
+    <string name="label_entry_count">Ping count</string>
+
+    <string name="toast_no_default_browser">No browser to show info</string>
+    <string name="toast_enter_url">Enter URL</string>
+    <string name="toast_no_data_to_share">No data to share</string>
+
+    <string name="hint_enter_cmd">Enter command…</string>
+
+    <string name="open_source_libs">Open Source Libraries</string>
+    <string name="open_source_libs_desc">List of used libraries</string>
+    <string name="website">Website</string>
+    <string name="website_desc">http://kenumir.pl/</string>
+    <string name="author">Author</string>
+    <string name="author_desc">Michał (Kenumir) Szwarc</string>
+    <string name="version">Version</string>
+    <string name="suggestions">Suggestions/Feature request</string>
+    <string name="suggestions_desc">Info for author</string>
+    <string name="suggestions_hint">Enter text :-)</string>
+    <string name="rate_app">Rate app</string>
+    <string name="rate_app_desc">Leave rate in Play Store</string>
+    <string name="support">Support</string>
+    <string name="about">About</string>
+</resources>

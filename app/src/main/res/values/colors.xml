@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="silver">#FFEEEEEE</color>
+
+    <array name="menu_parent_background_colors">
+        <item>?colorPrimary</item>
+        <item>?colorPrimary</item>
+        <item>?colorPrimary</item>
+    </array>
+
+    <color name="textPrimary">#DD000000</color>
+    <color name="textSecondary">#8A000000</color>
+</resources>

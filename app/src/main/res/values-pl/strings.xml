@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Pinger</string>
+
+    <string name="label_cancel">Anuluj</string>
+    <string name="label_ok">OK</string>
+    <string name="label_delete">Usuń</string>
+    <string name="label_stop">Zatrzymaj</string>
+
+    <string name="menu_address_list">Adresy</string>
+    <string name="menu_cmd">Konsola</string>
+    <string name="menu_info">Moje IP</string>
+    <string name="menu_more">Więcej</string>
+
+    <string name="ping_info_start">Ping `%s` start</string>
+    <string name="ping_info_finish">Ping koniec</string>
+
+    <string name="placeholder_no_interfaces">Brak urządzeń</string>
+
+    <string name="label_wifi">WiFi</string>
+    <string name="label_mobile">Mobile</string>
+    <string name="label_copy">Kopiuj</string>
+    <string name="label_copy_ip4">Kopiuj IPv4</string>
+    <string name="label_copy_ip6">Kopiuj IPv6</string>
+    <string name="label_share">Udostępnij</string>
+    <string name="label_ip_info">IP Info</string>
+    <string name="label_no_interfaces_found">Nic nie znaleziono</string>
+    <string name="label_no_results">Brak wyników polecenia</string>
+    <string name="label_no_address">Lista jest pusta</string>
+    <string name="label_bytes">bajtów</string>
+    <string name="label_default_packet">Domyślny rozmiar</string>
+    <string name="label_pings">%d pakietów</string>
+    <string name="label_address">Adres: %s</string>
+    <string name="label_start_stop">Start/Stop</string>
+
+    <string name="label_entry">Wpis</string>
+    <string name="label_entry_name">Nazwa wpisu</string>
+    <string name="label_entry_url">Adres URL</string>
+    <string name="label_entry_display_name">Nazwa wyświetlana (nie wymagane)</string>
+    <string name="label_entry_packet">Rozmiar pakietu (domyślnie puste)</string>
+    <string name="label_entry_count">Ilość pakietów</string>
+
+    <string name="toast_no_default_browser">Brak przeglądarki do wyświetlenia info</string>
+    <string name="toast_enter_url">Wpisz adres URL</string>
+    <string name="toast_no_data_to_share">Brak danych do udostępnienia</string>
+
+    <string name="hint_enter_cmd">Wpisz polecenie…</string>
+
+    <string name="open_source_libs">Biblioteki Open Source</string>
+    <string name="open_source_libs_desc">Lista użytych bibliotek</string>
+    <string name="website">Strona</string>
+    <string name="website_desc">http://kenumir.pl/</string>
+    <string name="author">Autor</string>
+    <string name="author_desc">Michał (Kenumir) Szwarc</string>
+    <string name="version">Wersja</string>
+    <string name="suggestions">Sugestie/Propozycje</string>
+    <string name="suggestions_desc">Informacja dla autora</string>
+    <string name="suggestions_hint">Napisz coś :-)</string>
+    <string name="rate_app">Oecń aplikację</string>
+    <string name="rate_app_desc">Zostaw ocenę w sklepie Play</string>
+    <string name="support">Wsparcie</string>
+    <string name="about">Informacje</string>
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="StartTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/app_start_logo</item>
+    </style>
+
+    <style name="Card">
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingLeft">@dimen/card_item_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/card_item_horizontal_margin</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_marginLeft">@dimen/card_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/card_horizontal_margin</item>
+    </style>
+
+    <style name="Card_Header">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+</resources>

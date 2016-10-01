@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array tools:ignore="all" name="lib_names">
+        <item>Support - appcompat-v7</item>
+        <item>Support - recyclerview-v7</item>
+        <item>Support - design-v7</item>
+        <item>Support - cardview-v7</item>
+        <item>Crashlytics</item>
+        <item>Butterknife</item>
+        <item>Materialish Progress</item>
+        <item>AHBottomNavigation</item>
+        <item>ANRWatchdog</item>
+        <item>Otto</item>
+        <item>Retrofit</item>
+        <item>Retrofit - converter-gson</item>
+        <item>Material Dialogs</item>
+        <item>Console</item>
+        <item>QueryBuilder</item>
+        <item>ErrorReportAdapter</item>
+    </string-array>
+
+    <string-array tools:ignore="all" name="lib_urls">
+        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
+        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
+        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
+        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
+        <item>https://fabric.io/kits/android/crashlytics</item>
+        <item>http://jakewharton.github.io/butterknife/</item>
+        <item>https://github.com/pnikosis/materialish-progress</item>
+        <item>https://github.com/aurelhubert/ahbottomnavigation</item>
+        <item>https://github.com/SalomonBrys/ANR-WatchDog</item>
+        <item>http://square.github.io/otto/</item>
+        <item>http://square.github.io/retrofit/</item>
+        <item>http://square.github.io/retrofit/</item>
+        <item>https://github.com/afollestad/material-dialogs</item>
+        <item>https://github.com/Hivedi/Console</item>
+        <item>https://github.com/Hivedi/QueryBuilder</item>
+        <item>https://github.com/Hivedi/ErrorReportAdapter</item>
+    </string-array>
+</resources>
