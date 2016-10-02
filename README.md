@@ -7,7 +7,4 @@ A graphic overlay on the system command `ping`. Android application.
 </a>
 
 
-![Screenshot1](https://raw.githubusercontent.com/kenumir/Pinger/master/screens/scr1.webp)
-![Screenshot2](https://raw.githubusercontent.com/kenumir/Pinger/master/screens/scr2.webp)
-![Screenshot3](https://raw.githubusercontent.com/kenumir/Pinger/master/screens/scr3.webp)
-![Screenshot4](https://raw.githubusercontent.com/kenumir/Pinger/master/screens/scr4.webp)
+![Screenshot](https://raw.githubusercontent.com/kenumir/Pinger/master/screens/scr1.png)
