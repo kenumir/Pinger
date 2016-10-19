@@ -95,7 +95,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
                                     protected String doInBackground(Cursor... params) {
                                         StringBuilder sb = new StringBuilder();
                                         Cursor cursor = params[0];
-                                        final int maxShareSize = 450 * 1024;
+                                        final int maxShareSize = 250 * 1024;
                                         if (cursor.moveToFirst()) {
                                             do {
                                                 sb.append(cursor.getString(cursor.getColumnIndex("data")));

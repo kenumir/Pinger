@@ -117,7 +117,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
                                         protected String doInBackground(Cursor... params) {
                                             StringBuilder sb = new StringBuilder();
                                             Cursor cursor = params[0];
-                                            final int maxShareSize = 450 * 1024;
+                                            final int maxShareSize = 250 * 1024;
                                             if (cursor.moveToFirst()) {
                                                 sb.append(getResources().getString(R.string.label_address, mAddressItem.addres)).append("\n");
                                                 do {
