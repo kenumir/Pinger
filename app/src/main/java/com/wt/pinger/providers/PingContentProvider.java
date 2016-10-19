@@ -21,6 +21,7 @@ public class PingContentProvider extends ContentProvider {
     private static final String PROVIDER_AUTHORITY = "com.wt.pinger.providers.ping";
     public static final Uri URI_CONTENT = Uri.parse("content://" + PROVIDER_AUTHORITY + "/");
 
+    private final Object dataSync = new Object();
     private ArrayList<PingItem> mData = new ArrayList<>();
     private AtomicLong lastId = new AtomicLong(1);
 
@@ -39,13 +40,17 @@ public class PingContentProvider extends ContentProvider {
                 }
             }
             if (addressId == 0) {
-                mData.clear();
+                synchronized (dataSync) {
+                    mData.clear();
+                }
             } else {
-                Iterator<PingItem> it = mData.iterator();
-                while (it.hasNext()) {
-                    PingItem item = it.next();
-                    if (item.addressId != null && item.addressId == addressId) {
-                        it.remove();
+                synchronized (dataSync) {
+                    Iterator<PingItem> it = mData.iterator();
+                    while (it.hasNext()) {
+                        PingItem item = it.next();
+                        if (item.addressId != null && item.addressId == addressId) {
+                            it.remove();
+                        }
                     }
                 }
             }
@@ -77,7 +82,9 @@ public class PingContentProvider extends ContentProvider {
                 newItem.info = values.get(PingItem.FIELD_INFO) != null ? values.getAsString(PingItem.FIELD_INFO) : null;
                 newItem.timestamp = values.get(PingItem.FIELD_TIMESTAMP) != null ? values.getAsLong(PingItem.FIELD_TIMESTAMP) : 0L;
                 newItem.addressId = values.get(PingItem.FIELD_ADDRESS_ID) != null ? values.getAsLong(PingItem.FIELD_ADDRESS_ID) : 0L;
-                mData.add(newItem);
+                synchronized (dataSync) {
+                    mData.add(newItem);
+                }
                 Uri itemUri = ContentUris.withAppendedId(uri, newItem._id);
                 if (getContext() != null) {
                     getContext().getContentResolver().notifyChange(itemUri, null);
@@ -119,14 +126,16 @@ public class PingContentProvider extends ContentProvider {
                 }
             }
 
-            if (mData.size() > 0) {
-                for(int i=mData.size()-1; i>=0; i--) {
-                    PingItem d = mData.get(i);
-                    if (addressId == 0 || d.addressId == null || d.addressId == 0) {
-                        res.addRow(new Object[]{d._id, d.time, d.seq, d.ttl, d.info, d.timestamp, d.addressId});
-                    } else {
-                        if (d.addressId == addressId) {
+            synchronized (dataSync) {
+                if (mData.size() > 0) {
+                    for (int i = mData.size() - 1; i >= 0; i--) {
+                        PingItem d = mData.get(i);
+                        if (addressId == 0 || d.addressId == null || d.addressId == 0) {
                             res.addRow(new Object[]{d._id, d.time, d.seq, d.ttl, d.info, d.timestamp, d.addressId});
+                        } else {
+                            if (d.addressId == addressId) {
+                                res.addRow(new Object[]{d._id, d.time, d.seq, d.ttl, d.info, d.timestamp, d.addressId});
+                            }
                         }
                     }
                 }
