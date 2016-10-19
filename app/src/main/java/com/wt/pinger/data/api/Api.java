@@ -48,6 +48,7 @@ public class Api {
         OkHttpClient.Builder b = new OkHttpClient.Builder();
         b.connectTimeout(5, TimeUnit.SECONDS);
         b.readTimeout(5, TimeUnit.SECONDS);
+        b.writeTimeout(5, TimeUnit.SECONDS);
         b.addInterceptor(new ApiInterceptor());
 
         Retrofit retrofit = new Retrofit.Builder()

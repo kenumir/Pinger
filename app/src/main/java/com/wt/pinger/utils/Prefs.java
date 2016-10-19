@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Kenumir on 2016-08-30.
@@ -18,41 +17,36 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Prefs {
 
-    public interface OnPrefsReady {
+    interface OnPrefsReady {
         void onReady(Prefs prefs);
     }
 
-    volatile static Prefs singleton;
+    private volatile static Prefs singleton;
 
     private static final Executor exec = Executors.newSingleThreadExecutor(new ThreadFactory() {
-        private final AtomicInteger mCount = new AtomicInteger(1);
         public Thread newThread(@NonNull Runnable r) {
-            return new Thread(r, "PrefsTask #" + mCount.getAndIncrement());
+            return new Thread(r, "PrefsTask");
         }
     });
 
     public static Prefs get(@NonNull Context ctx) {
         if (singleton == null) {
+            Prefs res = new Prefs(ctx);
             synchronized (Prefs.class) {
                 if (singleton == null) {
-                    singleton = new Prefs(ctx);
+                    singleton = res;
                 }
             }
         }
         return singleton;
     }
 
-    public static void getAsync(final @NonNull Context ctx, final @Nullable OnPrefsReady cb) {
+    public static void getAsync(@NonNull Context ctx, final @Nullable OnPrefsReady cb) {
         if (singleton == null) {
-            new AsyncTask<Void, Void, Prefs>(){
+            new AsyncTask<Context, Void, Prefs>(){
                 @Override
-                protected Prefs doInBackground(Void... voids) {
-                    synchronized (Prefs.class) {
-                        if (singleton == null) {
-                            singleton = new Prefs(ctx);
-                        }
-                    }
-                    return singleton;
+                protected Prefs doInBackground(Context... params) {
+                    return Prefs.get(params[0]);
                 }
                 @Override
                 protected void onPostExecute(Prefs prefs) {
@@ -60,7 +54,7 @@ public class Prefs {
                         cb.onReady(prefs);
                     }
                 }
-            }.executeOnExecutor(exec);
+            }.executeOnExecutor(exec, ctx);
         } else {
             if (cb != null) {
                 cb.onReady(singleton);

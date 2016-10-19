@@ -64,7 +64,7 @@ public class AddressDialog extends DialogFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        item.addres = editText1.getText().toString();
+                        item.addres = editText1.getText().toString().trim();
                         item.display_name = editText0.getText().toString();
                         if (item.addres.trim().length() == 0) {
                             editText1.requestFocus();

@@ -5,11 +5,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.hivedi.console.Console;
 import com.wt.pinger.R;
 import com.wt.pinger.activity.PingActivity;
 import com.wt.pinger.proto.ItemProto;
@@ -27,17 +27,29 @@ public class PingService extends Service {
 
     private static final int NOTIFICATION_ID = 112;
 
-    public static void startStop(@NonNull Context ctx, @NonNull AddressItem a) {
-        Intent it = new Intent(ctx, PingService.class);
+    public static void startStop(final @NonNull Context ctx, @NonNull AddressItem a) {
+        final Intent it = new Intent(ctx, PingService.class);
         it.setAction(ACTION_START_STOP);
         a.saveToIntent(it);
-        ctx.startService(it);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                ctx.startService(it);
+            }
+        }).start();
     }
 
-    public static void check(@NonNull Context ctx) {
-        Intent it = new Intent(ctx, PingService.class);
+    public static void check(final @NonNull Context ctx) {
+        final Intent it = new Intent(ctx, PingService.class);
         it.setAction(ACTION_CHECK);
-        ctx.startService(it);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                ctx.startService(it);
+            }
+        }).start();
     }
 
     public static final int SERVICE_STATE_IDLE = 1;
@@ -87,12 +99,10 @@ public class PingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent != null && intent.getAction() != null) {
-            Console.logi("A: " + intent.getAction());
             switch(intent.getAction()) {
                 case ACTION_START_STOP:
                     if (mPingProgram == null) {
                         mPingItem = ItemProto.fromIntent(intent, AddressItem.class);
-                        //Console.logi("A: start=" + mPingItem);
                         if (mPingItem != null) {
                             mPingProgram = new PingProgram.Builder()
                                     .listener(new PingProgram.OnPingListener() {
@@ -103,7 +113,7 @@ public class PingService extends Service {
 
                                             PingItem data = new PingItem();
                                             data.addressId = mPingItem._id;
-                                            data.info = getResources().getString(R.string.ping_info_start, mPingItem.addres); //"Ping '" + mPingItem.addres + "' start";
+                                            data.info = getResources().getString(R.string.ping_info_start, mPingItem.addres);
                                             data.timestamp = System.currentTimeMillis();
                                             getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
 
@@ -115,14 +125,13 @@ public class PingService extends Service {
 
                                         @Override
                                         public void onResult(@Nullable PingItem data) {
-                                            //Console.log("PP: " + data);
                                             if (data != null) {
                                                 data.addressId = mPingItem != null ? mPingItem._id : null;
                                                 getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
                                                 if (data.isDataValid()) {
                                                     mBuilder.setContentText(
                                                             DateTime.formatTime(PingService.this, data.timestamp) +
-                                                                    " - " + data.seq + " - " + data.time
+                                                                    " - " + data.seq + " - " + data.time + "ms"
                                                     );
                                                 } else {
                                                     mBuilder.setContentText(data.info);
@@ -133,7 +142,6 @@ public class PingService extends Service {
 
                                         @Override
                                         public void onError(String er) {
-                                            //Console.loge("Error X: " + er);
                                             if (er != null) {
                                                 PingItem data = new PingItem();
                                                 data.info = er;
@@ -146,14 +154,11 @@ public class PingService extends Service {
                                         @Override
                                         public void onFinish() {
                                             mPingProgram = null;
-
                                             PingItem data = new PingItem();
                                             data.addressId = mPingItem._id;
-                                            data.info = data.info = getResources().getString(R.string.ping_info_finish);
+                                            data.info = getResources().getString(R.string.ping_info_finish);
                                             data.timestamp = System.currentTimeMillis();
                                             getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
-
-                                            //getContentResolver().notifyChange(PingContentProvider.URI_CONTENT, null);
                                             BusProvider.getInstance().post(SERVICE_STATE_IDLE);
                                             stopForeground(true);
                                         }
@@ -163,11 +168,8 @@ public class PingService extends Service {
                                     .address(mPingItem.addres)
                                     .build();
                             mPingProgram.start();
-                        } else {
-                            Console.loge("No ping data to start");
                         }
                     } else {
-                        Console.logi("A: terminate=" + mPingItem);
                         mPingProgram.terminate();
                         mPingProgram = null;
                     }
