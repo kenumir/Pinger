@@ -37,7 +37,7 @@
     <string name="label_entry_url">Entry URL</string>
     <string name="label_entry_display_name">Display name (not required)</string>
     <string name="label_entry_packet">Packet size (empty for default)</string>
-    <string name="label_entry_count">Ping count</string>
+    <string name="label_entry_count">Ping count (default unlimited)</string>
 
     <string name="toast_no_default_browser">No browser to show info</string>
     <string name="toast_enter_url">Enter URL</string>

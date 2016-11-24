@@ -37,7 +37,7 @@
     <string name="label_entry_url">Adres URL</string>
     <string name="label_entry_display_name">Nazwa wyświetlana (nie wymagane)</string>
     <string name="label_entry_packet">Rozmiar pakietu (domyślnie puste)</string>
-    <string name="label_entry_count">Ilość pakietów</string>
+    <string name="label_entry_count">Ilość pakietów (domyślnie niskończona)</string>
 
     <string name="toast_no_default_browser">Brak przeglądarki do wyświetlenia info</string>
     <string name="toast_enter_url">Wpisz adres URL</string>
