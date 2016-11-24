@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new AHBottomNavigationItem(R.string.menu_cmd, R.drawable.ic_rate_review_white_24dp, R.color.colorPrimary));
         items.add(new AHBottomNavigationItem(R.string.menu_info, R.drawable.ic_info_outline_white_24dp, R.color.colorPrimary));
         items.add(new AHBottomNavigationItem(R.string.menu_more, R.drawable.ic_menu_white_24dp, R.color.colorPrimary));
-        tabs.setForceTitlesDisplay(true);
+        tabs.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
         tabs.addItems(items);
         tabs.setDefaultBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         tabs.setAccentColor(0xFFFFFFFF);
