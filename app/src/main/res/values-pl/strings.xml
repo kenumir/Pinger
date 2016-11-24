@@ -29,6 +29,7 @@
     <string name="label_bytes">bajtów</string>
     <string name="label_default_packet">Domyślny rozmiar</string>
     <string name="label_pings">%d pakietów</string>
+    <string name="label_interval">%ds interwału</string>
     <string name="label_address">Adres: %s</string>
     <string name="label_start_stop">Start/Stop</string>
 
@@ -38,6 +39,7 @@
     <string name="label_entry_display_name">Nazwa wyświetlana (nie wymagane)</string>
     <string name="label_entry_packet">Rozmiar pakietu (domyślnie puste)</string>
     <string name="label_entry_count">Ilość pakietów (domyślnie niskończona)</string>
+    <string name="label_interval_time">Interwał pakietów (sekundy)</string>
 
     <string name="toast_no_default_browser">Brak przeglądarki do wyświetlenia info</string>
     <string name="toast_enter_url">Wpisz adres URL</string>

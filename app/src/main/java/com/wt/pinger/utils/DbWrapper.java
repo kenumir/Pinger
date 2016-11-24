@@ -14,20 +14,20 @@ import com.wt.pinger.providers.data.AddressItem;
 
 public class DbWrapper extends SQLiteOpenHelper {
 	
-	public static final String TABLE_ITEMS = "items";
+	private static final String TABLE_ITEMS = "items";
 
-	public static final String KEY_ITEMS_ID = AddressItem.FIELD_ID;
-	//public static final String KEY_ITEMS_NAME = "name";// deprecated field
-	public static final String KEY_ITEMS_ADDRES = AddressItem.FIELD_ADDRESS;
-	public static final String KEY_ITEMS_PACKET = AddressItem.FIELD_PACKET;
-	public static final String KEY_ITEMS_PINGS = AddressItem.FIELD_PINGS;
-	public static final String KEY_ITEMS_DISPLAY_NAME = AddressItem.FIELD_DISPLAY_NAME;
+	private static final String KEY_ITEMS_ID = AddressItem.FIELD_ID;
+	private static final String KEY_ITEMS_ADDRES = AddressItem.FIELD_ADDRESS;
+	private static final String KEY_ITEMS_PACKET = AddressItem.FIELD_PACKET;
+	private static final String KEY_ITEMS_PINGS = AddressItem.FIELD_PINGS;
+	private static final String KEY_ITEMS_INTERVAL = AddressItem.FIELD_INTERVAL;
+	private static final String KEY_ITEMS_DISPLAY_NAME = AddressItem.FIELD_DISPLAY_NAME;
 
-	private static final int DB_VERSION = 6;
+	private static final int DB_VERSION = 7;
 	private static final String DB_NAME = "pinger.sqlite";
 	
 	private SQLiteDatabase db;
-	volatile static DbWrapper sDbWrapper;
+	private volatile static DbWrapper sDbWrapper;
 	
 	public static String getDbFileName() {
 		return DB_NAME;
@@ -54,6 +54,7 @@ public class DbWrapper extends SQLiteOpenHelper {
                         KEY_ITEMS_ADDRES + " TEXT ," +
                         KEY_ITEMS_PACKET + " INTEGER, " +
                         KEY_ITEMS_PINGS + " INTEGER, " +
+                        KEY_ITEMS_INTERVAL + " INTEGER, " +
                         KEY_ITEMS_DISPLAY_NAME + " TEXT" +
                         ")"
         );
@@ -66,7 +67,7 @@ public class DbWrapper extends SQLiteOpenHelper {
 		return this.db.rawQuery(qb.getSelect(), qb.getParams());
 	}
 
-	public long addEntry(String address, int packet, int pings, String name) {
+	public long addEntry(String address, int packet, int pings, String name, int interval) {
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_ITEMS_ADDRES, address);
         if (packet > 0) {
@@ -78,6 +79,11 @@ public class DbWrapper extends SQLiteOpenHelper {
             cv.put(KEY_ITEMS_PINGS, pings);
         } else {
             cv.putNull(KEY_ITEMS_PINGS);
+        }
+        if (interval > 0) {
+            cv.put(KEY_ITEMS_INTERVAL, interval);
+        } else {
+            cv.putNull(KEY_ITEMS_INTERVAL);
         }
         if (name != null && name.length() > 0) {
             cv.put(KEY_ITEMS_DISPLAY_NAME, name);
@@ -87,7 +93,7 @@ public class DbWrapper extends SQLiteOpenHelper {
 		return this.db.insert(TABLE_ITEMS, null, cv);
 	}
 
-	public int updateEntry(Long _id, String address, int packet, int pings, String name) {
+	public int updateEntry(Long _id, String address, int packet, int pings, String name, int interval) {
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_ITEMS_ADDRES, address);
         if (packet > 0) {
@@ -99,6 +105,11 @@ public class DbWrapper extends SQLiteOpenHelper {
             cv.put(KEY_ITEMS_PINGS, pings);
         } else {
             cv.putNull(KEY_ITEMS_PINGS);
+        }
+        if (interval > 0) {
+            cv.put(KEY_ITEMS_INTERVAL, interval);
+        } else {
+            cv.putNull(KEY_ITEMS_INTERVAL);
         }
         if (name != null && name.length() > 0) {
             cv.put(KEY_ITEMS_DISPLAY_NAME, name);
@@ -141,6 +152,12 @@ public class DbWrapper extends SQLiteOpenHelper {
                 case 6:
                     // no db update - skip create filed `name`
                 case 7:
+                    String sql7 = "ALTER TABLE " + TABLE_ITEMS + " ADD COLUMN " + KEY_ITEMS_INTERVAL + " INTEGER";
+                    db.execSQL(sql7);
+                    if (BuildConfig.DEBUG) {
+                        Console.logi("SQL7: " + sql7);
+                    }
+                case 8:
 			}
 		}
 	}

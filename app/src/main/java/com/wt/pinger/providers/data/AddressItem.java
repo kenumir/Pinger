@@ -15,12 +15,14 @@ public class AddressItem extends ItemProto {
     public static final String FIELD_PACKET = "packet";
     public static final String FIELD_PINGS = "pings";
     public static final String FIELD_DISPLAY_NAME = "display_name";
+    public static final String FIELD_INTERVAL = "interval";
 
     @Deprecated
     @DataFieldAnnotation public String name; // not used
     @DataFieldAnnotation public String addres;
     @DataFieldAnnotation public Integer packet;
     @DataFieldAnnotation public Integer pings;
+    @DataFieldAnnotation public Integer interval;
     @DataFieldAnnotation public String display_name;
 
 }

@@ -39,6 +39,7 @@ public class AddressDialog extends DialogFragment {
     @BindView(R.id.editText0) EditText editText0;
     @BindView(R.id.editText2) EditText editText2;
     @BindView(R.id.editText3) EditText editText3;
+    @BindView(R.id.editText4) EditText editText4;
 
     private AddressItem item;
 
@@ -81,6 +82,11 @@ public class AddressDialog extends DialogFragment {
                         } catch (Exception e) {
                             item.pings = null;
                         }
+                        try {
+                            item.interval = Integer.parseInt(editText4.getText().toString());
+                        } catch (Exception e) {
+                            item.interval = null;
+                        }
                         if (item._id == null) {
                             // insert
                             new AsyncQueryHandler(getActivity().getContentResolver()){}.
@@ -118,6 +124,7 @@ public class AddressDialog extends DialogFragment {
             editText0.setText(item.display_name);
             editText2.setText(item.packet == null ? "" : item.packet.toString());
             editText3.setText(item.pings == null ? "" : item.pings.toString());
+            editText4.setText(item.interval == null ? "" : item.interval.toString());
         }
 
         return dialog;

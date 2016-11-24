@@ -58,7 +58,8 @@ public class DbContentProvider extends ContentProvider {
                     values.getAsString(AddressItem.FIELD_ADDRESS),
                     values.get(AddressItem.FIELD_PACKET) != null ? values.getAsInteger(AddressItem.FIELD_PACKET) : 0,
                     values.get(AddressItem.FIELD_PINGS) != null ? values.getAsInteger(AddressItem.FIELD_PINGS) : 0,
-                    values.getAsString(AddressItem.FIELD_DISPLAY_NAME)
+                    values.getAsString(AddressItem.FIELD_DISPLAY_NAME),
+                    values.get(AddressItem.FIELD_INTERVAL) != null ? values.getAsInteger(AddressItem.FIELD_INTERVAL) : 0
             );
             Uri itemUri = ContentUris.withAppendedId(uri, id);
             if (getContext() != null) {
@@ -89,7 +90,8 @@ public class DbContentProvider extends ContentProvider {
                     values.getAsString(AddressItem.FIELD_ADDRESS),
                     values.get(AddressItem.FIELD_PACKET) != null ? values.getAsInteger(AddressItem.FIELD_PACKET) : 0,
                     values.get(AddressItem.FIELD_PINGS) != null ? values.getAsInteger(AddressItem.FIELD_PINGS) : 0,
-                    values.getAsString(AddressItem.FIELD_DISPLAY_NAME)
+                    values.getAsString(AddressItem.FIELD_DISPLAY_NAME),
+                    values.get(AddressItem.FIELD_INTERVAL) != null ? values.getAsInteger(AddressItem.FIELD_INTERVAL) : 0
             );
 
             if (getContext() != null) {

@@ -4,11 +4,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
+import com.hivedi.console.Console;
+import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.activity.PingActivity;
 import com.wt.pinger.proto.ItemProto;
@@ -46,7 +50,51 @@ public class PingService extends Service {
     private NotificationCompat.Builder mBuilder;
     private AddressItem mPingItem;
 
+    private PowerManager.WakeLock mWakeLock;
+    private WifiManager.WifiLock mWifiLock;
+
     public PingService() {
+    }
+
+    private void setupWakeLocks() {
+        if (mWakeLock != null && mWakeLock.isHeld()) {
+            if (BuildConfig.DEBUG) { Console.logd("WakeLock is held, no need to create next"); }
+        } else {
+            if (mWakeLock != null) {
+                mWakeLock.release();
+            }
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "replaio");
+            mWakeLock.acquire();
+            if (BuildConfig.DEBUG) {
+                Console.logd("WakeLock acquire");
+            }
+        }
+        if (mWifiLock != null && mWifiLock.isHeld()) {
+            if (BuildConfig.DEBUG) { Console.logd("WifiLock is held, no need to create next"); }
+        } else {
+            if (mWifiLock != null) {
+                mWifiLock.release();
+            }
+            mWifiLock = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL, "Replaio");
+            mWifiLock.acquire();
+            if (BuildConfig.DEBUG) {
+                Console.logd("WifiLock acquire");
+            }
+        }
+    }
+
+    private void releaseWakeLocks() {
+        if (mWakeLock != null && mWakeLock.isHeld()) {
+            mWakeLock.release();
+            mWakeLock = null;
+            if (BuildConfig.DEBUG) { Console.logd("WakeLock release"); }
+        }
+        if (mWifiLock != null && mWifiLock.isHeld()) {
+            mWifiLock.release();
+            mWifiLock = null;
+            if (BuildConfig.DEBUG) { Console.logd("WifiLock release"); }
+        }
     }
 
     @Override
@@ -95,6 +143,7 @@ public class PingService extends Service {
                                     .listener(new PingProgram.OnPingListener() {
                                         @Override
                                         public void onStart() {
+                                            setupWakeLocks();
                                             BusProvider.getInstance().post(SERVICE_STATE_WORKING);
                                             getContentResolver().delete(PingContentProvider.URI_CONTENT, null, new String[]{mPingItem._id.toString()});
 
@@ -148,11 +197,13 @@ public class PingService extends Service {
                                             getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
                                             BusProvider.getInstance().post(SERVICE_STATE_IDLE);
                                             stopForeground(true);
+                                            releaseWakeLocks();
                                         }
                                     })
                                     .count(mPingItem.pings != null ? mPingItem.pings : 0)
                                     .packetSize(mPingItem.packet != null ? mPingItem.packet : 0)
                                     .address(mPingItem.addres)
+                                    .interval(mPingItem.interval != null ? mPingItem.interval : 0)
                                     .build();
                             mPingProgram.start();
                         }

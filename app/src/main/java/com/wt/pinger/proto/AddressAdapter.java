@@ -41,12 +41,17 @@ public class AddressAdapter extends SimpleCursorRecyclerAdapter implements ItemT
             if (item.pings != null && item.pings > 0) {
                 secText += " / " + mContext.getResources().getString(R.string.label_pings, item.pings);
             }
+            if (item.interval != null && item.interval > 0) {
+                secText += " / " + mContext.getResources().getString(R.string.label_interval, item.interval);
+            }
             holder.views[1].setText(secText);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PingActivity.show(mContext, item);
+                if (item != null) {
+                    PingActivity.show(mContext, item);
+                }
             }
         });
         /*holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
