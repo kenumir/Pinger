@@ -5,7 +5,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -31,25 +30,13 @@ public class PingService extends Service {
         final Intent it = new Intent(ctx, PingService.class);
         it.setAction(ACTION_START_STOP);
         a.saveToIntent(it);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                ctx.startService(it);
-            }
-        }).start();
+        ctx.startService(it);
     }
 
     public static void check(final @NonNull Context ctx) {
         final Intent it = new Intent(ctx, PingService.class);
         it.setAction(ACTION_CHECK);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                ctx.startService(it);
-            }
-        }).start();
+        ctx.startService(it);
     }
 
     public static final int SERVICE_STATE_IDLE = 1;
