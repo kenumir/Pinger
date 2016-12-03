@@ -5,10 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.hivedi.era.ERA;
+import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.fragment.AddressFragment;
 import com.wt.pinger.fragment.ConsoleFragment;
@@ -37,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
 
         List<AHBottomNavigationItem> items = new ArrayList<>();
@@ -71,5 +73,19 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
         ERA.log("MainActivity.onCreate:end");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (BuildConfig.DEBUG) {
+            menu.add("Test exception").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    ERA.logException(new RuntimeException("Test error"));
+                    return false;
+                }
+            });
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 }

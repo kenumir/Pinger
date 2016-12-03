@@ -7,7 +7,6 @@ import com.crashlytics.android.Crashlytics;
 import com.github.anrwatchdog.ANRError;
 import com.github.anrwatchdog.ANRWatchDog;
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
@@ -18,7 +17,6 @@ import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.PingProgram;
 import com.wt.pinger.utils.Prefs;
-import com.wt.pinger.utils.RemoteConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,6 +56,27 @@ public class App extends Application {
         super.onCreate();
         appReady = false;
 
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setLong("Build Time", BuildConfig.APP_BUILD_TIMESTAMP);
+        ERA.registerAdapter(new ReportInterface() {
+            @Override
+            public void logException(Throwable throwable, Object... objects) {
+                Crashlytics.logException(throwable);
+                FirebaseCrash.report(throwable);
+            }
+
+            @Override
+            public void log(String s, Object... objects) {
+                Crashlytics.log(s);
+                FirebaseCrash.log(s);
+            }
+
+            @Override
+            public void breadcrumb(String s, Object... objects) {
+                // nothing
+            }
+        });
+
         if (BuildConfig.DEBUG) {
             /**
              * simple log
@@ -66,26 +85,6 @@ public class App extends Application {
             Console.setTag("pinger");
             Console.addLogWriterLogCat();
         } else {
-            Fabric.with(this, new Crashlytics());
-            Crashlytics.setLong("Build Time", BuildConfig.APP_BUILD_TIMESTAMP);
-            ERA.registerAdapter(new ReportInterface() {
-                @Override
-                public void logException(Throwable throwable, Object... objects) {
-                    Crashlytics.logException(throwable);
-                    FirebaseCrash.report(throwable);
-                }
-
-                @Override
-                public void log(String s, Object... objects) {
-                    Crashlytics.log(s);
-                    FirebaseCrash.log(s);
-                }
-
-                @Override
-                public void breadcrumb(String s, Object... objects) {
-                    // nothing
-                }
-            });
             new ANRWatchDog().setReportMainThreadOnly().setANRListener(new ANRWatchDog.ANRListener() {
                 @Override
                 public void onAppNotResponding(ANRError error) {
@@ -163,12 +162,6 @@ public class App extends Application {
                     }
                 }
 
-                RemoteConfig.get().getConfig(new RemoteConfig.OnGetListener() {
-                    @Override
-                    protected void onSuccess(FirebaseRemoteConfig config) {
-                        Console.loge("show_replaio_promo=" + config.getLong("show_replaio_promo"));
-                    }
-                });
                 ERA.log("App.AsyncTask:FirebaseRemoteConfig fetch");
 
                 ERA.log("App.AsyncTask:end with time " + (SystemClock.elapsedRealtime() - startTime) + " ms");
