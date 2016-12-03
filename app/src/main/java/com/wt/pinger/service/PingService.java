@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.hivedi.console.Console;
+import com.hivedi.era.ERA;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.activity.PingActivity;
@@ -106,6 +107,7 @@ public class PingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        ERA.log("PingService.onCreate:begin");
         Intent stopIntent = new Intent(this, PingService.class);
         stopIntent.setPackage(getPackageName());
         stopIntent.setAction(ACTION_START_STOP);
@@ -127,7 +129,7 @@ public class PingService extends Service {
                 ).build()
         ));
         mBuilder.setDeleteIntent(PendingIntent.getService(this, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-
+        ERA.log("PingService.onCreate:end");
     }
 
     @Override
@@ -136,6 +138,7 @@ public class PingService extends Service {
         if (intent != null && intent.getAction() != null) {
             switch(intent.getAction()) {
                 case ACTION_START_STOP:
+                    ERA.log("PingService.onStartCommand:ACTION_START_STOP");
                     if (mPingProgram == null) {
                         mPingItem = ItemProto.fromIntent(intent, AddressItem.class);
                         if (mPingItem != null) {
@@ -214,6 +217,7 @@ public class PingService extends Service {
                     break;
 
                 case ACTION_CHECK:
+                    ERA.log("PingService.onStartCommand:ACTION_CHECK");
                     BusProvider.getInstance().post(mPingProgram != null ? SERVICE_STATE_WORKING : SERVICE_STATE_IDLE);
                     break;
             }

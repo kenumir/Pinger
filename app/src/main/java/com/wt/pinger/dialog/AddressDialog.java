@@ -11,7 +11,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.hivedi.eventclip.EventClip;
+import com.hivedi.eventclip.proto.EventParam;
 import com.wt.pinger.R;
+import com.wt.pinger.events.EventNames;
 import com.wt.pinger.proto.ItemProto;
 import com.wt.pinger.providers.DbContentProvider;
 import com.wt.pinger.providers.data.AddressItem;
@@ -91,6 +94,7 @@ public class AddressDialog extends DialogFragment {
                             // insert
                             new AsyncQueryHandler(getActivity().getContentResolver()){}.
                                     startInsert(0, null, DbContentProvider.URI_CONTENT, item.toContentValues(true));
+                            EventClip.deliver(new EventParam(EventNames.ADDRESS_ADDED));
                         } else {
                             // update
                             new AsyncQueryHandler(getActivity().getContentResolver()){}.

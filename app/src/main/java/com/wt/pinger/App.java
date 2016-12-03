@@ -6,19 +6,26 @@ import android.os.SystemClock;
 import com.crashlytics.android.Crashlytics;
 import com.github.anrwatchdog.ANRError;
 import com.github.anrwatchdog.ANRWatchDog;
+import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
+import com.hivedi.eventclip.EventClip;
 import com.wt.pinger.data.api.Api;
 import com.wt.pinger.data.api.NewUser;
+import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.PingProgram;
 import com.wt.pinger.utils.Prefs;
+import com.wt.pinger.utils.RemoteConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
@@ -32,6 +39,8 @@ public class App extends Application {
     public interface OnAppReady {
         void onAppReady();
     }
+
+    private final static ExecutorService exec = Executors.newSingleThreadExecutor();
 
     private OnAppReady mOnAppReady;
     private boolean appReady = false;
@@ -63,11 +72,13 @@ public class App extends Application {
                 @Override
                 public void logException(Throwable throwable, Object... objects) {
                     Crashlytics.logException(throwable);
+                    FirebaseCrash.report(throwable);
                 }
 
                 @Override
                 public void log(String s, Object... objects) {
                     Crashlytics.log(s);
+                    FirebaseCrash.log(s);
                 }
 
                 @Override
@@ -83,18 +94,27 @@ public class App extends Application {
             }).start();
         }
 
+        final long t1 = SystemClock.elapsedRealtime();
+        EventClip.registerProvider(new FireBaseEventProvider(App.this));
+        ERA.log("App:FireBaseEventProvider init time " + (SystemClock.elapsedRealtime() - t1) + " ms");
+
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 final long startTime = SystemClock.elapsedRealtime();
 
+                ERA.log("App.AsyncTask:begin");
                 Prefs prefs = Prefs.get(App.this);
 
+                ERA.log("App.AsyncTask:Prefs init");
                 // UUID
                 String uuid = prefs.load(Constants.PREF_UUID, (String) null);
                 if (uuid == null) {
                     uuid = UUID.randomUUID().toString();
                     prefs.save(Constants.PREF_UUID, uuid);
+                    ERA.log("App.AsyncTask:UUID generate and save");
+                } else {
+                    ERA.log("App.AsyncTask:UUID load");
                 }
 
                 if (!BuildConfig.DEBUG) {
@@ -132,23 +152,36 @@ public class App extends Application {
                         valid_ping_program = -2;
                     }
                 }
+                ERA.log("App.AsyncTask:Setup ping program");
 
                 if (BuildConfig.BUILD_FLAG_USE_API) {
                     if (!prefs.load(Constants.PREF_UUID_SAVED, false)) {
                         if (Api.getInstance().saveNewUser(NewUser.init(uuid, SystemClock.elapsedRealtime() - startTime, App.this, valid_ping_program))) {
                             prefs.save(Constants.PREF_UUID_SAVED, true);
+                            ERA.log("App.AsyncTask:Save new user");
                         }
                     }
                 }
+
+                RemoteConfig.get().getConfig(new RemoteConfig.OnGetListener() {
+                    @Override
+                    protected void onSuccess(FirebaseRemoteConfig config) {
+                        Console.loge("show_replaio_promo=" + config.getLong("show_replaio_promo"));
+                    }
+                });
+                ERA.log("App.AsyncTask:FirebaseRemoteConfig fetch");
+
+                ERA.log("App.AsyncTask:end with time " + (SystemClock.elapsedRealtime() - startTime) + " ms");
                 return null;
             }
             @Override
             protected void onPostExecute(Void aVoid) {
+                ERA.log("App.AsyncTask:onPostExecute");
                 appReady = true;
                 if (mOnAppReady != null) {
                     mOnAppReady.onAppReady();
                 }
             }
-        }.execute();
+        }.executeOnExecutor(exec);
     }
 }

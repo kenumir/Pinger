@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.hivedi.era.ERA;
 import com.wt.pinger.R;
 import com.wt.pinger.fragment.AddressFragment;
 import com.wt.pinger.fragment.ConsoleFragment;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ERA.log("MainActivity.onCreate:begin");
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -68,5 +70,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.mainFrame, mainFragments[0])
                     .commit();
         }
+        ERA.log("MainActivity.onCreate:end");
     }
 }

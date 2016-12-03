@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.hivedi.era.ERA;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.wt.pinger.App;
 import com.wt.pinger.R;
@@ -34,13 +35,16 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ERA.log("StartActivity.onCreate:begin");
         mApp = (App) getApplication();
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
+        ERA.log("StartActivity.onCreate:end");
     }
 
     @Override
     protected void onPause() {
+        ERA.log("StartActivity.onPause");
         progress.removeCallbacks(startRun);
         super.onPause();
     }
@@ -48,12 +52,14 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
     @Override
     protected void onResume() {
         super.onResume();
+        ERA.log("StartActivity.onResume");
         progress.spin();
         progress.post(startRun);
     }
 
     @Override
     public void onBackPressed() {
+        ERA.log("StartActivity.onBackPressed");
         // nop
     }
 

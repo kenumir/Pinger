@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.hivedi.console.Console;
+import com.hivedi.era.ERA;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.providers.CmdContentProvider;
 import com.wt.pinger.utils.BusProvider;
@@ -73,6 +74,7 @@ public class CmdService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        ERA.log("CmdService.onCreate");
     }
 
     @Override
@@ -82,6 +84,7 @@ public class CmdService extends Service {
             if (action != null) {
                 switch (action) {
                     case ACTION_CMD:
+                        ERA.log("CmdService.onStartCommand:ACTION_CMD");
                         synchronized (processThreadSync) {
                             if (mProcessThread != null) {
                                 mProcessThread.stopProcess();
@@ -126,6 +129,7 @@ public class CmdService extends Service {
                         }
                         break;
                     case ACTION_CHECK:
+                        ERA.log("CmdService.onStartCommand:ACTION_CHECK");
                         BusProvider.getInstance().post(new CmdServiceMessage(CMD_MSG_CHECK).setData(isWorking()));
                         break;
                 }
@@ -153,7 +157,7 @@ public class CmdService extends Service {
         private OnProcessListener mOnProcessListener;
         private boolean working = false;
 
-        public ProcessThread(@NonNull String cmd, @Nullable OnProcessListener listener) {
+        ProcessThread(@NonNull String cmd, @Nullable OnProcessListener listener) {
             this.cmd = cmd;
             this.mOnProcessListener = listener;
         }
@@ -209,13 +213,13 @@ public class CmdService extends Service {
             }
         }
 
-        public void stopProcess() {
+        void stopProcess() {
             if (process != null) {
                 process.destroy();
             }
         }
 
-        public boolean isWorking() {
+        boolean isWorking() {
             return working;
         }
     }

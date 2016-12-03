@@ -64,6 +64,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ERA.log("PingActivity.onCreate:begin");
         if (getIntent() == null) {
             finish();
             return;
@@ -200,6 +201,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         recycler.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(1, null, this);
+        ERA.log("PingActivity.onCreate:end");
     }
 
     private void startStopService() {
@@ -209,8 +211,10 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
+        ERA.log("PingActivity.onResume:begin");
         BusProvider.getInstance().register(this);
         PingService.check(this);
+        ERA.log("PingActivity.onResume:end");
     }
 
     @Override
