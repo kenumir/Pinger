@@ -8,4 +8,6 @@
 
     <dimen name="card_horizontal_margin">0dp</dimen>
     <dimen name="card_item_horizontal_margin">0dp</dimen>
+
+    <dimen name="activity_settings_item_padding">16dp</dimen>
 </resources>

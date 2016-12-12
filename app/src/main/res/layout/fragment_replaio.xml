@@ -1,0 +1,58 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Settings_Header"
+            android:text="Best radio application"/>
+
+        <LinearLayout
+            style="@style/Settings_Item"
+            android:id="@+id/replaio_app"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/replaio_icon"
+                android:layout_marginRight="16dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/Settings_Item_Text"
+                    android:text="Replaio - Radio, Music &amp; Talk"/>
+
+                <TextView
+                    android:id="@+id/textBitrate"
+                    style="@style/Settings_Item_SubText"
+                    android:text="Get from play store"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/replaioAd"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@drawable/replaio_ad"
+            android:scaleType="centerInside"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

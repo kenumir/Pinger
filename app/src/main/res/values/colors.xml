@@ -13,4 +13,7 @@
 
     <color name="textPrimary">#DD000000</color>
     <color name="textSecondary">#8A000000</color>
+
+    <color name="ripple_mask">#FFFFFFFF</color>
+    <color name="theme_light_bg_pressed_ripple">#44000000</color>
 </resources>

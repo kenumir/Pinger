@@ -10,6 +10,7 @@
     <string name="menu_cmd">Console</string>
     <string name="menu_info">My IP</string>
     <string name="menu_more">More</string>
+    <string name="menu_replaio">Replaio</string>
 
     <string name="ping_info_start">Ping `%s` start</string>
     <string name="ping_info_finish">Ping finish</string>

@@ -10,6 +10,7 @@
     <string name="menu_cmd">Konsola</string>
     <string name="menu_info">Moje IP</string>
     <string name="menu_more">Więcej</string>
+    <string name="menu_replaio">Replaio</string>
 
     <string name="ping_info_start">Ping `%s` start</string>
     <string name="ping_info_finish">Ping koniec</string>
