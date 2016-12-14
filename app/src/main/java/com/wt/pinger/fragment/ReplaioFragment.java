@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hivedi.eventclip.EventClip;
 import com.wt.pinger.R;
+import com.wt.pinger.events.EventNames;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +35,7 @@ public class ReplaioFragment extends Fragment {
 
     private void openReplaio() {
         openPlayStore(getActivity(), "com.hv.replaio&referrer=utm_source%3Dkenumir%26utm_medium%3Dpinger");
+        EventClip.deliver(EventNames.REPLAIO_AD_CLICKED);
     }
 
     public ReplaioFragment() {}

@@ -16,14 +16,14 @@ apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.wt.pinger"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 60
-        versionName "3.1.3"
+        versionCode 61
+        versionName "3.1.4"
 
         resConfigs "en", "pl"
         vectorDrawables.useSupportLibrary = true
@@ -93,7 +93,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    def supportLibVersion = "25.0.1"
+    def supportLibVersion = "25.1.0"
     def fireBaseLibVersion = "10.0.1"
 
     compile "com.android.support:appcompat-v7:${supportLibVersion}"

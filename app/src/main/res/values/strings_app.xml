@@ -17,6 +17,7 @@
         <item>Console</item>
         <item>QueryBuilder</item>
         <item>ErrorReportAdapter</item>
+        <item>EventClip</item>
     </string-array>
 
     <string-array tools:ignore="all" name="lib_urls">
@@ -36,5 +37,6 @@
         <item>https://github.com/Hivedi/Console</item>
         <item>https://github.com/Hivedi/QueryBuilder</item>
         <item>https://github.com/Hivedi/ErrorReportAdapter</item>
+        <item>https://github.com/kenumir/EventClip</item>
     </string-array>
 </resources>
