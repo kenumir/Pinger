@@ -4,6 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.hivedi.console.Console;
+import com.wt.pinger.BuildConfig;
+import com.wt.pinger.data.api.Api;
+import com.wt.pinger.data.api.NewUser;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.Prefs;
 
@@ -19,9 +23,9 @@ public class UserSync {
 
     private volatile static UserSync singleton;
 
-    public static UserSync get(@NonNull Context ctx) {
+    public static UserSync get() {
         if (singleton == null) {
-            UserSync res = new UserSync(ctx);
+            UserSync res = new UserSync();
             synchronized (UserSync.class) {
                 singleton = res;
             }
@@ -30,40 +34,37 @@ public class UserSync {
     }
 
     private final ExecutorService exec = Executors.newSingleThreadExecutor();
-    private Prefs prefs;
 
-    private UserSync(Context ctx) {
-        new AsyncTask<Context, Void, Prefs>(){
-            @Override
-            protected Prefs doInBackground(Context... params) {
-                return Prefs.get(params[0]);
-            }
+    private UserSync() {
 
-            @Override
-            protected void onPostExecute(Prefs p) {
-                prefs = p;
-            }
-        }.executeOnExecutor(exec, ctx.getApplicationContext());
     }
 
-    public void saveUser() {
-        new AsyncTask<Void, Void, Void>(){
+    public void saveUser(@NonNull Context c) {
+        new AsyncTask<Context, Void, Void>(){
             @Override
-            protected Void doInBackground(Void... params) {
-                String uuid = null;
-                String referrer = null;
-                if (!prefs.load(Constants.PREF_UUID_SAVED, false)) {
-                    uuid = prefs.load(Constants.PREF_UUID, (String) null);
+            protected Void doInBackground(Context... params) {
+                boolean andyDataToSend = false;
+                Prefs prefs = Prefs.get(params[0]);
+                String uuid = prefs.load(Constants.PREF_UUID, (String) null);
+                if (uuid != null) {
+                    String referrer = prefs.load(Constants.PREF_REFERRER, (String) null);
+                    long initTime = prefs.load(Constants.PREF_FIRST_INIT_TIME, 0L);
+                    if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
+                        andyDataToSend = true;
+                    }
+                    if (!prefs.load(Constants.PREF_FIRST_INIT_TIME_SAVED, false)) {
+                        andyDataToSend = true;
+                    }
+                    if (andyDataToSend) {
+                        if (BuildConfig.DEBUG) {
+                            Console.logi("Save User Info");
+                        }
+                        Api.getInstance().saveNewUser(NewUser.init(params[0], uuid, initTime, referrer));
+                    }
                 }
-                if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
-                    referrer = prefs.load(Constants.PREF_REFERRER, (String) null);
-                }
-                //if () {
-                //    Api.getInstance().saveNewUser(NewUser.init())
-                //}
                 return null;
             }
-        }.executeOnExecutor(exec);
+        }.executeOnExecutor(exec, c.getApplicationContext());
     }
 
 }

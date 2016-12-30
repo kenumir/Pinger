@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.hivedi.eventclip.EventClip;
-import com.hivedi.eventclip.proto.EventParam;
+import com.kenumir.eventclip.EventClip;
+import com.kenumir.eventclip.proto.EventParam;
 import com.wt.pinger.R;
 import com.wt.pinger.events.EventNames;
 import com.wt.pinger.proto.ItemProto;

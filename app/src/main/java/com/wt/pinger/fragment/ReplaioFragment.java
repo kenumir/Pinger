@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hivedi.eventclip.EventClip;
+import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.R;
 import com.wt.pinger.events.EventNames;
 

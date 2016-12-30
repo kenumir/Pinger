@@ -26,8 +26,7 @@ public class AppInstallReferrerReceiver extends BroadcastReceiver {
             prefs.save(Constants.PREF_REFERRER, referrer);
             String uuid = prefs.load(Constants.PREF_UUID);
             if (uuid != null) {
-                UserSync.get(context).saveUser();
-                //ConfigSync.get().execute(context, ConfigSync.TAG_REFERRER);
+                UserSync.get().saveUser(context);
             } else {
                 if (BuildConfig.DEBUG) {
                     Console.logi("AppInstallReferrerReceiver: no UUID, skip sync");

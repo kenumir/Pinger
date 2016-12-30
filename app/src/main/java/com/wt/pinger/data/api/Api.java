@@ -50,6 +50,7 @@ public class Api {
         b.readTimeout(5, TimeUnit.SECONDS);
         b.writeTimeout(5, TimeUnit.SECONDS);
         b.addInterceptor(new ApiInterceptor());
+        b.retryOnConnectionFailure(false);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.API_BASE_URL)
@@ -72,6 +73,9 @@ public class Api {
                 return result != null && result.has("success") && result.get("success").getAsBoolean();
             } else {
                 RuntimeException error = new RuntimeException("Api Error, code=" + resp.code() + ", saveNewUser");
+                if (BuildConfig.DEBUG) {
+                    Console.loge("Api Error[saveNewUser]: " + error.toString(), error);
+                }
                 ERA.logException(error);
                 throw error;
             }

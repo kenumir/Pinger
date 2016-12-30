@@ -11,9 +11,10 @@ import android.view.MenuItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.hivedi.era.ERA;
-import com.hivedi.eventclip.EventClip;
+import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
+import com.wt.pinger.data.UserSync;
 import com.wt.pinger.events.EventNames;
 import com.wt.pinger.fragment.AddressFragment;
 import com.wt.pinger.fragment.ConsoleFragment;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.mainFrame, mainFragments[0])
                     .commit();
+            UserSync.get().saveUser(this);
         }
         ERA.log("MainActivity.onCreate:end");
     }

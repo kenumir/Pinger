@@ -25,14 +25,13 @@ public class NewUser {
     public float device_density;
     public int device_width;
     public int device_height;
-    public int valid_ping_program = 0;
 
     public int app_version;
     public String app_version_name;
 
     public long first_init_time = 0;
 
-    public static NewUser init(@NonNull String uuid, long initTime, @NonNull Context ctx, int pingValid, String referrer) {
+    public static NewUser init(@NonNull Context ctx, @NonNull String uuid, long initTime, String referrer) {
         NewUser res = new NewUser();
         res.uuid = uuid;
         res.first_init_time = initTime;
@@ -54,9 +53,6 @@ public class NewUser {
         res.device_density = ctx.getResources().getDisplayMetrics().density;
         res.device_width = ctx.getResources().getDisplayMetrics().widthPixels;
         res.device_height = ctx.getResources().getDisplayMetrics().heightPixels;
-
-        res.valid_ping_program = pingValid;
-
         return res;
     }
 

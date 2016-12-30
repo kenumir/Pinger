@@ -155,22 +155,8 @@ public class App extends Application {
                 if (initTime == 0L) {
                     prefs.save(Constants.PREF_FIRST_INIT_TIME, SystemClock.elapsedRealtime() - startTime);
                 }
-                if (BuildConfig.BUILD_FLAG_USE_API) {
-
-                    //if (!prefs.load(Constants.PREF_FIRST_INIT_TIME_SAVED, false)) {
-                    //
-                    //}
-                    /*if (!prefs.load(Constants.PREF_UUID_SAVED, false)) {
-                        if (Api.getInstance().saveNewUser(NewUser.init(uuid, SystemClock.elapsedRealtime() - startTime, App.this, valid_ping_program))) {
-                            prefs.save(Constants.PREF_UUID_SAVED, true);
-                            ERA.log("App.AsyncTask:Save new user");
-                        }
-                    }*/
-                    //UserSync.get(App.this).saveUser();
-                }
 
                 ERA.log("App.AsyncTask:FirebaseRemoteConfig fetch");
-
                 ERA.log("App.AsyncTask:end with time " + (SystemClock.elapsedRealtime() - startTime) + " ms");
                 return null;
             }

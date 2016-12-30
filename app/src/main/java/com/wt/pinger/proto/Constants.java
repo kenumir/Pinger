@@ -7,7 +7,6 @@ package com.wt.pinger.proto;
 public class Constants {
 
     public static final String PREF_UUID = "uuid";
-    public static final String PREF_UUID_SAVED = "uuid_saved";
     public static final String PREF_REFERRER = "referrer";
     public static final String PREF_REFERRER_SAVED = "referrer_saved";
     public static final String PREF_FIRST_INIT_TIME = "first_init_time";
