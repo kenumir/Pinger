@@ -194,7 +194,7 @@ public class PingService extends Service {
                                         public void onFinish() {
                                             mPingProgram = null;
                                             PingItem data = new PingItem();
-                                            data.addressId = mPingItem._id;
+                                            data.addressId = mPingItem != null ? mPingItem._id : null;
                                             data.info = getResources().getString(R.string.ping_info_finish);
                                             data.timestamp = System.currentTimeMillis();
                                             getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
