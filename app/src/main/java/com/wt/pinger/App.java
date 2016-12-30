@@ -10,7 +10,7 @@ import com.google.firebase.crash.FirebaseCrash;
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
-import com.hivedi.eventclip.EventClip;
+import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.PingProgram;
