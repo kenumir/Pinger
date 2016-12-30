@@ -21,6 +21,7 @@ public class NewUser {
     public String system_model;
     public String system_product;
     public String system_build;
+    public String referrer;
     public float device_density;
     public int device_width;
     public int device_height;
@@ -31,7 +32,7 @@ public class NewUser {
 
     public long first_init_time = 0;
 
-    public static NewUser init(@NonNull String uuid, long initTime, @NonNull Context ctx, int pingValid) {
+    public static NewUser init(@NonNull String uuid, long initTime, @NonNull Context ctx, int pingValid, String referrer) {
         NewUser res = new NewUser();
         res.uuid = uuid;
         res.first_init_time = initTime;
@@ -44,6 +45,8 @@ public class NewUser {
         res.system_model = Build.MODEL;
         res.system_product = Build.PRODUCT;
         res.system_build = Build.DISPLAY;
+
+        res.referrer = referrer;
 
         res.app_version = BuildConfig.VERSION_CODE;
         res.app_version_name = BuildConfig.VERSION_NAME;

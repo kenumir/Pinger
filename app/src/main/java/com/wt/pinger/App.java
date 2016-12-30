@@ -11,8 +11,6 @@ import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
 import com.hivedi.eventclip.EventClip;
-import com.wt.pinger.data.api.Api;
-import com.wt.pinger.data.api.NewUser;
 import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.PingProgram;
@@ -153,13 +151,22 @@ public class App extends Application {
                 }
                 ERA.log("App.AsyncTask:Setup ping program");
 
+                long initTime = prefs.load(Constants.PREF_FIRST_INIT_TIME, 0L);
+                if (initTime == 0L) {
+                    prefs.save(Constants.PREF_FIRST_INIT_TIME, SystemClock.elapsedRealtime() - startTime);
+                }
                 if (BuildConfig.BUILD_FLAG_USE_API) {
-                    if (!prefs.load(Constants.PREF_UUID_SAVED, false)) {
+
+                    //if (!prefs.load(Constants.PREF_FIRST_INIT_TIME_SAVED, false)) {
+                    //
+                    //}
+                    /*if (!prefs.load(Constants.PREF_UUID_SAVED, false)) {
                         if (Api.getInstance().saveNewUser(NewUser.init(uuid, SystemClock.elapsedRealtime() - startTime, App.this, valid_ping_program))) {
                             prefs.save(Constants.PREF_UUID_SAVED, true);
                             ERA.log("App.AsyncTask:Save new user");
                         }
-                    }
+                    }*/
+                    //UserSync.get(App.this).saveUser();
                 }
 
                 ERA.log("App.AsyncTask:FirebaseRemoteConfig fetch");
