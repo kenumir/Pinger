@@ -49,17 +49,26 @@ public class UserSync {
                 if (uuid != null) {
                     String referrer = prefs.load(Constants.PREF_REFERRER, (String) null);
                     long initTime = prefs.load(Constants.PREF_FIRST_INIT_TIME, 0L);
-                    if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
+                    if (!prefs.load(Constants.PREF_REFERRER_SAVED, false) && referrer != null) {
                         andyDataToSend = true;
                     }
-                    if (!prefs.load(Constants.PREF_FIRST_INIT_TIME_SAVED, false)) {
+                    if (!prefs.load(Constants.PREF_FIRST_INIT_TIME_SAVED, false) && initTime > 0L) {
                         andyDataToSend = true;
                     }
                     if (andyDataToSend) {
+                        NewUser user = NewUser.init(params[0], uuid, initTime, referrer);
                         if (BuildConfig.DEBUG) {
-                            Console.logi("Save User Info");
+                            Console.logd("Save User Info, data=" + user);
                         }
-                        Api.getInstance().saveNewUser(NewUser.init(params[0], uuid, initTime, referrer));
+                        boolean saveSuccess = Api.getInstance().saveNewUser(user);
+                        if (saveSuccess) {
+                            if (!prefs.load(Constants.PREF_FIRST_INIT_TIME_SAVED, false) && initTime > 0L) {
+                                prefs.save(Constants.PREF_FIRST_INIT_TIME_SAVED, true);
+                            }
+                            if (!prefs.load(Constants.PREF_REFERRER_SAVED, false) && referrer != null) {
+                                prefs.save(Constants.PREF_REFERRER_SAVED, true);
+                            }
+                        }
                     }
                 }
                 return null;

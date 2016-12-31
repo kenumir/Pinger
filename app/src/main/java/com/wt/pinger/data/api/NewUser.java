@@ -22,6 +22,7 @@ public class NewUser {
     public String system_product;
     public String system_build;
     public String referrer;
+    public String installer_package;
     public float device_density;
     public int device_width;
     public int device_height;
@@ -53,7 +54,19 @@ public class NewUser {
         res.device_density = ctx.getResources().getDisplayMetrics().density;
         res.device_width = ctx.getResources().getDisplayMetrics().widthPixels;
         res.device_height = ctx.getResources().getDisplayMetrics().heightPixels;
+
+        // added in 3.1.6 (63)
+        res.installer_package = ctx.getPackageManager().getInstallerPackageName(ctx.getPackageName());
         return res;
     }
 
+    @Override
+    public String toString() {
+        return "{\nuuid=" + uuid + "\nsystem_api_name=" + system_api_name + "\nsystem_api_sdk=" + system_api_sdk + "\n" +
+                "system_brand=" + system_brand + "\nsystem_manufacturer=" + system_manufacturer + "\nsystem_model=" + system_model + "\n" +
+                "system_product=" + system_product + "\nsystem_build=" + system_build + "\nreferrer=" + referrer + "\n" +
+                "installer_package=" + installer_package + "\ndevice_density=" + device_density + "\ndevice_width=" + device_width + "\n" +
+                "device_height=" + device_height + "\napp_version=" + app_version + "\napp_version_name=" + app_version_name + "\n" +
+                "first_init_time=" + device_height + "\n}";
+    }
 }
