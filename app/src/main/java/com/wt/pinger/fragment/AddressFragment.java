@@ -17,10 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.hivedi.console.Console;
+import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
+import com.wt.pinger.activity.MainActivity;
 import com.wt.pinger.dialog.AddressDialog;
 import com.wt.pinger.proto.AddressAdapter;
 import com.wt.pinger.providers.DbContentProvider;
+import com.wt.pinger.providers.data.AddressItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +56,19 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
         ButterKnife.bind(this, res);
 
         adapter = new AddressAdapter(getActivity());
+        adapter.setOnItemClick(new AddressAdapter.OnItemClick() {
+            @Override
+            public void onClick(AddressItem item) {
+                if (!((MainActivity) getActivity()).isSaveInstanceStateCalled()) {
+                    AddressDialog d = AddressDialog.newInstance(item);
+                    d.show(getFragmentManager(), "edit");
+                } else {
+                    if (BuildConfig.DEBUG) {
+                        Console.logw("Skip showing edit dialog after `onSaveInstanceState` is called");
+                    }
+                }
+            }
+        });
         // TODO touch helper = D&D
         //ItemTouchHelper.Callback callback = new GridItemTouchHelperCallback(adapter);
         //mItemTouchHelper = new ItemTouchHelper(callback);

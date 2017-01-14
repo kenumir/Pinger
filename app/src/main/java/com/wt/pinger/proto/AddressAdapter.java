@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.wt.pinger.R;
 import com.wt.pinger.activity.PingActivity;
-import com.wt.pinger.dialog.AddressDialog;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
 import com.wt.pinger.extra.SimpleViewHolder;
 import com.wt.pinger.providers.data.AddressItem;
@@ -19,14 +18,23 @@ import com.wt.pinger.providers.data.AddressItem;
  */
 public class AddressAdapter extends SimpleCursorRecyclerAdapter implements ItemTouchHelperAdapter {
 
+    public interface OnItemClick {
+        void onClick(AddressItem item);
+    }
+
     private FragmentActivity mContext;
     private SimpleViewHolder dragHolder;
     private ItemTouchHelper mItemTouchHelper;
+    private OnItemClick mOnItemClick;
 
     public AddressAdapter(@NonNull FragmentActivity ctx) {
         super(R.layout.item_address, null, new String[]{AddressItem.FIELD_DISPLAY_NAME, AddressItem.FIELD_PINGS}, new int[]{R.id.address_text1, R.id.address_text2});
         mContext = ctx;
         setHasStableIds(true);
+    }
+
+    public void setOnItemClick(OnItemClick o) {
+        mOnItemClick = o;
     }
 
     @Override
@@ -68,8 +76,9 @@ public class AddressAdapter extends SimpleCursorRecyclerAdapter implements ItemT
         holder.itemView.findViewById(R.id.address_edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddressDialog d = AddressDialog.newInstance(item);
-                d.show(mContext.getSupportFragmentManager(), "edit");
+                if (mOnItemClick != null) {
+                    mOnItemClick.onClick(item);
+                }
             }
         });
     }

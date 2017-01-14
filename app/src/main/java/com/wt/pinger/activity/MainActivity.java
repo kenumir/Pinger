@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
             new AddressFragment(), new ConsoleFragment(), new MyIPFragment(), new ReplaioFragment(), new MoreFragment()
     };
 
+    private boolean saveInstanceStateCalled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,5 +96,21 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        saveInstanceStateCalled = false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        saveInstanceStateCalled = true;
+        super.onSaveInstanceState(outState);
+    }
+
+    public boolean isSaveInstanceStateCalled() {
+        return saveInstanceStateCalled;
     }
 }
