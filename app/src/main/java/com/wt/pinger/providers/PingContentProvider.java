@@ -84,6 +84,7 @@ public class PingContentProvider extends ContentProvider {
                 newItem.addressId = values.get(PingItem.FIELD_ADDRESS_ID) != null ? values.getAsLong(PingItem.FIELD_ADDRESS_ID) : 0L;
                 synchronized (dataSync) {
                     mData.add(newItem);
+                    // TODO optimize array size, get array size and trim unnecessary data (other ping address)
                 }
                 Uri itemUri = ContentUris.withAppendedId(uri, newItem._id);
                 if (getContext() != null) {
