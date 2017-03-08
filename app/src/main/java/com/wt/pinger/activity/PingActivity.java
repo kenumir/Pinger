@@ -1,5 +1,6 @@
 package com.wt.pinger.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -149,11 +150,15 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
                                         @Override
                                         protected void onPostExecute(String s) {
                                             if (s.length() > 0) {
-                                                Intent sendIntent = new Intent();
-                                                sendIntent.setAction(Intent.ACTION_SEND);
-                                                sendIntent.putExtra(Intent.EXTRA_TEXT, s);
-                                                sendIntent.setType("text/plain");
-                                                startActivity(sendIntent);
+                                                try {
+                                                    Intent sendIntent = new Intent();
+                                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                                    sendIntent.putExtra(Intent.EXTRA_TEXT, s);
+                                                    sendIntent.setType("text/plain");
+                                                    startActivity(sendIntent);
+                                                } catch (ActivityNotFoundException e) {
+                                                    ERA.logException(e);
+                                                }
                                             } else {
                                                 Toast.makeText(PingActivity.this, R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
                                             }

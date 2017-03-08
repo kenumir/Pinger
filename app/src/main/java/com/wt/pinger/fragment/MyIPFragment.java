@@ -1,5 +1,6 @@
 package com.wt.pinger.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hivedi.era.ERA;
 import com.wt.pinger.R;
 import com.wt.pinger.providers.NetworkInfoProvider;
 import com.wt.pinger.providers.data.NetworkInfo;
@@ -142,11 +144,15 @@ public class MyIPFragment extends Fragment implements LoaderManager.LoaderCallba
                     menu.add(R.string.label_share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            Intent sendIntent = new Intent();
-                            sendIntent.setAction(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_TEXT, ni.getIP());
-                            sendIntent.setType("text/plain");
-                            startActivity(sendIntent);
+                            try {
+                                Intent sendIntent = new Intent();
+                                sendIntent.setAction(Intent.ACTION_SEND);
+                                sendIntent.putExtra(Intent.EXTRA_TEXT, ni.getIP());
+                                sendIntent.setType("text/plain");
+                                startActivity(sendIntent);
+                            } catch (ActivityNotFoundException e) {
+                                ERA.logException(e);
+                            }
                             return false;
                         }
                     });
