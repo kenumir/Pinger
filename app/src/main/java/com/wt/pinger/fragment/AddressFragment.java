@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.hivedi.console.Console;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
@@ -86,6 +88,17 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("address-fragment")
+                        .putContentName("Address Fragment")
+                        .putContentType("fragment")
+        );
     }
 
     @Override

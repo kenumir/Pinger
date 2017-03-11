@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.hivedi.era.ERA;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.BuildConfig;
@@ -102,6 +104,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         saveInstanceStateCalled = false;
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("main-activity")
+                        .putContentName("Main Activity")
+                        .putContentType("activity")
+        );
     }
 
     @Override

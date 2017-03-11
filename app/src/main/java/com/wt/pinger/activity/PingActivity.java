@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.hivedi.era.ERA;
 import com.squareup.otto.Subscribe;
 import com.wt.pinger.R;
@@ -216,6 +218,12 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("ping-activity")
+                        .putContentName("Ping Activity")
+                        .putContentType("activity")
+        );
         ERA.log("PingActivity.onResume:begin");
         BusProvider.getInstance().register(this);
         PingService.check(this);

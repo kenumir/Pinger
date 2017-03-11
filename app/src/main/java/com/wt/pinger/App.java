@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.SystemClock;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.github.anrwatchdog.ANRError;
 import com.github.anrwatchdog.ANRWatchDog;
 import com.google.firebase.crash.FirebaseCrash;
@@ -11,6 +12,7 @@ import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
 import com.kenumir.eventclip.EventClip;
+import com.wt.pinger.events.providers.AnswersEventProvider;
 import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.PingProgram;
@@ -55,6 +57,7 @@ public class App extends Application {
         appReady = false;
 
         Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Answers());
         Crashlytics.setLong("Build Time", BuildConfig.APP_BUILD_TIMESTAMP);
         ERA.registerAdapter(new ReportInterface() {
             @Override
@@ -93,6 +96,7 @@ public class App extends Application {
 
         final long t1 = SystemClock.elapsedRealtime();
         EventClip.registerProvider(new FireBaseEventProvider(App.this));
+        EventClip.registerProvider(new AnswersEventProvider());
         ERA.log("App:FireBaseEventProvider init time " + (SystemClock.elapsedRealtime() - t1) + " ms");
 
         new AsyncTask<Void, Void, Void>(){
@@ -118,12 +122,9 @@ public class App extends Application {
                     Crashlytics.setUserIdentifier(uuid);
                 }
 
-                int valid_ping_program;
-
                 File pingFile = new File("/system/bin/ping");
                 if (pingFile.exists()) {
                     PingProgram.setPingExec("/system/bin/ping");
-                    valid_ping_program = 1;
                 } else {
                     try {
                         Process ping = Runtime.getRuntime().exec("ping -c 1 127.0.0.1");
@@ -139,14 +140,11 @@ public class App extends Application {
                         ping.destroy();
                         if (dataCounter > 1) {
                             PingProgram.setPingExec("ping");
-                            valid_ping_program = 2;
                         } else {
                             PingProgram.setPingExec(null);
-                            valid_ping_program = -1;
                         }
                     } catch (Exception ignore) {
                         PingProgram.setPingExec(null);
-                        valid_ping_program = -2;
                     }
                 }
                 ERA.log("App.AsyncTask:Setup ping program");

@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.proto.Constants;
@@ -122,5 +124,16 @@ public class MoreFragment extends Fragment {
         ButterKnife.bind(this, res);
         text2c.setText(BuildConfig.VERSION_NAME);
         return res;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("more-fragment")
+                        .putContentName("More Fragment")
+                        .putContentType("fragment")
+        );
     }
 }

@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.hivedi.era.ERA;
 import com.wt.pinger.R;
 import com.wt.pinger.providers.NetworkInfoProvider;
@@ -190,5 +192,16 @@ public class MyIPFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
         swipe.setRefreshing(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("my-ip-fragment")
+                        .putContentName("My IP Fragment")
+                        .putContentType("fragment")
+        );
     }
 }

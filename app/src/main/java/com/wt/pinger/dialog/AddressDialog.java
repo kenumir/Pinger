@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.kenumir.eventclip.EventClip;
 import com.kenumir.eventclip.proto.EventParam;
 import com.wt.pinger.R;
@@ -132,6 +134,17 @@ public class AddressDialog extends DialogFragment {
         }
 
         return dialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("address-dialog")
+                        .putContentName("Address Dialog")
+                        .putContentType("dialog")
+        );
     }
 
     @Override

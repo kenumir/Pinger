@@ -25,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.squareup.otto.Subscribe;
@@ -156,6 +158,12 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onResume() {
         super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("console-fragment")
+                        .putContentName("Console Fragment")
+                        .putContentType("fragment")
+        );
         BusProvider.getInstance().register(this);
         CmdService.checkService(getActivity());
     }

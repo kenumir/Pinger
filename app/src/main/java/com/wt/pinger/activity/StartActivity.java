@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.hivedi.era.ERA;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.wt.pinger.App;
@@ -52,6 +54,12 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
     @Override
     protected void onResume() {
         super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("start-activity")
+                        .putContentName("Start Activity")
+                        .putContentType("activity")
+        );
         ERA.log("StartActivity.onResume");
         progress.spin();
         progress.post(startRun);

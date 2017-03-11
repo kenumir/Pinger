@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.R;
 import com.wt.pinger.events.EventNames;
@@ -64,4 +66,14 @@ public class ReplaioFragment extends Fragment {
         return false;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Answers.getInstance().logContentView(
+                new ContentViewEvent()
+                        .putContentId("replaio-fragment")
+                        .putContentName("Replaio Fragment")
+                        .putContentType("fragment")
+        );
+    }
 }
