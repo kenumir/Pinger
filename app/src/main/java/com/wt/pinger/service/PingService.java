@@ -77,7 +77,7 @@ public class PingService extends Service {
             if (mWifiLock != null) {
                 mWifiLock.release();
             }
-            mWifiLock = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL, "Replaio");
+            mWifiLock = ((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL, "Replaio");
             mWifiLock.acquire();
             if (BuildConfig.DEBUG) {
                 Console.logd("WifiLock acquire");
