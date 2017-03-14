@@ -13,6 +13,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'com.google.firebase.firebase-crash'
 
 android {
     compileSdkVersion 25
@@ -22,8 +23,8 @@ android {
         applicationId "com.wt.pinger"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 65
-        versionName "3.1.8"
+        versionCode 66
+        versionName "3.1.9"
 
         resConfigs "en", "pl"
         vectorDrawables.useSupportLibrary = true
@@ -67,6 +68,7 @@ android {
                     'crashlytics.pro',
                     'support_design.pro',
                     'support_v7.pro',
+                    'picasso.pro',
                     'android.pro'
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->

@@ -56,7 +56,7 @@ public class ReplaioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_replaio, container, false);
         ButterKnife.bind(this, res);
-        pager.setAdapter(new ViewPagerAdapter());
+        pager.setAdapter(new ViewPagerAdapter(getActivity()));
         return res;
     }
 
@@ -88,16 +88,19 @@ public class ReplaioFragment extends Fragment {
     }
 
     private static class ViewPagerAdapter extends PagerAdapter {
-        private  Context context;
+
         private String[] images = new String[]{
                 "file:///android_asset/images/s1.webp",
                 "file:///android_asset/images/s2.webp",
                 "file:///android_asset/images/s3.webp",
                 "file:///android_asset/images/s4.webp",
         };
+        private Picasso mPicasso;
 
-
-        ViewPagerAdapter() {
+        ViewPagerAdapter(Context ctx) {
+            mPicasso = new Picasso.Builder(ctx)
+                    //.downloader(new OkHttp3Downloader(new OkHttpClient.Builder().build()))
+                    .build();
         }
 
         @Override
@@ -126,11 +129,11 @@ public class ReplaioFragment extends Fragment {
             final ImageView img = new ImageView(container.getContext());
             container.addView(img);
 
-            Picasso.with(container.getContext())
-                    .load(images[position])
-                    .centerInside()
-                    .fit()
-                    .into(img);
+            mPicasso
+                .load(images[position])
+                .centerInside()
+                .fit()
+                .into(img);
 
             return img;
         }
