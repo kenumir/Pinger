@@ -4,19 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.kenumir.eventclip.EventClip;
+import com.squareup.picasso.Picasso;
 import com.wt.pinger.R;
+import com.wt.pinger.R2;
 import com.wt.pinger.events.EventNames;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,11 +34,13 @@ import butterknife.OnClick;
 
 public class ReplaioFragment extends Fragment {
 
+    @BindView(R2.id.pager) ViewPager pager;
+
     @OnClick(R.id.replaio_app) void replaio_appClick(View v) {
         openReplaio();
     }
 
-    @OnClick(R.id.replaioAd) void replaioAdClick(View v) {
+    @OnClick(R.id.replaioButton) void replaioButtonClick(View v) {
         openReplaio();
     }
 
@@ -47,6 +56,7 @@ public class ReplaioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_replaio, container, false);
         ButterKnife.bind(this, res);
+        pager.setAdapter(new ViewPagerAdapter());
         return res;
     }
 
@@ -75,5 +85,54 @@ public class ReplaioFragment extends Fragment {
                         .putContentName("Replaio Fragment")
                         .putContentType("fragment")
         );
+    }
+
+    private static class ViewPagerAdapter extends PagerAdapter {
+        private  Context context;
+        private String[] images = new String[]{
+                "file:///android_asset/images/s1.webp",
+                "file:///android_asset/images/s2.webp",
+                "file:///android_asset/images/s3.webp",
+                "file:///android_asset/images/s4.webp",
+        };
+
+
+        ViewPagerAdapter() {
+        }
+
+        @Override
+        public int getCount() {
+            return images.length;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((View) object);
+        }
+
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            final ImageView img = new ImageView(container.getContext());
+            container.addView(img);
+
+            Picasso.with(container.getContext())
+                    .load(images[position])
+                    .centerInside()
+                    .fit()
+                    .into(img);
+
+            return img;
+        }
     }
 }

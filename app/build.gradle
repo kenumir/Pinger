@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId "com.wt.pinger"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 65
         versionName "3.1.8"
@@ -116,6 +116,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'com.github.kenumir:EventClip:1.0.3'
 
