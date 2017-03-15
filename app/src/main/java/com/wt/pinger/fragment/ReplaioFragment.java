@@ -18,10 +18,10 @@ import android.widget.ImageView;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.kenumir.eventclip.EventClip;
-import com.squareup.picasso.Picasso;
 import com.wt.pinger.R;
 import com.wt.pinger.R2;
 import com.wt.pinger.events.EventNames;
+import com.wt.pinger.utils.PicassoUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,12 +95,10 @@ public class ReplaioFragment extends Fragment {
                 "file:///android_asset/images/s3.webp",
                 "file:///android_asset/images/s4.webp",
         };
-        private Picasso mPicasso;
+        private Context c;
 
         ViewPagerAdapter(Context ctx) {
-            mPicasso = new Picasso.Builder(ctx)
-                    //.downloader(new OkHttp3Downloader(new OkHttpClient.Builder().build()))
-                    .build();
+            c = ctx;
         }
 
         @Override
@@ -129,7 +127,7 @@ public class ReplaioFragment extends Fragment {
             final ImageView img = new ImageView(container.getContext());
             container.addView(img);
 
-            mPicasso
+            PicassoUtil.get(c)
                 .load(images[position])
                 .centerInside()
                 .fit()
