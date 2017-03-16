@@ -11,6 +11,8 @@ import com.wt.pinger.activity.PingActivity;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
 import com.wt.pinger.extra.SimpleViewHolder;
 import com.wt.pinger.providers.data.AddressItem;
+import com.wt.pinger.service.PingService;
+import com.wt.pinger.utils.Prefs;
 
 /**
  * Created by Kenumir on 2016-08-22.
@@ -58,7 +60,16 @@ public class AddressAdapter extends SimpleCursorRecyclerAdapter implements ItemT
             @Override
             public void onClick(View v) {
                 if (item != null) {
-                    PingActivity.show(mContext, item);
+                    Prefs.getAsync(mContext, new Prefs.OnPrefsReady() {
+                        @Override
+                        public void onReady(Prefs prefs) {
+                            if (prefs.load(Constants.PREF_START_PING_FROM_LIST, false)) {
+                                PingService.startStop(mContext, item);
+                            } else {
+                                PingActivity.show(mContext, item);
+                            }
+                        }
+                    });
                 }
             }
         });

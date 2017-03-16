@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public class Prefs {
 
-    interface OnPrefsReady {
+    public interface OnPrefsReady {
         void onReady(Prefs prefs);
     }
 

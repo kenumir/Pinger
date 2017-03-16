@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="marked" format="boolean" />
+    <attr name="autocheck" format="boolean" />
+
+    <declare-styleable name="CheckableRelativeLayout">
+        <attr name="marked" />
+        <attr name="autocheck" />
+        <attr name="populateEnabledState" format="boolean" />
+    </declare-styleable>
+
+</resources>

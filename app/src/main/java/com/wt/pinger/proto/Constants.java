@@ -12,4 +12,7 @@ public class Constants {
     public static final String PREF_FIRST_INIT_TIME = "first_init_time";
     public static final String PREF_FIRST_INIT_TIME_SAVED = "first_init_time_saved";
 
+    // user settings
+    public static final String PREF_START_PING_FROM_LIST = "start_ping_from_list";
+
 }

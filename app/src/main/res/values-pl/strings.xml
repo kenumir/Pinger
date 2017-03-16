@@ -62,4 +62,8 @@
     <string name="rate_app_desc">Zostaw ocenę w sklepie Play</string>
     <string name="support">Wsparcie</string>
     <string name="about">Informacje</string>
+
+    <string name="settings">Ustawienia</string>
+    <string name="settings_start_ping">Uruchom ping z listy</string>
+    <string name="settings_start_ping_desc">Kliknięcie pozycji listy spowoduje uruchomienie polecnia ping</string>
 </resources>

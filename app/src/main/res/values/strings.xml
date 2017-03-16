@@ -62,4 +62,8 @@
     <string name="rate_app_desc">Leave rate in Play Store</string>
     <string name="support">Support</string>
     <string name="about">About</string>
+
+    <string name="settings">Settings</string>
+    <string name="settings_start_ping">Start ping from list</string>
+    <string name="settings_start_ping_desc">Execute ping command when click list item</string>
 </resources>

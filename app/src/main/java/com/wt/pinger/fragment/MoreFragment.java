@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -19,6 +20,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
+import com.wt.pinger.proto.CheckableRelativeLayout;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.Networking;
 import com.wt.pinger.utils.Prefs;
@@ -114,6 +116,7 @@ public class MoreFragment extends Fragment {
     }
 
     @BindView(R.id.text2c) TextView text2c;
+    @BindView(R.id.settingRunFromList) CheckableRelativeLayout settingRunFromList;
 
     public MoreFragment() {}
 
@@ -123,6 +126,27 @@ public class MoreFragment extends Fragment {
         View res = inflater.inflate(R.layout.fragment_more, container, false);
         ButterKnife.bind(this, res);
         text2c.setText(BuildConfig.VERSION_NAME);
+        settingRunFromList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                Prefs.getAsync(getActivity(), new Prefs.OnPrefsReady() {
+                    @Override
+                    public void onReady(Prefs prefs) {
+                        prefs.save(Constants.PREF_START_PING_FROM_LIST, isChecked);
+                    }
+                });
+            }
+        });
+
+        Prefs.getAsync(getActivity(), new Prefs.OnPrefsReady() {
+            @Override
+            public void onReady(Prefs prefs) {
+                if (isAdded()) {
+                    settingRunFromList.setChecked(prefs.load(Constants.PREF_START_PING_FROM_LIST, false), true);
+                }
+            }
+        });
+
         return res;
     }
 
