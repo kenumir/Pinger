@@ -21,6 +21,9 @@ public class NewUser {
     public String system_model;
     public String system_product;
     public String system_build;
+    public String system_device;
+    public String system_id;
+    public String system_board;
     public String referrer;
     public String installer_package;
     public float device_density;
@@ -45,6 +48,9 @@ public class NewUser {
         res.system_model = Build.MODEL;
         res.system_product = Build.PRODUCT;
         res.system_build = Build.DISPLAY;
+        res.system_device = Build.DEVICE; // added in 3.2.0
+        res.system_id = Build.ID;         // added in 3.2.0
+        res.system_board = Build.BOARD;   // added in 3.2.0
 
         res.referrer = referrer;
 
@@ -62,11 +68,25 @@ public class NewUser {
 
     @Override
     public String toString() {
-        return "{\nuuid=" + uuid + "\nsystem_api_name=" + system_api_name + "\nsystem_api_sdk=" + system_api_sdk + "\n" +
-                "system_brand=" + system_brand + "\nsystem_manufacturer=" + system_manufacturer + "\nsystem_model=" + system_model + "\n" +
-                "system_product=" + system_product + "\nsystem_build=" + system_build + "\nreferrer=" + referrer + "\n" +
-                "installer_package=" + installer_package + "\ndevice_density=" + device_density + "\ndevice_width=" + device_width + "\n" +
-                "device_height=" + device_height + "\napp_version=" + app_version + "\napp_version_name=" + app_version_name + "\n" +
-                "first_init_time=" + device_height + "\n}";
+        return "{\nuuid=" + uuid +
+                "\nsystem_api_name=" + system_api_name +
+                "\nsystem_api_sdk=" + system_api_sdk +
+                "\nsystem_brand=" + system_brand +
+                "\nsystem_manufacturer=" + system_manufacturer +
+                "\nsystem_model=" + system_model +
+                "\nsystem_product=" + system_product +
+                "\nsystem_build=" + system_build +
+                "\nsystem_device=" + system_device +
+                "\nsystem_id=" + system_id +
+                "\nsystem_board=" + system_board +
+                "\nreferrer=" + referrer +
+                "\ninstaller_package=" + installer_package +
+                "\ndevice_density=" + device_density +
+                "\ndevice_width=" + device_width +
+                "\ndevice_height=" + device_height +
+                "\napp_version=" + app_version +
+                "\napp_version_name=" + app_version_name +
+                "\nfirst_init_time=" + device_height +
+                "\n}";
     }
 }

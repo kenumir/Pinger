@@ -124,7 +124,7 @@ dependencies {
     compile 'com.github.kenumir:EventClip:1.0.3'
 
     // hivedi
-    compile 'com.github.Hivedi:Console:1.0.2'
+    compile 'com.github.Hivedi:Console:1.0.3'
     compile 'com.github.Hivedi:QueryBuilder:1.0.2'
     compile 'com.github.Hivedi:ErrorReportAdapter:2.1.0'
 }
