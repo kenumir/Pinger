@@ -65,7 +65,7 @@ public class PingService extends Service {
                 mWakeLock.release();
             }
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "replaio");
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "pinger");
             mWakeLock.acquire();
             if (BuildConfig.DEBUG) {
                 Console.logd("WakeLock acquire");
@@ -91,10 +91,19 @@ public class PingService extends Service {
             mWakeLock = null;
             if (BuildConfig.DEBUG) { Console.logd("WakeLock release"); }
         }
-        if (mWifiLock != null && mWifiLock.isHeld()) {
-            mWifiLock.release();
-            mWifiLock = null;
-            if (BuildConfig.DEBUG) { Console.logd("WifiLock release"); }
+        /**
+         * sometimes happen: RuntimeException: WifiLock under-locked pinger
+         */
+        try {
+            if (mWifiLock != null && mWifiLock.isHeld()) {
+                mWifiLock.release();
+                mWifiLock = null;
+                if (BuildConfig.DEBUG) {
+                    Console.logd("WifiLock release");
+                }
+            }
+        } catch (Exception e) {
+            // ignore
         }
     }
 
