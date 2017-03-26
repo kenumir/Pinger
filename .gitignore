@@ -42,3 +42,7 @@ _work
 
 # Keystore files
 *.jks
+
+
+# crash reporting
+pinger-firebase-crashreporting.json
