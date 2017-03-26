@@ -65,11 +65,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 if (!wasSelected) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.mainFrame, mainFragments[position])
-                            .commit();
-                    EventClip.deliver(EventNames.REPLAIO_TAB_OPENED);
+                    /**
+                     * prevent error: IllegalStateException: Can not perform this action after onSaveInstanceState
+                     * issue: https://github.com/kenumir/Pinger/issues/9
+                     */
+                    if (!saveInstanceStateCalled) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.mainFrame, mainFragments[position])
+                                .commit();
+                        EventClip.deliver(EventNames.REPLAIO_TAB_OPENED);
+                    }
                 }
                 return true;
             }
