@@ -117,6 +117,7 @@ public class MoreFragment extends Fragment {
 
     @BindView(R.id.text2c) TextView text2c;
     @BindView(R.id.settingRunFromList) CheckableRelativeLayout settingRunFromList;
+    @BindView(R.id.settingMemberOldSessions) CheckableRelativeLayout settingMemberOldSessions;
 
     public MoreFragment() {}
 
@@ -137,12 +138,24 @@ public class MoreFragment extends Fragment {
                 });
             }
         });
+        settingMemberOldSessions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                Prefs.getAsync(getActivity(), new Prefs.OnPrefsReady() {
+                    @Override
+                    public void onReady(Prefs prefs) {
+                        prefs.save(Constants.PREF_MEMBER_OLD_SESSIONS, isChecked);
+                    }
+                });
+            }
+        });
 
         Prefs.getAsync(getActivity(), new Prefs.OnPrefsReady() {
             @Override
             public void onReady(Prefs prefs) {
                 if (isAdded()) {
                     settingRunFromList.setChecked(prefs.load(Constants.PREF_START_PING_FROM_LIST, false), true);
+                    settingMemberOldSessions.setChecked(prefs.load(Constants.PREF_MEMBER_OLD_SESSIONS, true), true);
                 }
             }
         });

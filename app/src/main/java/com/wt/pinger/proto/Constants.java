@@ -14,5 +14,6 @@ public class Constants {
 
     // user settings
     public static final String PREF_START_PING_FROM_LIST = "start_ping_from_list";
+    public static final String PREF_MEMBER_OLD_SESSIONS = "member_old_sessions";
 
 }

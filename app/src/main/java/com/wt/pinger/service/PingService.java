@@ -16,6 +16,7 @@ import com.hivedi.era.ERA;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.activity.PingActivity;
+import com.wt.pinger.proto.Constants;
 import com.wt.pinger.proto.ItemProto;
 import com.wt.pinger.providers.PingContentProvider;
 import com.wt.pinger.providers.data.AddressItem;
@@ -23,6 +24,7 @@ import com.wt.pinger.providers.data.PingItem;
 import com.wt.pinger.utils.BusProvider;
 import com.wt.pinger.utils.DateTime;
 import com.wt.pinger.utils.PingProgram;
+import com.wt.pinger.utils.Prefs;
 
 public class PingService extends Service {
 
@@ -169,6 +171,14 @@ public class PingService extends Service {
                                             mPingItem.saveToIntent(it);
                                             mBuilder.setContentIntent(PendingIntent.getActivity(PingService.this, 1, it, PendingIntent.FLAG_UPDATE_CURRENT));
                                             startForeground(NOTIFICATION_ID, mBuilder.build());
+
+                                            if (!Prefs.get(PingService.this).load(Constants.PREF_MEMBER_OLD_SESSIONS, true)) {
+                                                getContentResolver().delete(
+                                                        PingContentProvider.URI_CONTENT,
+                                                        PingContentProvider.WHERE_DELETE_OLD_SESSIONS,
+                                                        new String[]{mPingItem._id.toString()}
+                                                );
+                                            }
                                         }
 
                                         @Override

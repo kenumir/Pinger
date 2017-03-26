@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class PingContentProvider extends ContentProvider {
 
+    public static final String WHERE_DELETE_OLD_SESSIONS = "delete_old_session";
+
     private static final String PROVIDER_AUTHORITY = "com.wt.pinger.providers.ping";
     public static final Uri URI_CONTENT = Uri.parse("content://" + PROVIDER_AUTHORITY + "/");
 
@@ -39,23 +41,36 @@ public class PingContentProvider extends ContentProvider {
                     addressId = 0;
                 }
             }
-            if (addressId == 0) {
-                synchronized (dataSync) {
-                    mData.clear();
-                }
-            } else {
+
+            if (selection != null && selection.equals(WHERE_DELETE_OLD_SESSIONS)) {
                 synchronized (dataSync) {
                     Iterator<PingItem> it = mData.iterator();
                     while (it.hasNext()) {
                         PingItem item = it.next();
-                        if (item.addressId != null && item.addressId == addressId) {
+                        if (item.addressId != null && item.addressId != addressId) {
                             it.remove();
                         }
                     }
                 }
-            }
-            if (getContext() != null) {
-                getContext().getContentResolver().notifyChange(uri, null);
+            } else {
+                if (addressId == 0) {
+                    synchronized (dataSync) {
+                        mData.clear();
+                    }
+                } else {
+                    synchronized (dataSync) {
+                        Iterator<PingItem> it = mData.iterator();
+                        while (it.hasNext()) {
+                            PingItem item = it.next();
+                            if (item.addressId != null && item.addressId == addressId) {
+                                it.remove();
+                            }
+                        }
+                    }
+                }
+                if (getContext() != null) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
             }
             return 0;
         }

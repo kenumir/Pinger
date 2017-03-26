@@ -66,4 +66,6 @@
     <string name="settings">Ustawienia</string>
     <string name="settings_start_ping">Uruchom ping z listy</string>
     <string name="settings_start_ping_desc">Kliknięcie pozycji listy spowoduje uruchomienie polecnia ping</string>
+    <string name="settings_member_old_sessions">Pamiętaj poprzednie sesje</string>
+    <string name="settings_member_old_sessions_desc">Nie kasuj poprzednich sesji ping</string>
 </resources>

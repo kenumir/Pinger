@@ -66,4 +66,6 @@
     <string name="settings">Settings</string>
     <string name="settings_start_ping">Start ping from list</string>
     <string name="settings_start_ping_desc">Execute ping command when click list item</string>
+    <string name="settings_member_old_sessions">Remember previous sessions</string>
+    <string name="settings_member_old_sessions_desc">Do not delete previous ping sessions</string>
 </resources>
