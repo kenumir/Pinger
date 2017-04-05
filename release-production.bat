@@ -1,1 +1,1 @@
-gradlew -PFirebaseServiceAccountFilePath="e:/pinger-firebase-crashreporting.json" :app:firebaseUploadReleaseProguardMapping
+gradlew :app:firebaseUploadReleaseProguardMapping
