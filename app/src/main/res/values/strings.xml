@@ -33,6 +33,7 @@
     <string name="label_interval">%ds interval</string>
     <string name="label_address">Address: %s</string>
     <string name="label_start_stop">Start/Stop</string>
+    <string name="label_missing_sequence">Missing sequence</string>
 
     <string name="label_entry">Entry</string>
     <string name="label_entry_name">Entry name</string>

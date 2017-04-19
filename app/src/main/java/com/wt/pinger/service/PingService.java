@@ -155,6 +155,7 @@ public class PingService extends Service {
                         if (mPingItem != null) {
                             mPingProgram = new PingProgram.Builder()
                                     .listener(new PingProgram.OnPingListener() {
+                                        private Integer lastSequenceNum = null;
                                         @Override
                                         public void onStart() {
                                             setupWakeLocks();
@@ -184,6 +185,21 @@ public class PingService extends Service {
                                         @Override
                                         public void onResult(@Nullable PingItem data) {
                                             if (data != null) {
+                                                if (lastSequenceNum != null && data.seq != null) {
+                                                    int diff = data.seq - lastSequenceNum;
+	                                                if (diff > 1) {
+		                                                for(int i=lastSequenceNum + 1; i<data.seq; i++) {
+			                                                PingItem fakeData = new PingItem();
+			                                                fakeData.seq = i;
+			                                                fakeData.addressId = data.addressId;
+			                                                fakeData.info = getResources().getString(R.string.label_missing_sequence);
+			                                                fakeData.infoType = PingItem.INFO_TYPE_ERROR;
+			                                                fakeData.timestamp = System.currentTimeMillis();
+			                                                getContentResolver().insert(PingContentProvider.URI_CONTENT, fakeData.toContentValues(true));
+		                                                }
+	                                                }
+                                                }
+
                                                 data.addressId = mPingItem != null ? mPingItem._id : null;
                                                 getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
                                                 if (data.isDataValid()) {
@@ -195,6 +211,8 @@ public class PingService extends Service {
                                                     mBuilder.setContentText(data.info);
                                                 }
                                                 startForeground(NOTIFICATION_ID, mBuilder.build());
+
+                                                lastSequenceNum = data.seq;
                                             }
                                         }
 

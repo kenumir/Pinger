@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -189,6 +190,12 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
                 super.onBindViewHolder(holder, cursor);
                 PingItem item = ItemProto.fromCursor(cursor, PingItem.class);
                 if (item != null) {
+	                /**
+	                 * display formats:
+	                 * [HH:mm:ss]: [seq] - [ping]ms
+	                 * [HH:mm:ss]: [seq] - Error info
+	                 * [HH:mm:ss]: Error info
+	                 */
                     if (item.isDataValid()) {
                         holder.views[0].setText(
                             SystemCompat.toHtml(
@@ -198,7 +205,21 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
                             )
                         );
                     } else {
-                        holder.views[0].setText(SystemCompat.toHtml(DateTime.formatTime(PingActivity.this, item.timestamp) + ": <b>" + item.info + "</b>"));
+	                    Spanned span;
+                        if (item.seq != null) {
+	                        if (item.seq == 0) {
+		                        span = SystemCompat.toHtml(
+		                        	DateTime.formatTime(PingActivity.this, item.timestamp) + ": " + String.format(Locale.getDefault(), "%04d", item.seq) + " - <font color='blue'><b>" + item.info + "</b></font>"
+		                        );
+	                        } else {
+		                        span = SystemCompat.toHtml(
+				                        DateTime.formatTime(PingActivity.this, item.timestamp) + ": " + String.format(Locale.getDefault(), "%04d", item.seq) + " - <font color='red'><b>" + item.info + "</b></font>"
+		                        );
+	                        }
+                        } else {
+	                        span = SystemCompat.toHtml(DateTime.formatTime(PingActivity.this, item.timestamp) + ": <font color='blue'><b>" + item.info + "</b></font>");
+                        }
+	                    holder.views[0].setText(span);
                     }
                 }
             }

@@ -33,6 +33,7 @@
     <string name="label_interval">%ds interwału</string>
     <string name="label_address">Adres: %s</string>
     <string name="label_start_stop">Start/Stop</string>
+    <string name="label_missing_sequence">Brakująca sekwencja</string>
 
     <string name="label_entry">Wpis</string>
     <string name="label_entry_name">Nazwa wpisu</string>

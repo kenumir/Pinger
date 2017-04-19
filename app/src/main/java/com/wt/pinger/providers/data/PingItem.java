@@ -43,6 +43,9 @@ import java.util.regex.Pattern;
  */
 public class PingItem extends ItemProto {
 
+    public static final int INFO_TYPE_NORMAL = 0;
+    public static final int INFO_TYPE_ERROR = 1;
+
     public static final String FIELD_TTL = "ttl";
     public static final String FIELD_SEQ = "seq";
     public static final String FIELD_TIME = "time";
@@ -58,6 +61,7 @@ public class PingItem extends ItemProto {
     @DataFieldAnnotation public Double time;
     @DataFieldAnnotation public String info;
     @DataFieldAnnotation public Long addressId;
+    @DataFieldAnnotation public int infoType = INFO_TYPE_NORMAL;
 
     private static int parseInt(String s) {
         try {
