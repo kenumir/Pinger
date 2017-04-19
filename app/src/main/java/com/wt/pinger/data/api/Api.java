@@ -23,9 +23,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Api {
 
     public static String userAgent() {
+	    /**
+	     * fix for: IllegalArgumentException: Unexpected char 0x56db at 62 in User-Agent value: Pinger 3.2.1 (Linux; Android 4.4.2; SAMSUNG-N9106 Build/N9106-四核-MT6582)
+	     */
         return String.format(
                 "Pinger %s (Linux; Android %s; %s Build/%s)",
-                BuildConfig.VERSION_NAME, Build.VERSION.RELEASE, Build.MODEL, Build.DISPLAY
+                BuildConfig.VERSION_NAME,
+                Build.VERSION.RELEASE.replaceAll("[^\\p{ASCII}]", ""),
+                Build.MODEL.replaceAll("[^\\p{ASCII}]", ""),
+                Build.DISPLAY.replaceAll("[^\\p{ASCII}]", "")
         );
     }
 
