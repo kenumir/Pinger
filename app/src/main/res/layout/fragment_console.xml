@@ -13,22 +13,49 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/cmdSelectBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_more_horiz_gray_24dp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            tools:ignore="ContentDescription"/>
+
+        <ImageView
+            android:id="@+id/cmdAddBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_playlist_add_gray_24dp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            tools:ignore="ContentDescription"/>
+
         <EditText
             android:id="@+id/cmd_edit"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="text|textEmailAddress"
-            android:singleLine="true"
             android:ems="10"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="0dp"
             android:layout_marginEnd="0dp"
             android:hint="@string/hint_enter_cmd"
-            android:imeOptions="actionDone"/>
-
+            android:imeOptions="actionDone"
+            android:maxLines="1"/>
 
         <ImageView
             android:id="@+id/cmdBtn"

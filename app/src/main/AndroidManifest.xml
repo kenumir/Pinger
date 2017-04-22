@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.wt.pinger"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.wt.pinger">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -20,7 +20,6 @@
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIn-bFOypPMHP70jra_GECNtCfcu1HWfQ5LpvfZg"/>
-
 
         <!-- Activity -->
         <activity
@@ -59,30 +58,29 @@
         <service
             android:name=".service.PingService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"/>
 
         <!-- provider -->
         <provider
             android:name=".providers.NetworkInfoProvider"
-            android:authorities="com.wt.pinger.providers.networkinfo"
+            android:authorities="${applicationId}.providers.networkinfo"
             android:enabled="true"
             android:exported="false"/>
         <provider
             android:name=".providers.CmdContentProvider"
-            android:authorities="com.wt.pinger.providers.cmd"
+            android:authorities="${applicationId}.providers.cmd"
             android:enabled="true"
             android:exported="false"/>
         <provider
             android:name=".providers.PingContentProvider"
-            android:authorities="com.wt.pinger.providers.ping"
+            android:authorities="${applicationId}.providers.ping"
             android:enabled="true"
             android:exported="false"/>
         <provider
             android:name=".providers.DbContentProvider"
-            android:authorities="com.wt.pinger.providers.db"
+            android:authorities="${applicationId}.providers.db"
             android:enabled="true"
-            android:exported="false" />
-
+            android:exported="false"/>
     </application>
 
 </manifest>
