@@ -119,7 +119,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 				}
 
 				new MaterialDialog.Builder(getActivity())
-						.title("List of sample commands")
+						.title(R.string.label_list_of_commands)
 						.items(commands)
 						.autoDismiss(false)
 						.itemsCallback(new MaterialDialog.ListCallback() {
@@ -164,7 +164,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 														cursor.close();
 														if (isAdded() && dialog.isShowing()) {
 															dialog.setItems(cc);
-															Toast.makeText(getActivity(), "Item deleted", Toast.LENGTH_SHORT).show();
+															Toast.makeText(getActivity(), R.string.toast_command_deleted, Toast.LENGTH_SHORT).show();
 														}
 													}
 												}).execute();
@@ -175,7 +175,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 								return true;
 							}
 						})
-						.neutralText("Restore default")
+						.neutralText(R.string.label_restore_defaults)
 						.onNeutral(new MaterialDialog.SingleButtonCallback() {
 							@Override
 							public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
@@ -202,7 +202,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 								}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS_RESET, null);
 							}
 						})
-						.positiveText("Close")
+						.positiveText(R.string.label_close)
 						.onPositive(new MaterialDialog.SingleButtonCallback() {
 							@Override
 							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -223,7 +223,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 			new AsyncQueryHandler(getActivity().getContentResolver()) {
 				@Override
 				protected void onInsertComplete(int token, Object cookie, Uri uri) {
-					Toast.makeText(getActivity(), "Item added", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), R.string.toast_command_added, Toast.LENGTH_SHORT).show();
 				}
 			}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS, values);
 		}

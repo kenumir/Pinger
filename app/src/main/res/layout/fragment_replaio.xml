@@ -11,7 +11,8 @@
 
         <TextView
             style="@style/Settings_Header"
-            android:text="Best radio application"/>
+            android:text="Best radio application"
+            android:textAlignment="viewStart"/>
 
         <LinearLayout
             style="@style/Settings_Item"
@@ -22,10 +23,11 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:src="@drawable/replaio_icon"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_weight="1"
@@ -33,12 +35,14 @@
 
                 <TextView
                     style="@style/Settings_Item_Text"
-                    android:text="Replaio - Radio, Music &amp; Talk"/>
+                    android:text="Replaio - Radio, Music &amp; Talk"
+                    android:textAlignment="viewStart"/>
 
                 <TextView
                     android:id="@+id/textBitrate"
                     style="@style/Settings_Item_SubText"
-                    android:text="Get from play store"/>
+                    android:text="Get from play store"
+                    android:textAlignment="viewStart"/>
 
             </LinearLayout>
 

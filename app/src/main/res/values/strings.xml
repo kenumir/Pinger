@@ -34,6 +34,9 @@
     <string name="label_address">Address: %s</string>
     <string name="label_start_stop">Start/Stop</string>
     <string name="label_missing_sequence">Missing sequence</string>
+    <string name="label_restore_defaults">Restore defaults</string>
+    <string name="label_close">Close</string>
+    <string name="label_list_of_commands">List of commands</string>
 
     <string name="label_entry">Entry</string>
     <string name="label_entry_name">Entry name</string>
@@ -46,6 +49,8 @@
     <string name="toast_no_default_browser">No browser to show info</string>
     <string name="toast_enter_url">Enter URL</string>
     <string name="toast_no_data_to_share">No data to share</string>
+    <string name="toast_command_added">Command added</string>
+    <string name="toast_command_deleted">Command deleted</string>
 
     <string name="hint_enter_cmd">Enter command…</string>
 
