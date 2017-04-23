@@ -24,7 +24,7 @@
 
                 <TextView
                     style="@style/Card_Header"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings" />
 
@@ -65,14 +65,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/settings_start_ping"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/textPrimary"/>
+                            android:textColor="@color/textPrimary"
+                            android:textAlignment="viewStart"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/settings_start_ping_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/textSecondary"/>
+                            android:textColor="@color/textSecondary"
+                            android:textAlignment="viewStart"/>
 
                     </LinearLayout>
 
@@ -115,8 +117,8 @@
                         android:layout_marginLeft="56dp"
                         android:layout_marginStart="56dp"
                         android:gravity="center_vertical"
-                        android:layout_toLeftOf="@+id/settings_option1"
-                        android:layout_toStartOf="@+id/settings_option1"
+                        android:layout_toLeftOf="@+id/settings_option2"
+                        android:layout_toStartOf="@+id/settings_option2"
                         android:paddingRight="16dp"
                         android:paddingEnd="16dp">
 
@@ -126,7 +128,7 @@
                             android:text="@string/settings_member_old_sessions"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/textPrimary"
-                            android:layout_marginRight="32dp"/>
+                            android:textAlignment="viewStart"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -134,7 +136,7 @@
                             android:text="@string/settings_member_old_sessions_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/textSecondary"
-                            android:layout_marginRight="32dp"/>
+                            android:textAlignment="viewStart"/>
 
                     </LinearLayout>
 
@@ -165,7 +167,7 @@
 
                 <TextView
                     style="@style/Card_Header"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/support" />
 
@@ -202,11 +204,12 @@
                             android:layout_height="wrap_content"
                             android:text="@string/suggestions"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/textPrimary"/>
+                            android:textColor="@color/textPrimary"
+                            android:textAlignment="viewStart"/>
 
                         <TextView
                             android:id="@+id/text2a"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/suggestions_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -245,7 +248,7 @@
 
                         <TextView
                             android:id="@+id/text1b"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/rate_app"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -253,7 +256,7 @@
 
                         <TextView
                             android:id="@+id/text2b"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/rate_app_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -279,7 +282,7 @@
 
                 <TextView
                     style="@style/Card_Header"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/about" />
 
@@ -311,7 +314,7 @@
 
                         <TextView
                             android:id="@+id/text1c"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/version"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -319,7 +322,7 @@
 
                         <TextView
                             android:id="@+id/text2c"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/textSecondary"/>
@@ -357,7 +360,7 @@
 
                         <TextView
                             android:id="@+id/text1d"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/author"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -365,7 +368,7 @@
 
                         <TextView
                             android:id="@+id/text2d"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/author_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -404,7 +407,7 @@
 
                         <TextView
                             android:id="@+id/text1e"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/website"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -412,7 +415,7 @@
 
                         <TextView
                             android:id="@+id/text2e"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/website_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -451,7 +454,7 @@
 
                         <TextView
                             android:id="@+id/text1f"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/open_source_libs"
                             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -459,7 +462,7 @@
 
                         <TextView
                             android:id="@+id/text2f"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/open_source_libs_desc"
                             android:textAppearance="?android:attr/textAppearanceSmall"

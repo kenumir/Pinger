@@ -67,4 +67,9 @@
         <item name="android:textColor">#FF616161</item>
     </style>
 
+    <style name="PingActivityToolbar">
+        <item name="collapsedTitleGravity">start</item>
+        <item name="expandedTitleGravity">start|bottom</item>
+    </style>
+
 </resources>
