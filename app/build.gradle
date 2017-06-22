@@ -23,8 +23,8 @@ android {
         applicationId "com.wt.pinger"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 70
-        versionName "3.2.3"
+        versionCode 71
+        versionName "3.2.4"
 
         resConfigs "en", "pl"
         vectorDrawables.useSupportLibrary = true
@@ -50,10 +50,13 @@ android {
             return void
         }
         release {
-            storeFile file("../_work/sign/pinger_keystore.jks")
-            keyAlias "kenumir"
-            storePassword "pLfcLNqCCaQSnVFqeMZdCKJxXliTNrABQ0ugVXKOlabXOhsuMO1"
-            keyPassword "BY6OrKpRylOhRxKwMdVDyukhqnAyYdkOCqxbHaSUeSypnAmHde22"
+            Properties props = new Properties()
+            props.load(new FileInputStream("_work/sign/sing.properties"))
+
+            storeFile file("../_work/sign/new_pinger_upload_keystore.jks")
+            keyAlias props.get('SIGN_ALIAS', '')
+            storePassword props.get('SING_STORE_PASS', '')
+            keyPassword props.get('SIGN_ALIAS_PASS', '')
         }
     }
 

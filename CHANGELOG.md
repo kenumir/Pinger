@@ -1,5 +1,9 @@
 # Changelog
 
+# 3.2.4
+- changes for Google Play App Signing
+- update libraries
+
 # 3.2.3
 - Better support for RTL
 - List of console commands (samples, add own, delete) [#5](https://github.com/kenumir/Pinger/issues/5)
