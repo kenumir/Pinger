@@ -118,6 +118,12 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 					cursor.close();
 				}
 
+				if (!isAdded()) {
+					// skip show dialog window, activity is gone
+					// query may take long time - activity may be closed
+					return;
+				}
+
 				new MaterialDialog.Builder(getActivity())
 						.title(R.string.label_list_of_commands)
 						.items(commands)
