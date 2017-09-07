@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.wt.pinger.App;
@@ -35,6 +36,7 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
     private App mApp;
 
     @Override
+    @AddTrace(name = "onCreateTrace")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("StartActivity.onCreate:begin");

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
 import com.squareup.otto.Subscribe;
 import com.wt.pinger.R;
@@ -66,6 +67,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     private AddressItem mAddressItem;
 
     @Override
+    @AddTrace(name = "onCreateTrace")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("PingActivity.onCreate:begin");

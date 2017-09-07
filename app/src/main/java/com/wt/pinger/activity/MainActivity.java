@@ -12,6 +12,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.BuildConfig;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean saveInstanceStateCalled = false;
 
     @Override
+    @AddTrace(name = "onCreateTrace")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("MainActivity.onCreate:begin");
