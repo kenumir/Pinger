@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean saveInstanceStateCalled = false;
 
     @Override
-    @AddTrace(name = "onCreateTrace")
+    @AddTrace(name = "MainActivity_onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("MainActivity.onCreate:begin");

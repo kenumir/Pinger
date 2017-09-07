@@ -23,6 +23,7 @@ public class FireBaseEventProvider extends EventClipProvider {
     private FirebaseAnalytics mFirebaseAnalytics;
 
     public FireBaseEventProvider(@NonNull Context ctx) {
+        // check is play services i available, may produce errors?
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(ctx.getApplicationContext());
     }
 
@@ -38,7 +39,7 @@ public class FireBaseEventProvider extends EventClipProvider {
 
     private void deliverInternal(@NonNull String eventName, @Nullable Map<String, Object> params) {
         Bundle bundle = null;
-        if (params != null && params.size() > 0 && params.size() % 2 == 0) {
+        if (params != null && params.size() > 0) {
             bundle = new Bundle();
             for(String name : params.keySet()) {
                 Object value = params.get(name);

@@ -67,7 +67,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     private AddressItem mAddressItem;
 
     @Override
-    @AddTrace(name = "onCreateTrace")
+    @AddTrace(name = "PingActivity_onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("PingActivity.onCreate:begin");

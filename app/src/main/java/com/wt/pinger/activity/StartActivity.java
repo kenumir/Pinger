@@ -36,7 +36,7 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
     private App mApp;
 
     @Override
-    @AddTrace(name = "onCreateTrace")
+    @AddTrace(name = "StartActivity_onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("StartActivity.onCreate:begin");
