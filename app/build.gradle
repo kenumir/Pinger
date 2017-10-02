@@ -18,7 +18,7 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.wt.pinger"
