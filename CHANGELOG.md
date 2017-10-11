@@ -1,5 +1,10 @@
 # Changelog
 
+# 3.2.7
+- update support lib libraries
+- fix NPE exceptions
+- versions 3.2.5 and 3.2.6 are only internal tests (skip on production)
+
 # 3.2.4
 - changes for Google Play App Signing
 - update libraries
