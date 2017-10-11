@@ -224,12 +224,13 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 	@OnClick(R2.id.cmdAddBtn) void cmdAddBtnClick(View v) {
 		String text = edit.getText().toString();
 		if (text.length() > 0) {
+			final Context ctx = getActivity().getApplicationContext();
 			ContentValues values = new ContentValues();
 			values.put(DbContentProvider.Commands.FIELD_COMMAND_TEXT, text);
-			new AsyncQueryHandler(getActivity().getContentResolver()) {
+			new AsyncQueryHandler(ctx.getContentResolver()) {
 				@Override
 				protected void onInsertComplete(int token, Object cookie, Uri uri) {
-					Toast.makeText(getActivity(), R.string.toast_command_added, Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, R.string.toast_command_added, Toast.LENGTH_SHORT).show();
 				}
 			}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS, values);
 		}
