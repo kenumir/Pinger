@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.method.TextKeyListener;
 import android.view.LayoutInflater;
@@ -270,68 +269,67 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		MenuItemCompat.setShowAsAction(
-				menu.add(R.string.label_share).setIcon(R.drawable.ic_share_white_24dp).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-					@Override
-					public boolean onMenuItemClick(MenuItem menuItem) {
-						if (isAdded()) { // <- fox NPE on getActivity()
-							SimpleQueryHandler qh = new SimpleQueryHandler(getActivity().getContentResolver(), new SimpleQueryHandler.QueryListener() {
-								@Override
-								public void onQueryComplete(int token, Object cookie, Cursor cursor) {
-									if (cursor != null) {
-										new AsyncTask<Cursor, Void, String>() {
-											@Override
-											protected String doInBackground(Cursor... params) {
-												StringBuilder sb = new StringBuilder();
-												Cursor cursor = params[0];
-												final int maxShareSize = 250 * 1024;
-												if (cursor.moveToFirst()) {
-													do {
-														sb.append(cursor.getString(cursor.getColumnIndex("data")));
-														sb.append("\n");
 
-														int len = sb.length();
-														if (len > maxShareSize) {
-															// trim
-															sb.setLength(maxShareSize);
-															ERA.log("Share length trim from " + len);
-															ERA.logException(new Exception("Share length trim from " + len));
-															break;
-														}
-													} while (cursor.moveToNext());
-												}
-												cursor.close();
-												return sb.toString();
-											}
+		menu.add(R.string.label_share).setIcon(R.drawable.ic_share_white_24dp).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				if (isAdded()) { // <- fox NPE on getActivity()
+					SimpleQueryHandler qh = new SimpleQueryHandler(getActivity().getContentResolver(), new SimpleQueryHandler.QueryListener() {
+						@Override
+						public void onQueryComplete(int token, Object cookie, Cursor cursor) {
+							if (cursor != null) {
+								new AsyncTask<Cursor, Void, String>() {
+									@Override
+									protected String doInBackground(Cursor... params) {
+										StringBuilder sb = new StringBuilder();
+										Cursor cursor = params[0];
+										final int maxShareSize = 250 * 1024;
+										if (cursor.moveToFirst()) {
+											do {
+												sb.append(cursor.getString(cursor.getColumnIndex("data")));
+												sb.append("\n");
 
-											@Override
-											protected void onPostExecute(String s) {
-												if (s.length() > 0) {
-													try {
-														Intent sendIntent = new Intent();
-														sendIntent.setAction(Intent.ACTION_SEND);
-														sendIntent.putExtra(Intent.EXTRA_TEXT, s);
-														sendIntent.setType("text/plain");
-														startActivity(sendIntent);
-													} catch (ActivityNotFoundException e) {
-														ERA.logException(e);
-													}
-												} else {
-													Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+												int len = sb.length();
+												if (len > maxShareSize) {
+													// trim
+													sb.setLength(maxShareSize);
+													ERA.log("Share length trim from " + len);
+													ERA.logException(new Exception("Share length trim from " + len));
+													break;
 												}
-											}
-										}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, cursor);
-									} else {
-										Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+											} while (cursor.moveToNext());
+										}
+										cursor.close();
+										return sb.toString();
 									}
-								}
-							});
-							qh.startQuery(0, null, CmdContentProvider.URI_CONTENT, null, null, null, null);
+
+									@Override
+									protected void onPostExecute(String s) {
+										if (s.length() > 0) {
+											try {
+												Intent sendIntent = new Intent();
+												sendIntent.setAction(Intent.ACTION_SEND);
+												sendIntent.putExtra(Intent.EXTRA_TEXT, s);
+												sendIntent.setType("text/plain");
+												startActivity(sendIntent);
+											} catch (ActivityNotFoundException e) {
+												ERA.logException(e);
+											}
+										} else {
+											Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+										}
+									}
+								}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, cursor);
+							} else {
+								Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+							}
 						}
-						return false;
-					}
-				}), MenuItemCompat.SHOW_AS_ACTION_ALWAYS
-		);
+					});
+					qh.startQuery(0, null, CmdContentProvider.URI_CONTENT, null, null, null, null);
+				}
+				return false;
+			}
+		}).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 	}
 
 	@Override
