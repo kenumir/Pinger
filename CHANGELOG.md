@@ -1,7 +1,7 @@
 # Changelog
 
 # 3.2.7
-- update support lib libraries
+- update support libraries
 - fix NPE exceptions
 - versions 3.2.5 and 3.2.6 are only internal tests (skip on production)
 
