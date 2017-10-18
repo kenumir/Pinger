@@ -30,6 +30,7 @@ import com.wt.pinger.fragment.ConsoleFragment;
 import com.wt.pinger.fragment.MoreFragment;
 import com.wt.pinger.fragment.MyIPFragment;
 import com.wt.pinger.fragment.ReplaioFragment;
+import com.wt.pinger.proto.AlarmLock;
 import com.wt.pinger.receivers.StartAlarmReceiver;
 import com.wt.pinger.service.StartAlarmService;
 
@@ -111,18 +112,20 @@ public class MainActivity extends AppCompatActivity {
 		        menu.add("Test Alarm").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			        @Override
 			        public boolean onMenuItemClick(MenuItem item) {
-				        AlarmManager mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-				        Intent mIntent = new Intent(getApplicationContext(), StartAlarmReceiver.class).putExtra(StartAlarmService.KEY_ALARM_ID, 1L);
-				        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-				        long time = System.currentTimeMillis() + (60_000 * 6);
-
-				        Console.logi("ALARM START AT: " + format(time));
-
-				        Intent it = new Intent(getApplicationContext(), MainActivity.class);
-				        it.putExtra(StartAlarmService.KEY_ALARM_ID, 1L);
-				        PendingIntent alarmEditInfo = PendingIntent.getActivity(getApplicationContext(), 2, it, PendingIntent.FLAG_UPDATE_CURRENT);
-				        mAlarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(time, alarmEditInfo), pi);
+				        if (Build.VERSION.SDK_INT >= 21) {
+					        AlarmManager mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+					        Intent mIntent = new Intent(getApplicationContext(), StartAlarmReceiver.class).putExtra(StartAlarmService.KEY_ALARM_ID, 1L);
+					        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+					
+					        long time = System.currentTimeMillis() + (60_000 * 6);
+					
+					        Console.logi("ALARM START AT: " + format(time));
+					
+					        Intent it = new Intent(getApplicationContext(), MainActivity.class);
+					        it.putExtra(StartAlarmService.KEY_ALARM_ID, 1L);
+					        PendingIntent alarmEditInfo = PendingIntent.getActivity(getApplicationContext(), 2, it, PendingIntent.FLAG_UPDATE_CURRENT);
+					        mAlarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(time, alarmEditInfo), pi);
+				        }
 				        return false;
 			        }
 		        });
@@ -163,4 +166,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean isSaveInstanceStateCalled() {
         return saveInstanceStateCalled;
     }
+	
+	@Override
+	protected void onDestroy() {
+		AlarmLock.get().release();
+		super.onDestroy();
+	}
 }
