@@ -20,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +29,10 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.firebase.perf.metrics.AddTrace;
+import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.squareup.otto.Subscribe;
+import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
 import com.wt.pinger.extra.SimpleViewHolder;
@@ -77,10 +81,18 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         mAddressItem = ItemProto.fromIntent(getIntent(), AddressItem.class);
         if (mAddressItem == null) {
+	        if (BuildConfig.DEBUG) {
+		        Console.loge("No adress item data");
+	        }
             finish();
             return;
         }
-        setContentView(R.layout.activity_ping);
+	    final Window win = getWindow();
+	    win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+	    win.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+	    setContentView(R.layout.activity_ping);
+	    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         ButterKnife.bind(this);
 
         subTitle.setText(getResources().getString(R.string.label_address, mAddressItem.addres));

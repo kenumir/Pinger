@@ -1,5 +1,10 @@
 package com.wt.pinger.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +18,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.firebase.perf.metrics.AddTrace;
+import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.BuildConfig;
@@ -24,9 +30,13 @@ import com.wt.pinger.fragment.ConsoleFragment;
 import com.wt.pinger.fragment.MoreFragment;
 import com.wt.pinger.fragment.MyIPFragment;
 import com.wt.pinger.fragment.ReplaioFragment;
+import com.wt.pinger.receivers.StartAlarmReceiver;
+import com.wt.pinger.service.StartAlarmService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,6 +107,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (BuildConfig.DEBUG) {
+	        if (Build.VERSION.SDK_INT >= 21) {
+		        menu.add("Test Alarm").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			        @Override
+			        public boolean onMenuItemClick(MenuItem item) {
+				        AlarmManager mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+				        Intent mIntent = new Intent(getApplicationContext(), StartAlarmReceiver.class).putExtra(StartAlarmService.KEY_ALARM_ID, 1L);
+				        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+				        long time = System.currentTimeMillis() + (60_000 * 6);
+
+				        Console.logi("ALARM START AT: " + format(time));
+
+				        Intent it = new Intent(getApplicationContext(), MainActivity.class);
+				        it.putExtra(StartAlarmService.KEY_ALARM_ID, 1L);
+				        PendingIntent alarmEditInfo = PendingIntent.getActivity(getApplicationContext(), 2, it, PendingIntent.FLAG_UPDATE_CURRENT);
+				        mAlarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(time, alarmEditInfo), pi);
+				        return false;
+			        }
+		        });
+	        }
             menu.add("Test exception").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
@@ -107,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onCreateOptionsMenu(menu);
     }
+
+	public static String format(Long timestamp) {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault()).format(timestamp);
+	}
 
     @Override
     protected void onResume() {
