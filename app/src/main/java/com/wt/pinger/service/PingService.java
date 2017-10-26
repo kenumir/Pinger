@@ -163,7 +163,7 @@ public class PingService extends Service {
                                             getContentResolver().delete(PingContentProvider.URI_CONTENT, null, new String[]{mPingItem._id.toString()});
 
                                             PingItem data = new PingItem();
-                                            data.addressId = mPingItem._id;
+                                            data.addressId = mPingItem._id; // NPE!
                                             data.info = getResources().getString(R.string.ping_info_start, mPingItem.addres);
                                             data.timestamp = System.currentTimeMillis();
                                             getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
