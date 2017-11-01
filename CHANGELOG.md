@@ -1,5 +1,8 @@
 # Changelog
 
+# 3.2.8
+- update libraries
+
 # 3.2.7
 - update support libraries
 - fix NPE exceptions
