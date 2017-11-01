@@ -4,6 +4,7 @@ buildscript {
     repositories {
         jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
@@ -13,15 +14,14 @@ buildscript {
         // in the individual module build.gradle files
         //classpath 'com.google.firebase:firebase-plugins:1.0.5'
         classpath 'com.google.firebase:firebase-plugins:1.1.1'
+        classpath 'io.fabric.tools:gradle:1.24.4'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url "https://maven.google.com" // Google's Maven repository
-        }
+        maven { url "https://maven.google.com" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }

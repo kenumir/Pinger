@@ -7,7 +7,6 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.github.anrwatchdog.ANRError;
 import com.github.anrwatchdog.ANRWatchDog;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.Trace;
 import com.hivedi.console.Console;
@@ -68,13 +67,11 @@ public class App extends Application {
             @Override
             public void logException(Throwable throwable, Object... objects) {
                 Crashlytics.logException(throwable);
-                FirebaseCrash.report(throwable);
             }
 
             @Override
             public void log(String s, Object... objects) {
                 Crashlytics.log(s);
-                FirebaseCrash.log(s);
             }
 
             @Override

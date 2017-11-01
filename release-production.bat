@@ -1,1 +1,1 @@
-gradlew :app:firebaseUploadReleaseProguardMapping
+gradlew assembleRelease
