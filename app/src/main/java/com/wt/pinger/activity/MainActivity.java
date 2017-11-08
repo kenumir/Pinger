@@ -1,6 +1,8 @@
 package com.wt.pinger.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +14,15 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.perf.metrics.AddTrace;
+import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.BuildConfig;
@@ -40,7 +50,10 @@ public class MainActivity extends AppCompatActivity {
             new AddressFragment(), new ConsoleFragment(), new MyIPFragment(), new ReplaioFragment(), new MoreFragment()
     };
 
+    private final int RC_SIGN_IN = 123;
+
     private boolean saveInstanceStateCalled = false;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     @AddTrace(name = "MainActivity_onCreate")
@@ -91,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             UserSync.get().saveUser(this);
         }
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("796963996519-l8a0orl29216dc96mo4a7kfli6fccr5l.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         ERA.log("MainActivity.onCreate:end");
     }
 
@@ -104,8 +124,76 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
             });
+            menu.add("Log In").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                    return false;
+                }
+            });
+            menu.add("Log Check").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                    if (acct != null) {
+                        Console.logi("getEmail: " + acct.getEmail());
+                        Console.logi("getId: " + acct.getId());
+                        Console.logi("getDisplayName: " + acct.getDisplayName());
+                        Console.logi("getIdToken: " + acct.getIdToken());
+                        Console.logi("getServerAuthCode: " + acct.getServerAuthCode());
+                        Console.logi("getPhotoUrl: " + acct.getPhotoUrl());
+                    } else {
+                        Console.logi("No Account");
+                    }
+                    return false;
+                }
+            });
+
+            menu.add("Log Out").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Console.logi("signOut, isSuccessful=" + task.isSuccessful());
+                        }
+                    });
+                    return false;
+                }
+            });
+
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            Console.logi("Auth: " + account);
+            Console.logi("Auth mail: " + account.getEmail());
+            Console.logi("Auth id: " + account.getId());
+            Console.logi("Auth getIdToken: " + account.getIdToken());
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Console.loge("Auth error: " + e.getStatusMessage() + ", code=" + e.getStatusCode());
+        }
     }
 
     @Override

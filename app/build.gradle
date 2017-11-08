@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.jakewharton.butterknife'
-apply plugin: 'com.google.firebase.firebase-crash'
+//apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'com.google.firebase.firebase-perf'
+//apply plugin: 'com.google.gms.google-services'
 apply from: '../dependencies.gradle'
 
 android {
@@ -37,7 +38,6 @@ android {
     signingConfigs {
         debug {
             // ignore keystore etc
-            return void
         }
         release {
             Properties props = new Properties()
@@ -51,6 +51,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            //signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
@@ -100,6 +103,8 @@ dependencies {
     compile "com.google.firebase:firebase-core:${fireBaseLibVersion}"
     compile "com.google.firebase:firebase-config:${fireBaseLibVersion}"
     compile "com.google.firebase:firebase-perf:${fireBaseLibVersion}"
+
+    compile 'com.google.android.gms:play-services-auth:' + versions.libraryFirebase
 
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') { transitive = true }
     compile('com.crashlytics.sdk.android:answers:1.4.1@aar') { transitive = true }
