@@ -135,12 +135,12 @@ public class PingProgram {
                         }
                     } else {
                         BufferedReader readerError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-                        String er = "";
+                        StringBuilder er = new StringBuilder();
                         while ((line = readerError.readLine()) != null) {
-                            er += line + "\n";
+                            er.append(line).append("\n");
                         }
-                        if (mOnPingListener != null && er.trim().length() > 0) {
-                            mOnPingListener.onError(er.trim());
+                        if (mOnPingListener != null && er.toString().trim().length() > 0) {
+                            mOnPingListener.onError(er.toString().trim());
                         }
                         readerError.close();
                     }

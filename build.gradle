@@ -1,20 +1,19 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+apply from: './dependencies.gradle'
 buildscript {
+    apply from: './dependencies.gradle'
     repositories {
+        mavenLocal()
+        google()
         jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-SNAPSHOT'
-        classpath 'com.google.gms:google-services:3.1.1'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-        //classpath 'com.google.firebase:firebase-plugins:1.0.5'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:' + versions.butterknife
+        classpath 'com.google.gms:google-services:3.1.2'
         classpath 'com.google.firebase:firebase-plugins:1.1.1'
-        classpath 'io.fabric.tools:gradle:1.24.4'
+        classpath 'io.fabric.tools:gradle:1.24.5'
     }
 }
 
@@ -23,6 +22,7 @@ allprojects {
         jcenter()
         maven { url "https://maven.google.com" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
 
