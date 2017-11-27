@@ -59,7 +59,7 @@ public class MoreFragment extends Fragment {
 
     @OnClick(R.id.itemWeb) void itemWebClick(View v) {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://kenumir.pl/")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://pinger.kenumir.pl/")));
         } catch (android.content.ActivityNotFoundException e) {
             // ignore
         }
