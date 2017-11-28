@@ -13,8 +13,8 @@ android {
         applicationId "com.wt.pinger"
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
-        versionCode 76
-        versionName "3.2.9"
+        versionCode 77
+        versionName "3.3.0"
 
         resConfigs "en", "pl"
         vectorDrawables.useSupportLibrary = true
@@ -84,42 +84,44 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 
     def supportLibVersion = versions.librarySupport
     def fireBaseLibVersion = versions.libraryFirebase
 
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.android.support:support-compat:${supportLibVersion}"
-    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
-    compile "com.android.support:design:${supportLibVersion}"
-    compile "com.android.support:cardview-v7:${supportLibVersion}"
-    compile "com.android.support:support-v13:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:support-compat:${supportLibVersion}"
+    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:cardview-v7:${supportLibVersion}"
+    implementation "com.android.support:support-v13:${supportLibVersion}"
 
-    compile "com.google.firebase:firebase-core:${fireBaseLibVersion}"
-    compile "com.google.firebase:firebase-config:${fireBaseLibVersion}"
-    compile "com.google.firebase:firebase-perf:${fireBaseLibVersion}"
+    implementation "com.google.firebase:firebase-core:${fireBaseLibVersion}"
+    implementation "com.google.firebase:firebase-config:${fireBaseLibVersion}"
+    implementation "com.google.firebase:firebase-perf:${fireBaseLibVersion}"
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') { transitive = true }
-    compile('com.crashlytics.sdk.android:answers:1.4.1@aar') { transitive = true }
-    compile 'com.jakewharton:butterknife:' + versions.butterknife
+    implementation 'com.android.installreferrer:installreferrer:' + versions.installreferrer
+
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') { transitive = true }
+    implementation('com.crashlytics.sdk.android:answers:1.4.1@aar') { transitive = true }
+    implementation 'com.jakewharton:butterknife:' + versions.butterknife
     annotationProcessor 'com.jakewharton:butterknife-compiler:' + versions.butterknife
-    compile 'com.pnikosis:materialish-progress:1.7'
-    compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
-    compile 'com.github.anrwatchdog:anrwatchdog:1.3.0'
-    compile 'com.squareup:otto:1.3.8'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.pnikosis:materialish-progress:1.7'
+    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    implementation 'com.github.anrwatchdog:anrwatchdog:1.3.0'
+    implementation 'com.squareup:otto:1.3.8'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    compile 'com.github.kenumir:EventClip:1.0.3'
+    implementation 'com.github.kenumir:EventClip:1.0.3'
 
     // hivedi
-    compile 'com.github.Hivedi:Console:' + versions.console
-    compile 'com.github.Hivedi:QueryBuilder:1.0.2'
-    compile 'com.github.Hivedi:ErrorReportAdapter:2.1.1'
+    implementation 'com.github.Hivedi:Console:' + versions.console
+    implementation 'com.github.Hivedi:QueryBuilder:1.0.2'
+    implementation 'com.github.Hivedi:ErrorReportAdapter:2.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

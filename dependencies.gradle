@@ -5,7 +5,8 @@ ext.versions = [
         targetSdkVersion: 26,
 
         librarySupport: '27.0.1',
-        libraryFirebase: '11.6.0',
+        libraryFirebase: '11.6.2',
+        installreferrer: '1.0',
         console: '1.0.3',
         butterknife: '9.0.0-SNAPSHOT',
 ]

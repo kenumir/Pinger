@@ -1,6 +1,10 @@
 package com.wt.pinger.activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.firebase.perf.metrics.AddTrace;
+import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.BuildConfig;
@@ -24,6 +32,8 @@ import com.wt.pinger.fragment.ConsoleFragment;
 import com.wt.pinger.fragment.MoreFragment;
 import com.wt.pinger.fragment.MyIPFragment;
 import com.wt.pinger.fragment.ReplaioFragment;
+import com.wt.pinger.proto.Constants;
+import com.wt.pinger.utils.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements InstallReferrerStateListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tabs) AHBottomNavigation tabs;
@@ -41,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private boolean saveInstanceStateCalled = false;
+    private InstallReferrerClient mReferrerClient;
 
     @Override
     @AddTrace(name = "MainActivity_onCreate")
@@ -67,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 if (!wasSelected) {
-                    /**
+                    /*
                      * prevent error: IllegalStateException: Can not perform this action after onSaveInstanceState
                      * issue: https://github.com/kenumir/Pinger/issues/9
                      */
@@ -91,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             UserSync.get().saveUser(this);
         }
+
+        mReferrerClient = InstallReferrerClient.newBuilder(this).build();
+        mReferrerClient.startConnection(this);
+
         ERA.log("MainActivity.onCreate:end");
     }
 
@@ -128,5 +143,64 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isSaveInstanceStateCalled() {
         return saveInstanceStateCalled;
+    }
+
+    @Override
+    public void onInstallReferrerSetupFinished(int responseCode) {
+        if (BuildConfig.DEBUG) {
+            Console.logi("onInstallReferrerSetupFinished: responseCode=" + responseCode);
+        }
+        switch (responseCode) {
+            case InstallReferrerClient.InstallReferrerResponse.OK:
+                ERA.log("onInstallReferrerSetupFinished: responseCode=OK");
+                final Context ctx = getApplicationContext();
+                try {
+                    final ReferrerDetails response = mReferrerClient.getInstallReferrer();
+                    if (BuildConfig.DEBUG) {
+                        Console.logi("onInstallReferrerSetupFinished: InstallReferrer=" + response.getInstallReferrer());
+                    }
+                    ERA.log("onInstallReferrerSetupFinished: InstallReferrer=" + response.getInstallReferrer());
+                    Prefs.getAsync(ctx, new Prefs.OnPrefsReady() {
+                        @Override
+                        public void onReady(Prefs prefs) {
+                            if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
+                                prefs.save(Constants.PREF_REFERRER, response.getInstallReferrer());
+                                UserSync.get().saveUser(ctx);
+                            }
+                        }
+                    });
+                    mReferrerClient.endConnection();
+                } catch (RemoteException e) {
+                    ERA.logException(e);
+                }
+                break;
+            case InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                ERA.log("onInstallReferrerSetupFinished: responseCode=FEATURE_NOT_SUPPORTED");
+                break;
+            case InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                ERA.log("onInstallReferrerSetupFinished: responseCode=SERVICE_UNAVAILABLE");
+                break;
+            default:
+                ERA.log("onInstallReferrerSetupFinished: responseCode=" + responseCode + ", response not found");
+        }
+    }
+
+    @Override
+    public void onInstallReferrerServiceDisconnected() {
+        if (BuildConfig.DEBUG) {
+            Console.logi("onInstallReferrerServiceDisconnected, retry after 5secs");
+        }
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isFinishing() && mReferrerClient != null) {
+                    if (BuildConfig.DEBUG) {
+                        Console.logi("onInstallReferrerServiceDisconnected, retry - startConnection");
+                    }
+                    ERA.log("onInstallReferrerServiceDisconnected: retry connect");
+                    mReferrerClient.startConnection(MainActivity.this);
+                }
+            }
+        }, 5_000);
     }
 }
