@@ -1,4 +1,9 @@
 # Changelog
+# 3.3.0
+- save install referrer
+
+# 3.2.8
+- new web page url - http://pinger.kenumir.pl/
 
 # 3.2.8
 - update libraries
