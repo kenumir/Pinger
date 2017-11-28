@@ -13,7 +13,7 @@ android {
         applicationId "com.wt.pinger"
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
-        versionCode 77
+        versionCode 78
         versionName "3.3.0"
 
         resConfigs "en", "pl"
