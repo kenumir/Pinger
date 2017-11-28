@@ -27,7 +27,7 @@ public class AppInstallReferrerReceiver extends BroadcastReceiver {
             String uuid = prefs.load(Constants.PREF_UUID);
             if (uuid != null) {
                 if (BuildConfig.DEBUG) {
-                    Console.logi("AppInstallReferrerReceiver: uuid=" + uuid + ", referrer=" + referrer);
+                    Console.logi("AppInstallReferrerReceiver: uuid=" + uuid + ", referrer=" + referrer );
                 }
                 UserSync.get().saveUser(context);
             } else {
