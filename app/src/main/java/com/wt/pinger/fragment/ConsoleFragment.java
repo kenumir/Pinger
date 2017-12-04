@@ -1,5 +1,6 @@
 package com.wt.pinger.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
@@ -273,8 +274,9 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 		menu.add(R.string.label_share).setIcon(R.drawable.ic_share_white_24dp).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem menuItem) {
-				if (isAdded()) { // <- fox NPE on getActivity()
+				if (getActivity() != null) { // <- fox NPE on getActivity()
 					SimpleQueryHandler qh = new SimpleQueryHandler(getActivity().getContentResolver(), new SimpleQueryHandler.QueryListener() {
+						@SuppressLint("StaticFieldLeak")
 						@Override
 						public void onQueryComplete(int token, Object cookie, Cursor cursor) {
 							if (cursor != null) {
@@ -316,12 +318,16 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 												ERA.logException(e);
 											}
 										} else {
-											Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+											if (getActivity() != null) {
+												Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+											}
 										}
 									}
 								}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, cursor);
 							} else {
-								Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+								if (getActivity() != null) {
+									Toast.makeText(getActivity(), R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
+								}
 							}
 						}
 					});
