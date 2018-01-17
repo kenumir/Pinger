@@ -59,8 +59,11 @@ public class App extends Application {
 
         Trace fabricTrace = FirebasePerformance.getInstance().newTrace("fabric_init");
 	    fabricTrace.start();
-        Fabric.with(this, new Crashlytics());
-        Fabric.with(this, new Answers());
+        Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics(), new Answers())
+                .debuggable(true)
+                .build();
+        Fabric.with(fabric);
 	    fabricTrace.stop();
         Crashlytics.setLong("Build Time", BuildConfig.APP_BUILD_TIMESTAMP);
         ERA.registerAdapter(new ReportInterface() {
