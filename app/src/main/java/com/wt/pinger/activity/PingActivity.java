@@ -239,28 +239,30 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        ERA.log("PingActivity.onStart");
+        BusProvider.getInstance().register(this);
+        PingService.check(this);
+    }
+
+    @Override
+    protected void onStop() {
+        ERA.log("PingActivity.onStop");
+        BusProvider.getInstance().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        ERA.log("PingActivity.onResume");
         Answers.getInstance().logContentView(
                 new ContentViewEvent()
                         .putContentId("ping-activity")
                         .putContentName("Ping Activity")
                         .putContentType("activity")
         );
-        ERA.log("PingActivity.onResume:begin");
-        BusProvider.getInstance().register(this);
-        PingService.check(this);
-        ERA.log("PingActivity.onResume:end");
-    }
-
-    @Override
-    protected void onPause() {
-	    try {
-		    BusProvider.getInstance().unregister(this);
-	    } catch (IllegalArgumentException e) {
-		    // ignore
-	    }
-        super.onPause();
     }
 
     @Override
