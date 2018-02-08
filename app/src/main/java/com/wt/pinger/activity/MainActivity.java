@@ -104,7 +104,11 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         }
 
         mReferrerClient = InstallReferrerClient.newBuilder(this).build();
-        mReferrerClient.startConnection(this);
+        try {
+            mReferrerClient.startConnection(this);
+        } catch (Exception e) {
+            ERA.logException(e);
+        }
 
         ERA.log("MainActivity.onCreate:end");
     }
@@ -198,7 +202,11 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
                         Console.logi("onInstallReferrerServiceDisconnected, retry - startConnection");
                     }
                     ERA.log("onInstallReferrerServiceDisconnected: retry connect");
-                    mReferrerClient.startConnection(MainActivity.this);
+                    try {
+                        mReferrerClient.startConnection(MainActivity.this);
+                    } catch (Exception e) {
+                        ERA.logException(e);
+                    }
                 }
             }
         }, 5_000);
