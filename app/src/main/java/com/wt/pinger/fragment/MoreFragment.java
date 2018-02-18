@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,7 @@ public class MoreFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.open_source_libs)
                 .items(R.array.lib_names)
+                .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
                 .positiveText(R.string.label_ok)
                 .autoDismiss(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -95,6 +97,7 @@ public class MoreFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.suggestions)
                 .content(R.string.suggestions_desc)
+                .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
                 .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                 .input(R.string.suggestions_hint, 0, new MaterialDialog.InputCallback() {
                     @Override

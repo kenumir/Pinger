@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,6 +63,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.recycler) RecyclerView recycler;
     @BindView(R.id.fabAction) FloatingActionButton fabAction;
     @BindView(R.id.placeholder) View placeholder;
+    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout toolbar_layout;
 
     private SimpleCursorRecyclerAdapter adapter;
     private MenuItem playPauseMenu;
@@ -96,6 +99,8 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
                 startStopService();
             }
         });
+        toolbar_layout.setCollapsedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
+        toolbar_layout.setExpandedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
 
         playPauseMenu = toolbar.getMenu()
                 .add(R.string.label_start_stop)

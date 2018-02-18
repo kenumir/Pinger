@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.method.TextKeyListener;
 import android.view.LayoutInflater;
@@ -128,6 +129,7 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 						.title(R.string.label_list_of_commands)
 						.items(commands)
 						.autoDismiss(false)
+						.typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
 						.itemsCallback(new MaterialDialog.ListCallback() {
 							@Override
 							public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {

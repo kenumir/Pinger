@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class AddressDialog extends DialogFragment {
                 .customView(R.layout.dialog_address_form, true)
                 .positiveText(R.string.label_ok)
                 .negativeText(R.string.label_cancel)
+                .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
                 .neutralText(item._id != null ? R.string.label_delete : 0)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override

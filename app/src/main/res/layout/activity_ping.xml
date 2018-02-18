@@ -21,12 +21,15 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleTextAppearance="@style/AppTheme.ToolbarTextStyle"
+            app:collapsedTitleTextAppearance="@style/AppTheme.ToolbarTextStyle">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextAppearance="@style/AppTheme.ToolbarTextStyle"
                 app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
                 app:title="Ping details"
                 app:layout_collapseMode="pin"
