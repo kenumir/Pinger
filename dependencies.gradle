@@ -11,5 +11,5 @@ ext.versions = [
         ],
         installreferrer: '1.0',
         console: '1.0.3',
-        butterknife: '9.0.0-SNAPSHOT',
+        butterknife: '9.0.0-rc1',
 ]

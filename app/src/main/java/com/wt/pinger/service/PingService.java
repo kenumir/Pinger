@@ -1,10 +1,13 @@
 package com.wt.pinger.service;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -32,6 +35,7 @@ public class PingService extends Service {
     private static final String ACTION_CHECK = "com.wt.pinger.CHECK_SERVICE";
 
     private static final int NOTIFICATION_ID = 112;
+    private static final String NOTIFICATION_CHANNEL = "pinger_channel";
 
     public static void startStop(final @NonNull Context ctx, @NonNull AddressItem a) {
         final Intent it = new Intent(ctx, PingService.class);
@@ -67,7 +71,7 @@ public class PingService extends Service {
                 mWakeLock.release();
             }
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "pinger");
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "pinger:wakeLock");
             mWakeLock.acquire();
             if (BuildConfig.DEBUG) {
                 Console.logd("WakeLock acquire");
@@ -93,7 +97,7 @@ public class PingService extends Service {
             mWakeLock = null;
             if (BuildConfig.DEBUG) { Console.logd("WakeLock release"); }
         }
-        /**
+        /*
          * sometimes happen: RuntimeException: WifiLock under-locked pinger
          */
         try {
@@ -123,7 +127,8 @@ public class PingService extends Service {
         stopIntent.setPackage(getPackageName());
         stopIntent.setAction(ACTION_START_STOP);
 
-        mBuilder = new NotificationCompat.Builder(this)
+        mBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
+                .setChannelId(NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_stat_notify)
                 .setContentTitle(getResources().getString(R.string.app_name))
                 .setContentText("");
@@ -140,6 +145,23 @@ public class PingService extends Service {
                 ).build()
         ));
         mBuilder.setDeleteIntent(PendingIntent.getService(this, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel channel = nm.getNotificationChannel(NOTIFICATION_CHANNEL);
+            if (channel == null) {
+                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL,
+                        "Pinger",
+                        NotificationManager.IMPORTANCE_LOW
+                );
+                notificationChannel.setDescription("Pinger");
+                notificationChannel.enableLights(false);
+                notificationChannel.enableVibration(false);
+                notificationChannel.setShowBadge(false);
+
+                nm.createNotificationChannel(notificationChannel);
+            }
+        }
         ERA.log("PingService.onCreate:end");
     }
 
