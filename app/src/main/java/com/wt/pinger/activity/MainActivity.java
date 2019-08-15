@@ -38,13 +38,11 @@ import com.wt.pinger.utils.Prefs;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements InstallReferrerStateListener {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.tabs) AHBottomNavigation tabs;
+    private Toolbar toolbar;
+    private AHBottomNavigation tabs;
 
     private final Fragment[] mainFragments = new Fragment[]{
             new AddressFragment(), new ConsoleFragment(), new MyIPFragment(), new ReplaioFragment(), new MoreFragment()
@@ -60,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements InstallReferrerSt
         ERA.log("MainActivity.onCreate:begin");
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        toolbar = findViewById(R.id.toolbar);
+        tabs = findViewById(R.id.tabs);
         setSupportActionBar(toolbar);
 
         List<AHBottomNavigationItem> items = new ArrayList<>();

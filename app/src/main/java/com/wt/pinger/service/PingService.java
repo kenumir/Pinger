@@ -239,6 +239,15 @@ public class PingService extends Service {
                                         }
 
                                         @Override
+                                        public void onIPAddressResult(@Nullable String data) {
+                                            PingItem d = new PingItem();
+                                            d.addressId = mPingItem != null ? mPingItem._id : null;
+                                            d.info = "IP: `" + data + "`";
+                                            d.timestamp = System.currentTimeMillis();
+                                            getContentResolver().insert(PingContentProvider.URI_CONTENT, d.toContentValues(true));
+                                        }
+
+                                        @Override
                                         public void onError(String er) {
                                             if (er != null) {
                                                 PingItem data = new PingItem();

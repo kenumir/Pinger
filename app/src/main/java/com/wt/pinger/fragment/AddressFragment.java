@@ -28,9 +28,7 @@ import com.wt.pinger.proto.AddressAdapter;
 import com.wt.pinger.providers.DbContentProvider;
 import com.wt.pinger.providers.data.AddressItem;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 
 /**
  * Created by Kenumir on 2016-08-11.
@@ -38,14 +36,9 @@ import butterknife.OnClick;
  */
 public class AddressFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    @OnClick(R.id.fabAdd) void onFabAddClick(View v) {
-        AddressDialog d = AddressDialog.newInstance(null);
-        d.show(getFragmentManager(), "address_edit");
-    }
 
-    @BindView(R.id.recyclerAddress) RecyclerView recycler;
-    @BindView(R.id.adr_placeholder) LinearLayout adr_placeholder;
-
+    private RecyclerView recycler;
+    private LinearLayout adr_placeholder;
     private AddressAdapter adapter;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -55,7 +48,17 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_address, container, false);
-        ButterKnife.bind(this, res);
+
+        res.findViewById(R.id.fabAdd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddressDialog d = AddressDialog.newInstance(null);
+                d.show(getFragmentManager(), "address_edit");
+            }
+        });
+
+        recycler = res.findViewById(R.id.recyclerAddress);
+        adr_placeholder = res.findViewById(R.id.adr_placeholder);
 
         adapter = new AddressAdapter(getActivity());
         adapter.setOnItemClick(new AddressAdapter.OnItemClick() {

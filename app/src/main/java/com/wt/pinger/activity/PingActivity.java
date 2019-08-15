@@ -46,8 +46,6 @@ import com.wt.pinger.utils.SystemCompat;
 
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class PingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -57,13 +55,13 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         ctx.startActivity(it);
     }
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.subTitle) TextView subTitle;
-    @BindView(R.id.app_bar) AppBarLayout app_bar;
-    @BindView(R.id.recycler) RecyclerView recycler;
-    @BindView(R.id.fabAction) FloatingActionButton fabAction;
-    @BindView(R.id.placeholder) View placeholder;
-    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout toolbar_layout;
+    private Toolbar toolbar;
+    private TextView subTitle;
+    private AppBarLayout app_bar;
+    private RecyclerView recycler;
+    private FloatingActionButton fabAction;
+    private View placeholder;
+    private CollapsingToolbarLayout toolbar_layout;
 
     private SimpleCursorRecyclerAdapter adapter;
     private MenuItem playPauseMenu;
@@ -84,7 +82,15 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
             return;
         }
         setContentView(R.layout.activity_ping);
-        ButterKnife.bind(this);
+
+        toolbar = findViewById(R.id.toolbar);
+        subTitle = findViewById(R.id.subTitle);
+        app_bar = findViewById(R.id.app_bar);
+        recycler = findViewById(R.id.recycler);
+        fabAction = findViewById(R.id.fabAction);
+        placeholder = findViewById(R.id.placeholder);
+        toolbar_layout = findViewById(R.id.toolbar_layout);
+
 
         subTitle.setText(getResources().getString(R.string.label_address, mAddressItem.addres));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

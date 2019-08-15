@@ -26,10 +26,6 @@ import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.Networking;
 import com.wt.pinger.utils.Prefs;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Kenumir on 2016-09-25.
  *
@@ -37,90 +33,9 @@ import butterknife.OnClick;
 
 public class MoreFragment extends Fragment {
 
-    @OnClick(R.id.itemRate) void itemRateClick(View v) {
-        final String appPackageName = getActivity().getPackageName();
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-    }
-
-    @OnClick(R.id.itemAuthor) void itemAuthorClick(View v) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/u/0/+Micha%C5%82Szwarc")));
-        } catch (android.content.ActivityNotFoundException e) {
-            // ignore
-        }
-    }
-
-    @OnClick(R.id.itemWeb) void itemWebClick(View v) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://pinger.kenumir.pl/")));
-        } catch (android.content.ActivityNotFoundException e) {
-            // ignore
-        }
-    }
-
-    @OnClick(R.id.itemLibs) void itemLibsClick(View v) {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.open_source_libs)
-                .items(R.array.lib_names)
-                .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
-                .positiveText(R.string.label_ok)
-                .autoDismiss(false)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        try {
-                            String[] s = getResources().getStringArray(R.array.lib_urls);
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(s[which])));
-                        } catch (android.content.ActivityNotFoundException e) {
-                            // ignore
-                        }
-                    }
-                })
-                .show();
-    }
-
-    @OnClick(R.id.itemSuggest) void itemSuggestClick(View v) {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.suggestions)
-                .content(R.string.suggestions_desc)
-                .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
-                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
-                .input(R.string.suggestions_hint, 0, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        if (input.length() > 0) {
-                            new AsyncTask<CharSequence, Void, Void>() {
-                                @Override
-                                protected Void doInBackground(CharSequence... params) {
-                                    Networking.postSupport(
-                                            params[0].toString(),
-                                            Prefs.get(getActivity()).load(Constants.PREF_UUID)
-                                    );
-                                    return null;
-                                }
-                            }.execute(input);
-                        }
-                    }
-                }).show();
-    }
-
-    @BindView(R.id.text2c) TextView text2c;
-    @BindView(R.id.settingRunFromList) CheckableRelativeLayout settingRunFromList;
-    @BindView(R.id.settingMemberOldSessions) CheckableRelativeLayout settingMemberOldSessions;
+    private TextView text2c;
+    private CheckableRelativeLayout settingRunFromList;
+    private CheckableRelativeLayout settingMemberOldSessions;
 
     public MoreFragment() {}
 
@@ -128,7 +43,103 @@ public class MoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_more, container, false);
-        ButterKnife.bind(this, res);
+
+        text2c = res.findViewById(R.id.text2c) ;
+        settingRunFromList = res.findViewById(R.id.settingRunFromList) ;
+        settingMemberOldSessions = res.findViewById(R.id.settingMemberOldSessions) ;
+
+        res.findViewById(R.id.itemRate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getActivity().getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+        });
+        res.findViewById(R.id.itemAuthor).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/u/0/+Micha%C5%82Szwarc")));
+                } catch (android.content.ActivityNotFoundException e) {
+                    // ignore
+                }
+            }
+        });
+        res.findViewById(R.id.itemWeb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://pinger.kenumir.pl/")));
+                } catch (android.content.ActivityNotFoundException e) {
+                    // ignore
+                }
+            }
+        });
+        res.findViewById(R.id.itemLibs).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.open_source_libs)
+                        .items(R.array.lib_names)
+                        .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
+                        .positiveText(R.string.label_ok)
+                        .autoDismiss(false)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                try {
+                                    String[] s = getResources().getStringArray(R.array.lib_urls);
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(s[which])));
+                                } catch (android.content.ActivityNotFoundException e) {
+                                    // ignore
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
+        res.findViewById(R.id.itemSuggest).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.suggestions)
+                        .content(R.string.suggestions_desc)
+                        .typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                        .input(R.string.suggestions_hint, 0, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                if (input.length() > 0) {
+                                    new AsyncTask<CharSequence, Void, Void>() {
+                                        @Override
+                                        protected Void doInBackground(CharSequence... params) {
+                                            Networking.postSupport(
+                                                    params[0].toString(),
+                                                    Prefs.get(getActivity()).load(Constants.PREF_UUID)
+                                            );
+                                            return null;
+                                        }
+                                    }.execute(input);
+                                }
+                            }
+                        }).show();
+            }
+        });
+
         text2c.setText(BuildConfig.VERSION_NAME);
         settingRunFromList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

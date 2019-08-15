@@ -1,15 +1,15 @@
 ext.versions = [
         compileSdkVersion: 28,
         minSdkVersion: 15,
-        targetSdkVersion: 27,
+        targetSdkVersion: 28,
 
         librarySupport: '28.0.0',
         libraryFirebase: [
-                core: '16.0.4',
-                config: '16.0.1',
-                perf: '16.1.2'
+                core: '16.0.8',
+                config: '16.4.1',
+                perf: '16.2.4'
         ],
         installreferrer: '1.0',
         console: '1.0.3',
-        butterknife: '9.0.0-rc1',
+        butterknife: '10.1.0',
 ]

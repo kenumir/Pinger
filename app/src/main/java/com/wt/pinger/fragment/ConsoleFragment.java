@@ -41,7 +41,6 @@ import com.hivedi.era.ERA;
 import com.squareup.otto.Subscribe;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
-import com.wt.pinger.R2;
 import com.wt.pinger.proto.SimpleQueryHandler;
 import com.wt.pinger.providers.CmdContentProvider;
 import com.wt.pinger.providers.DbContentProvider;
@@ -50,9 +49,6 @@ import com.wt.pinger.utils.BusProvider;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Kenumir on 2016-08-11.
@@ -60,10 +56,10 @@ import butterknife.OnClick;
  */
 public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-	@BindView(R2.id.cmd_edit) EditText edit;
-	@BindView(R2.id.cmd_list) ListView list;
-	@BindView(R2.id.cmd_placeholder) LinearLayout placeholder;
-	@BindView(R2.id.cmdBtn) ImageView cmdBtn;
+	private EditText edit;
+	private ListView list;
+	private LinearLayout placeholder;
+	private ImageView cmdBtn;
 
 	private interface OnSelectCommand{
 		void onResult(Cursor cursor);
@@ -97,147 +93,6 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 		}
 	}
 
-	@OnClick(R2.id.cmdSelectBtn) void cmdSelectBtnClick(View v) {
-
-		new SelectCommandItems(getActivity()).callback(new OnSelectCommand() {
-			@Override
-			public void onResult(Cursor cursor) {
-				final ArrayList<Long> commandsIdList = new ArrayList<>();
-				CharSequence[] commands = new CharSequence[]{};
-				if (cursor != null) {
-					if (cursor.moveToFirst()) {
-						commands = new CharSequence[cursor.getCount()];
-						int col1 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_TEXT);
-						int col2 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_ID);
-						int counter = 0;
-						do {
-							commands[counter] = cursor.getString(col1);
-							commandsIdList.add(cursor.getLong(col2));
-							counter++;
-						} while (cursor.moveToNext());
-					}
-					cursor.close();
-				}
-
-				if (!isAdded()) {
-					// skip show dialog window, activity is gone
-					// query may take long time - activity may be closed
-					return;
-				}
-
-				new MaterialDialog.Builder(getActivity())
-						.title(R.string.label_list_of_commands)
-						.items(commands)
-						.autoDismiss(false)
-						.typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
-						.itemsCallback(new MaterialDialog.ListCallback() {
-							@Override
-							public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-								dialog.dismiss();
-								edit.setText(text);
-							}
-						})
-						.itemsLongCallback(new MaterialDialog.ListLongCallback() {
-							@Override
-							public boolean onLongSelection(final MaterialDialog dialog, View itemView, final int position, CharSequence text) {
-								if (isAdded()) {
-									String posString;
-									try {
-										posString = Long.toString(commandsIdList.get(position));
-									} catch (Exception e) {
-										posString = "0";
-									}
-									new AsyncQueryHandler(getActivity().getContentResolver()){
-										@Override
-										protected void onDeleteComplete(int token, Object cookie, int result) {
-											try {
-												commandsIdList.remove(position);
-											} catch (Exception e) {
-												// ignore
-											}
-											if (isAdded() && dialog.isShowing()) {
-												new SelectCommandItems(getActivity()).callback(new OnSelectCommand(){
-													@Override
-													public void onResult(Cursor cursor) {
-														CharSequence[] cc = new CharSequence[]{};
-														if (cursor.moveToFirst()) {
-															int counter = 0;
-															int col1 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_TEXT);
-															cc = new CharSequence[cursor.getCount()];
-															do {
-																cc[counter] = cursor.getString(col1);
-																counter++;
-															} while (cursor.moveToNext());
-														}
-														cursor.close();
-														if (isAdded() && dialog.isShowing()) {
-															dialog.setItems(cc);
-															Toast.makeText(getActivity(), R.string.toast_command_deleted, Toast.LENGTH_SHORT).show();
-														}
-													}
-												}).execute();
-											}
-										}
-									}.startDelete(0, null, DbContentProvider.URI_CONTENT_COMMANDS, DbContentProvider.Commands.FIELD_COMMAND_ID + "=?", new String[]{posString});
-								}
-								return true;
-							}
-						})
-						.neutralText(R.string.label_restore_defaults)
-						.onNeutral(new MaterialDialog.SingleButtonCallback() {
-							@Override
-							public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
-								new AsyncQueryHandler(getActivity().getContentResolver()){
-									@Override
-									protected void onInsertComplete(int token, Object cookie, Uri uri) {
-										if (isAdded() && dialog.isShowing()) {
-											dialog.setItems(DbContentProvider.DEFAULT_COMMAND_LIST);
-											commandsIdList.clear();
-											new SelectCommandItems(getActivity()).callback(new OnSelectCommand(){
-												@Override
-												public void onResult(Cursor cursor) {
-													if (cursor.moveToFirst()) {
-														int col1 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_ID);
-														do {
-															commandsIdList.add(cursor.getLong(col1));
-														} while (cursor.moveToNext());
-													}
-													cursor.close();
-												}
-											}).execute();
-										}
-									}
-								}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS_RESET, null);
-							}
-						})
-						.positiveText(R.string.label_close)
-						.onPositive(new MaterialDialog.SingleButtonCallback() {
-							@Override
-							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								dialog.dismiss();
-							}
-						})
-						.build()
-						.show();
-			}
-		}).execute();
-	}
-
-	@OnClick(R2.id.cmdAddBtn) void cmdAddBtnClick(View v) {
-		String text = edit.getText().toString();
-		if (text.length() > 0) {
-			final Context ctx = getActivity().getApplicationContext();
-			ContentValues values = new ContentValues();
-			values.put(DbContentProvider.Commands.FIELD_COMMAND_TEXT, text);
-			new AsyncQueryHandler(ctx.getContentResolver()) {
-				@Override
-				protected void onInsertComplete(int token, Object cookie, Uri uri) {
-					Toast.makeText(ctx, R.string.toast_command_added, Toast.LENGTH_SHORT).show();
-				}
-			}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS, values);
-		}
-	}
-
 	private SimpleCursorAdapter adapter;
 
 	public ConsoleFragment() {}
@@ -246,7 +101,157 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View res = inflater.inflate(R.layout.fragment_console, container, false);
-		ButterKnife.bind(this, res);
+
+		edit = res.findViewById(R.id.cmd_edit) ;
+		list = res.findViewById(R.id.cmd_list) ;
+		placeholder = res.findViewById(R.id.cmd_placeholder) ;
+		cmdBtn = res.findViewById(R.id.cmdBtn);
+
+		res.findViewById(R.id.cmdAddBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String text = edit.getText().toString();
+				if (text.length() > 0) {
+					final Context ctx = getActivity().getApplicationContext();
+					ContentValues values = new ContentValues();
+					values.put(DbContentProvider.Commands.FIELD_COMMAND_TEXT, text);
+					new AsyncQueryHandler(ctx.getContentResolver()) {
+						@Override
+						protected void onInsertComplete(int token, Object cookie, Uri uri) {
+							Toast.makeText(ctx, R.string.toast_command_added, Toast.LENGTH_SHORT).show();
+						}
+					}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS, values);
+				}
+			}
+		});
+		res.findViewById(R.id.cmdSelectBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new SelectCommandItems(getActivity()).callback(new OnSelectCommand() {
+					@Override
+					public void onResult(Cursor cursor) {
+						final ArrayList<Long> commandsIdList = new ArrayList<>();
+						CharSequence[] commands = new CharSequence[]{};
+						if (cursor != null) {
+							if (cursor.moveToFirst()) {
+								commands = new CharSequence[cursor.getCount()];
+								int col1 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_TEXT);
+								int col2 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_ID);
+								int counter = 0;
+								do {
+									commands[counter] = cursor.getString(col1);
+									commandsIdList.add(cursor.getLong(col2));
+									counter++;
+								} while (cursor.moveToNext());
+							}
+							cursor.close();
+						}
+
+						if (!isAdded()) {
+							// skip show dialog window, activity is gone
+							// query may take long time - activity may be closed
+							return;
+						}
+
+						new MaterialDialog.Builder(getActivity())
+								.title(R.string.label_list_of_commands)
+								.items(commands)
+								.autoDismiss(false)
+								.typeface(ResourcesCompat.getFont(getActivity(), R.font.medium), ResourcesCompat.getFont(getActivity(), R.font.regular))
+								.itemsCallback(new MaterialDialog.ListCallback() {
+									@Override
+									public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+										dialog.dismiss();
+										edit.setText(text);
+									}
+								})
+								.itemsLongCallback(new MaterialDialog.ListLongCallback() {
+									@Override
+									public boolean onLongSelection(final MaterialDialog dialog, View itemView, final int position, CharSequence text) {
+										if (isAdded()) {
+											String posString;
+											try {
+												posString = Long.toString(commandsIdList.get(position));
+											} catch (Exception e) {
+												posString = "0";
+											}
+											new AsyncQueryHandler(getActivity().getContentResolver()){
+												@Override
+												protected void onDeleteComplete(int token, Object cookie, int result) {
+													try {
+														commandsIdList.remove(position);
+													} catch (Exception e) {
+														// ignore
+													}
+													if (isAdded() && dialog.isShowing()) {
+														new SelectCommandItems(getActivity()).callback(new OnSelectCommand(){
+															@Override
+															public void onResult(Cursor cursor) {
+																CharSequence[] cc = new CharSequence[]{};
+																if (cursor.moveToFirst()) {
+																	int counter = 0;
+																	int col1 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_TEXT);
+																	cc = new CharSequence[cursor.getCount()];
+																	do {
+																		cc[counter] = cursor.getString(col1);
+																		counter++;
+																	} while (cursor.moveToNext());
+																}
+																cursor.close();
+																if (isAdded() && dialog.isShowing()) {
+																	dialog.setItems(cc);
+																	Toast.makeText(getActivity(), R.string.toast_command_deleted, Toast.LENGTH_SHORT).show();
+																}
+															}
+														}).execute();
+													}
+												}
+											}.startDelete(0, null, DbContentProvider.URI_CONTENT_COMMANDS, DbContentProvider.Commands.FIELD_COMMAND_ID + "=?", new String[]{posString});
+										}
+										return true;
+									}
+								})
+								.neutralText(R.string.label_restore_defaults)
+								.onNeutral(new MaterialDialog.SingleButtonCallback() {
+									@Override
+									public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
+										new AsyncQueryHandler(getActivity().getContentResolver()){
+											@Override
+											protected void onInsertComplete(int token, Object cookie, Uri uri) {
+												if (isAdded() && dialog.isShowing()) {
+													dialog.setItems(DbContentProvider.DEFAULT_COMMAND_LIST);
+													commandsIdList.clear();
+													new SelectCommandItems(getActivity()).callback(new OnSelectCommand(){
+														@Override
+														public void onResult(Cursor cursor) {
+															if (cursor.moveToFirst()) {
+																int col1 = cursor.getColumnIndex(DbContentProvider.Commands.FIELD_COMMAND_ID);
+																do {
+																	commandsIdList.add(cursor.getLong(col1));
+																} while (cursor.moveToNext());
+															}
+															cursor.close();
+														}
+													}).execute();
+												}
+											}
+										}.startInsert(0, null, DbContentProvider.URI_CONTENT_COMMANDS_RESET, null);
+									}
+								})
+								.positiveText(R.string.label_close)
+								.onPositive(new MaterialDialog.SingleButtonCallback() {
+									@Override
+									public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+										dialog.dismiss();
+									}
+								})
+								.build()
+								.show();
+					}
+				}).execute();
+			}
+		});
+
 		adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_cmd, null, new String[]{"data"}, new int[]{R.id.cmd_item}, 0);
 		list.setAdapter(adapter);
 		cmdBtn.setOnClickListener(new View.OnClickListener() {

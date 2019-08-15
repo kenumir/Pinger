@@ -13,12 +13,9 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import com.wt.pinger.App;
 import com.wt.pinger.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class StartActivity extends AppCompatActivity implements App.OnAppReady {
 
-    @BindView(R.id.progress_wheel) ProgressWheel progress;
+    private ProgressWheel progress;
 
     private final Runnable startRun = new Runnable() {
         @Override
@@ -42,7 +39,7 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
         ERA.log("StartActivity.onCreate:begin");
         mApp = (App) getApplication();
         setContentView(R.layout.activity_start);
-        ButterKnife.bind(this);
+        progress = findViewById(R.id.progress_wheel);
         ERA.log("StartActivity.onCreate:end");
     }
 

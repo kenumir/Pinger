@@ -19,13 +19,8 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.R;
-import com.wt.pinger.R2;
 import com.wt.pinger.events.EventNames;
 import com.wt.pinger.utils.PicassoUtil;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Kenumir on 2016-12-12.
@@ -34,19 +29,9 @@ import butterknife.OnClick;
 
 public class ReplaioFragment extends Fragment {
 
-    @BindView(R2.id.pager) ViewPager pager;
-
-    @OnClick(R.id.replaio_app) void replaio_appClick(View v) {
-        openReplaio();
-    }
-
-    @OnClick(R.id.replaioButton) void replaioButtonClick(View v) {
-        openReplaio();
-    }
-
+    private ViewPager pager;
     private void openReplaio() {
-        openPlayStore(getActivity(), "com.hv.replaio&referrer=utm_source%3Dkenumir%26utm_medium%3Dpinger");
-        EventClip.deliver(EventNames.REPLAIO_AD_CLICKED);
+
     }
 
     public ReplaioFragment() {}
@@ -55,8 +40,21 @@ public class ReplaioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_replaio, container, false);
-        ButterKnife.bind(this, res);
+        pager = res.findViewById(R.id.pager);
         pager.setAdapter(new ViewPagerAdapter(getActivity()));
+        res.findViewById(R.id.replaio_app).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openReplaio();
+            }
+        });
+        res.findViewById(R.id.replaioButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPlayStore(getActivity(), "com.hv.replaio&referrer=utm_source%3Dkenumir%26utm_medium%3Dpinger");
+                EventClip.deliver(EventNames.REPLAIO_AD_CLICKED);
+            }
+        });
         return res;
     }
 

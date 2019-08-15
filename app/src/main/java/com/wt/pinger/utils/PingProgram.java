@@ -72,6 +72,7 @@ public class PingProgram {
     public interface OnPingListener {
         void onStart();
         void onResult(@Nullable PingItem data);
+        void onIPAddressResult(@Nullable String data);
         void onError(String er);
         void onFinish();
     }
@@ -93,6 +94,19 @@ public class PingProgram {
     public PingProgram setOnPingListener(OnPingListener l) {
         mOnPingListener = l;
         return this;
+    }
+
+    @Nullable
+    private String parseIPAddress(@Nullable String s) {
+        // 64 bytes from www.wp.pl (212.77.98.9): icmp_seq=11 ttl=59 time=30.0 ms
+        if (s != null && s.trim().length() > 0 && s.contains("(") && s.contains(")")) {
+            int p1 = s.indexOf("(");
+            int p2 = s.indexOf(")");
+            if (p1 > 0 && p2 > 0) {
+                return s.substring(p1 + 1, p2);
+            }
+        }
+        return null;
     }
 
     public void start() {
@@ -122,15 +136,33 @@ public class PingProgram {
                 try {
                     process = Runtime.getRuntime().exec(sb.toString());
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    String line;
+                    // 64 bytes from www.wp.pl (212.77.98.9): icmp_seq=11 ttl=59 time=30.0 ms
+                    String line, ipAddress;
+                    boolean isIPAddressEventSend = false;
                     line = reader.readLine();
                     if (line != null) {
                         if (mOnPingListener != null) {
                             mOnPingListener.onResult(PingItem.parse(line, null));
                         }
+                        ipAddress = parseIPAddress(line);
+                        if (ipAddress != null) {
+                            if (mOnPingListener != null) {
+                                mOnPingListener.onIPAddressResult(ipAddress);
+                            }
+                            isIPAddressEventSend = true;
+                        }
                         while ((line = reader.readLine()) != null) {
                             if (mOnPingListener != null) {
                                 mOnPingListener.onResult(PingItem.parse(line, null));
+                            }
+                            if (!isIPAddressEventSend) {
+                                ipAddress = parseIPAddress(line);
+                                if (ipAddress != null) {
+                                    if (mOnPingListener != null) {
+                                        mOnPingListener.onIPAddressResult(ipAddress);
+                                    }
+                                    isIPAddressEventSend = true;
+                                }
                             }
                         }
                     } else {

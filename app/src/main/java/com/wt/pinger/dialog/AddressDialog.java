@@ -22,9 +22,6 @@ import com.wt.pinger.proto.ItemProto;
 import com.wt.pinger.providers.DbContentProvider;
 import com.wt.pinger.providers.data.AddressItem;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Kenumir on 2016-09-01.
  *
@@ -41,11 +38,11 @@ public class AddressDialog extends DialogFragment {
         return d;
     }
 
-    @BindView(R.id.editText1) EditText editText1;
-    @BindView(R.id.editText0) EditText editText0;
-    @BindView(R.id.editText2) EditText editText2;
-    @BindView(R.id.editText3) EditText editText3;
-    @BindView(R.id.editText4) EditText editText4;
+    private EditText editText1;
+    private EditText editText0;
+    private EditText editText2;
+    private EditText editText3;
+    private EditText editText4;
 
     private AddressItem item;
 
@@ -126,7 +123,12 @@ public class AddressDialog extends DialogFragment {
                 .build();
 
         if (dialog.getCustomView() != null) {
-            ButterKnife.bind(this, dialog.getCustomView());
+
+            editText1 = dialog.getCustomView().findViewById(R.id.editText1);
+            editText0 = dialog.getCustomView().findViewById(R.id.editText0);
+            editText2 = dialog.getCustomView().findViewById(R.id.editText2);
+            editText3 = dialog.getCustomView().findViewById(R.id.editText3);
+            editText4 = dialog.getCustomView().findViewById(R.id.editText4);
 
             editText1.setText(item.addres);
             editText0.setText(item.display_name);

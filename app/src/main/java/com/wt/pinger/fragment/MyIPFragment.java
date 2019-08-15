@@ -31,18 +31,15 @@ import com.wt.pinger.providers.NetworkInfoProvider;
 import com.wt.pinger.providers.data.NetworkInfo;
 import com.wt.pinger.utils.SystemCompat;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Kenumir on 2016-08-11.
  *
  */
 public class MyIPFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    @BindView(R.id.ip_swipe) SwipeRefreshLayout swipe;
-    @BindView(R.id.ip_list) ListView list;
-    @BindView(R.id.ip_placeholder) LinearLayout placeholder;
+    private SwipeRefreshLayout swipe;
+    private ListView list;
+    private LinearLayout placeholder;
 
     private SimpleCursorAdapter adapter;
     public MyIPFragment() {}
@@ -51,7 +48,9 @@ public class MyIPFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_my_ip, container, false);
-        ButterKnife.bind(this, res);
+        swipe = res.findViewById(R.id.ip_swipe) ;
+        list = res.findViewById(R.id.ip_list) ;
+        placeholder = res.findViewById(R.id.ip_placeholder) ;
         adapter = new SimpleCursorAdapter(
                 getActivity(),
                 R.layout.item_my_ip,
