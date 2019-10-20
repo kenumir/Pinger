@@ -2,8 +2,9 @@ package com.wt.pinger.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
@@ -25,6 +26,7 @@ public class StartActivity extends AppCompatActivity implements App.OnAppReady {
                 progress.setVisibility(View.INVISIBLE);
                 startActivity(new Intent(StartActivity.this, MainActivity.class));
                 finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             } else {
                 mApp.setOnAppReady(StartActivity.this);
             }

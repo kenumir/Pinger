@@ -5,7 +5,7 @@
     android:orientation="vertical" 
     android:padding="10dp">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText1Lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -22,9 +22,9 @@
             <requestFocus />
         </EditText>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText0Lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -39,9 +39,9 @@
             android:hint="@string/label_entry_display_name"
             android:nextFocusRight="@+id/editText2"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText2Lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -59,9 +59,9 @@
             android:nextFocusRight="@+id/editText3"
             android:imeOptions="actionNext"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText3Lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -79,9 +79,9 @@
             android:nextFocusRight="@+id/editText4"
             android:imeOptions="actionNext"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText4Lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -98,6 +98,6 @@
             android:hint="@string/label_interval_time"
             android:imeOptions="actionDone"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

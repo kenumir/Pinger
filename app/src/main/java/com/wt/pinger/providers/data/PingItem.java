@@ -1,6 +1,6 @@
 package com.wt.pinger.providers.data;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;

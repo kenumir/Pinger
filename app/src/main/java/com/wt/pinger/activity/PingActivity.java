@@ -1,33 +1,28 @@
 package com.wt.pinger.activity;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Spanned;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
 import com.squareup.otto.Subscribe;
@@ -35,7 +30,6 @@ import com.wt.pinger.R;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
 import com.wt.pinger.extra.SimpleViewHolder;
 import com.wt.pinger.proto.ItemProto;
-import com.wt.pinger.proto.SimpleQueryHandler;
 import com.wt.pinger.providers.PingContentProvider;
 import com.wt.pinger.providers.data.AddressItem;
 import com.wt.pinger.providers.data.PingItem;
@@ -57,14 +51,12 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private Toolbar toolbar;
     private TextView subTitle;
-    private AppBarLayout app_bar;
     private RecyclerView recycler;
-    private FloatingActionButton fabAction;
+    private ExtendedFloatingActionButton fabAction;
     private View placeholder;
     private CollapsingToolbarLayout toolbar_layout;
 
     private SimpleCursorRecyclerAdapter adapter;
-    private MenuItem playPauseMenu;
     private AddressItem mAddressItem;
 
     @Override
@@ -85,12 +77,10 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
 
         toolbar = findViewById(R.id.toolbar);
         subTitle = findViewById(R.id.subTitle);
-        app_bar = findViewById(R.id.app_bar);
         recycler = findViewById(R.id.recycler);
         fabAction = findViewById(R.id.fabAction);
         placeholder = findViewById(R.id.placeholder);
         toolbar_layout = findViewById(R.id.toolbar_layout);
-
 
         subTitle.setText(getResources().getString(R.string.label_address, mAddressItem.addres));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -108,102 +98,13 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         toolbar_layout.setCollapsedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
         toolbar_layout.setExpandedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
 
-        playPauseMenu = toolbar.getMenu()
-                .add(R.string.label_start_stop)
-                .setIcon(R.drawable.ic_play_arrow_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        startStopService();
-                        return false;
-                    }
-                });
-        playPauseMenu.setVisible(false);
-        MenuItemCompat.setShowAsAction(playPauseMenu, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-
-        MenuItemCompat.setShowAsAction(toolbar.getMenu().add(R.string.label_share)
-                .setIcon(R.drawable.ic_share_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        SimpleQueryHandler qh = new SimpleQueryHandler(getContentResolver(), new SimpleQueryHandler.QueryListener() {
-                            @Override
-                            public void onQueryComplete(int token, Object cookie, Cursor cursor) {
-                                if (cursor != null) {
-                                    new AsyncTask<Cursor, Void, String>(){
-                                        @Override
-                                        protected String doInBackground(Cursor... params) {
-                                            StringBuilder sb = new StringBuilder();
-                                            Cursor cursor = params[0];
-                                            final int maxShareSize = 250 * 1024;
-                                            if (cursor.moveToFirst()) {
-                                                sb.append(getResources().getString(R.string.label_address, mAddressItem.addres)).append("\n");
-                                                do {
-                                                    PingItem item = ItemProto.fromCursor(cursor, PingItem.class);
-                                                    if (item != null) {
-                                                        if (item.isDataValid()) {
-                                                            sb.append(
-                                                                    SystemCompat.toHtml(DateTime.formatTime(PingActivity.this, item.timestamp) + ": " + item.seq + " - " + item.time + "ms")
-                                                            ).append("\n");
-                                                        } else {
-                                                            sb.append(SystemCompat.toHtml(DateTime.formatTime(PingActivity.this, item.timestamp) + ": " + item.info)).append("\n");
-                                                        }
-                                                    }
-                                                    int len = sb.length();
-                                                    if (len > maxShareSize) {
-                                                        // trim
-                                                        sb.setLength(maxShareSize);
-                                                        Crashlytics.log("Share length trim from " + len);
-                                                        ERA.logException(new Exception("Share length trim from " + len));
-                                                        break;
-                                                    }
-                                                } while (cursor.moveToNext());
-                                            }
-                                            cursor.close();
-                                            return sb.toString();
-                                        }
-
-                                        @Override
-                                        protected void onPostExecute(String s) {
-                                            if (s.length() > 0) {
-                                                try {
-                                                    Intent sendIntent = new Intent();
-                                                    sendIntent.setAction(Intent.ACTION_SEND);
-                                                    sendIntent.putExtra(Intent.EXTRA_TEXT, s);
-                                                    sendIntent.setType("text/plain");
-                                                    startActivity(sendIntent);
-                                                } catch (ActivityNotFoundException e) {
-                                                    ERA.logException(e);
-                                                }
-                                            } else {
-                                                Toast.makeText(PingActivity.this, R.string.toast_no_data_to_share, Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, cursor);
-                                }
-                            }
-                        });
-                        qh.startQuery(0, null, PingContentProvider.URI_CONTENT, null, null, null, null);
-                        return false;
-                    }
-                }), MenuItemCompat.SHOW_AS_ACTION_ALWAYS
-        );
-
-        app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int pos = -(appBarLayout.getTotalScrollRange() - toolbar.getMeasuredHeight());
-                playPauseMenu.setVisible(pos > verticalOffset);
-            }
-        });
-
         adapter = new SimpleCursorRecyclerAdapter(R.layout.item_ping, null, new String[]{PingItem.FIELD_TIME}, new int[]{R.id.ping_text1}) {
             @Override
             public void onBindViewHolder(SimpleViewHolder holder, Cursor cursor) {
                 super.onBindViewHolder(holder, cursor);
                 PingItem item = ItemProto.fromCursor(cursor, PingItem.class);
                 if (item != null) {
-	                /**
+	                /*
 	                 * display formats:
 	                 * [HH:mm:ss]: [seq] - [ping]ms
 	                 * [HH:mm:ss]: [seq] - Error info
@@ -305,7 +206,7 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void updatePlayButton(boolean isWorking) {
-        playPauseMenu.setIcon(isWorking ? R.drawable.ic_stop_white_24dp : R.drawable.ic_play_arrow_white_24dp);
-        fabAction.setImageResource(isWorking ? R.drawable.ic_stop_white_32dp : R.drawable.ic_play_arrow_white_32dp);
+        fabAction.setIcon(ContextCompat.getDrawable(this, isWorking ? R.drawable.ic_stop_white_32dp : R.drawable.ic_play_arrow_white_32dp));
+        fabAction.setText(isWorking ? R.string.label_stop : R.string.label_stop);
     }
 }

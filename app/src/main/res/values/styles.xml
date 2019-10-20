@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -11,6 +11,10 @@
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
         <item name="android:toolbarStyle" tools:targetApi="lollipop">@style/AppTheme.Toolbar</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="titleTextAppearance">@style/AppTheme.ToolbarTextStyle</item>
@@ -22,8 +26,20 @@
         <item name="fontFamily">@font/regular</item>
     </style>
 
-    <style name="StartTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="StartTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/app_start_logo</item>
+    </style>
+
+    <style name="Fab">
+        <item name="tint">@color/white</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="FabExt">
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Card">

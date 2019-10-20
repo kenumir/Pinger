@@ -4,7 +4,6 @@ import android.app.Application;
 import android.os.SystemClock;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
 import com.github.anrwatchdog.ANRError;
 import com.github.anrwatchdog.ANRWatchDog;
 import com.google.firebase.perf.FirebasePerformance;
@@ -60,7 +59,7 @@ public class App extends Application {
         Trace fabricTrace = FirebasePerformance.getInstance().newTrace("fabric_init");
 	    fabricTrace.start();
         Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics(), new Answers())
+                .kits(new Crashlytics())
                 .debuggable(true)
                 .build();
         Fabric.with(fabric);

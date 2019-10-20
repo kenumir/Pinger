@@ -23,7 +23,8 @@ package com.wt.pinger.extra;/*
  */
 
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * from http://quanturium.github.io/2015/04/19/using-cursors-with-the-new-recyclerview/

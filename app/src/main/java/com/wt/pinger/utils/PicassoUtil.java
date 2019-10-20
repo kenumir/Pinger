@@ -1,7 +1,8 @@
 package com.wt.pinger.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;

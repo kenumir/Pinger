@@ -3,7 +3,6 @@ package com.wt.pinger.proto;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.wt.pinger.R;
 

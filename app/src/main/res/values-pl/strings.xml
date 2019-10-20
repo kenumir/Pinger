@@ -4,7 +4,8 @@
     <string name="label_cancel">Anuluj</string>
     <string name="label_ok">OK</string>
     <string name="label_delete">Usuń</string>
-    <string name="label_stop">Zatrzymaj</string>
+    <string name="label_stop">Stop</string>
+    <string name="label_start">Start</string>
 
     <string name="menu_address_list">Adresy</string>
     <string name="menu_cmd">Konsola</string>

@@ -2,7 +2,8 @@ package com.wt.pinger.data;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.hivedi.console.Console;
 import com.wt.pinger.BuildConfig;

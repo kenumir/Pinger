@@ -1,8 +1,9 @@
 package com.wt.pinger.providers.data;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Kenumir on 2016-08-12.
