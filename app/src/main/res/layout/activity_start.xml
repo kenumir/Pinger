@@ -15,6 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
         app:matProg_barColor="@color/colorPrimary"
-        app:matProg_progressIndeterminate="true" />
+        app:matProg_progressIndeterminate="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

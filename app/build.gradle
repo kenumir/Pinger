@@ -70,16 +70,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-
-    def supportLibVersion = versions.librarySupport
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core:1.1.0'
@@ -109,6 +106,7 @@ dependencies {
     implementation 'com.github.Hivedi:Console:' + versions.console
     implementation 'com.github.Hivedi:QueryBuilder:1.0.2'
     implementation 'com.github.Hivedi:ErrorReportAdapter:2.1.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

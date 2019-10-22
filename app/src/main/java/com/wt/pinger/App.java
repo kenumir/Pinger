@@ -12,7 +12,6 @@ import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
 import com.kenumir.eventclip.EventClip;
-import com.wt.pinger.events.providers.AnswersEventProvider;
 import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.PingProgram;
@@ -34,27 +33,11 @@ import io.fabric.sdk.android.services.concurrency.AsyncTask;
  */
 public class App extends Application {
 
-    public interface OnAppReady {
-        void onAppReady();
-    }
-
     private final static ExecutorService exec = Executors.newSingleThreadExecutor();
-
-    private OnAppReady mOnAppReady;
-    private boolean appReady = false;
-
-    public void setOnAppReady(OnAppReady e) {
-        mOnAppReady = e;
-    }
-
-    public boolean isAppReady() {
-        return appReady;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        appReady = false;
 
         Trace fabricTrace = FirebasePerformance.getInstance().newTrace("fabric_init");
 	    fabricTrace.start();
@@ -70,12 +53,10 @@ public class App extends Application {
             public void logException(Throwable throwable, Object... objects) {
                 Crashlytics.logException(throwable);
             }
-
             @Override
             public void log(String s, Object... objects) {
                 Crashlytics.log(s);
             }
-
             @Override
             public void breadcrumb(String s, Object... objects) {
                 // nothing
@@ -83,7 +64,7 @@ public class App extends Application {
         });
 
         if (BuildConfig.DEBUG) {
-            /**
+            /*
              * simple log
              */
             Console.setEnabled(true);
@@ -100,7 +81,6 @@ public class App extends Application {
 
         final long t1 = SystemClock.elapsedRealtime();
         EventClip.registerProvider(new FireBaseEventProvider(App.this));
-        EventClip.registerProvider(new AnswersEventProvider());
         ERA.log("App:FireBaseEventProvider init time " + (SystemClock.elapsedRealtime() - t1) + " ms");
 
         new AsyncTask<Void, Void, Void>(){
@@ -164,17 +144,12 @@ public class App extends Application {
                     prefs.save(Constants.PREF_FIRST_INIT_TIME, SystemClock.elapsedRealtime() - startTime);
                 }
 
-                ERA.log("App.AsyncTask:FirebaseRemoteConfig fetch");
                 ERA.log("App.AsyncTask:end with time " + (SystemClock.elapsedRealtime() - startTime) + " ms");
                 return null;
             }
             @Override
             protected void onPostExecute(Void aVoid) {
                 ERA.log("App.AsyncTask:onPostExecute");
-                appReady = true;
-                if (mOnAppReady != null) {
-                    mOnAppReady.onAppReady();
-                }
             }
         }.executeOnExecutor(exec);
     }

@@ -83,18 +83,8 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         toolbar_layout = findViewById(R.id.toolbar_layout);
 
         subTitle.setText(getResources().getString(R.string.label_address, mAddressItem.addres));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        fabAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startStopService();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
+        fabAction.setOnClickListener(view -> startStopService());
         toolbar_layout.setCollapsedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
         toolbar_layout.setExpandedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
 
@@ -177,19 +167,20 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         );
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this, PingContentProvider.URI_CONTENT, null, null, new String[]{mAddressItem._id.toString()}, null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
         placeholder.setVisibility(data == null || data.getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
 

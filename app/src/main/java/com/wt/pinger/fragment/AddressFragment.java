@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +26,6 @@ import com.wt.pinger.activity.MainActivity;
 import com.wt.pinger.dialog.AddressDialog;
 import com.wt.pinger.proto.AddressAdapter;
 import com.wt.pinger.providers.DbContentProvider;
-import com.wt.pinger.providers.data.AddressItem;
 
 
 
@@ -38,10 +36,8 @@ import com.wt.pinger.providers.data.AddressItem;
 public class AddressFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    private RecyclerView recycler;
     private LinearLayout adr_placeholder;
     private AddressAdapter adapter;
-    private ItemTouchHelper mItemTouchHelper;
 
     public AddressFragment() {}
 
@@ -50,36 +46,25 @@ public class AddressFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View res = inflater.inflate(R.layout.fragment_address, container, false);
 
-        res.findViewById(R.id.fabAdd).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddressDialog d = AddressDialog.newInstance(null);
-                d.show(getFragmentManager(), "address_edit");
-            }
+        res.findViewById(R.id.fabAdd).setOnClickListener(v -> {
+            AddressDialog d = AddressDialog.newInstance(null);
+            d.show(getFragmentManager(), "address_edit");
         });
 
-        recycler = res.findViewById(R.id.recyclerAddress);
+        RecyclerView recycler = res.findViewById(R.id.recyclerAddress);
         adr_placeholder = res.findViewById(R.id.adr_placeholder);
 
         adapter = new AddressAdapter(getActivity());
-        adapter.setOnItemClick(new AddressAdapter.OnItemClick() {
-            @Override
-            public void onClick(AddressItem item) {
-                if (!((MainActivity) getActivity()).isSaveInstanceStateCalled()) {
-                    AddressDialog d = AddressDialog.newInstance(item);
-                    d.show(getFragmentManager(), "edit");
-                } else {
-                    if (BuildConfig.DEBUG) {
-                        Console.logw("Skip showing edit dialog after `onSaveInstanceState` is called");
-                    }
+        adapter.setOnItemClick(item -> {
+            if (!((MainActivity) getActivity()).isSaveInstanceStateCalled()) {
+                AddressDialog d = AddressDialog.newInstance(item);
+                d.show(getFragmentManager(), "edit");
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Console.logw("Skip showing edit dialog after `onSaveInstanceState` is called");
                 }
             }
         });
-        // TODO touch helper = D&D
-        //ItemTouchHelper.Callback callback = new GridItemTouchHelperCallback(adapter);
-        //mItemTouchHelper = new ItemTouchHelper(callback);
-        //mItemTouchHelper.attachToRecyclerView(recycler);
-        //adapter.setItemTouchHelper(mItemTouchHelper);
 
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
