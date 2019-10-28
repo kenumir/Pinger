@@ -8,7 +8,6 @@ import android.os.RemoteException;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -33,6 +32,7 @@ import com.wt.pinger.fragment.ConsoleFragment;
 import com.wt.pinger.fragment.MoreFragment;
 import com.wt.pinger.fragment.MyIPFragment;
 import com.wt.pinger.fragment.ReplaioFragment;
+import com.wt.pinger.proto.BaseActivity;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.Prefs;
 
@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements InstallReferrerStateListener {
+public class MainActivity extends BaseActivity implements InstallReferrerStateListener {
 
     private Toolbar toolbar;
     private AHBottomNavigation tabs;

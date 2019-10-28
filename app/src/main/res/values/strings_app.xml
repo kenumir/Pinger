@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array tools:ignore="all" name="lib_names">
-        <item>Support - appcompat-v7</item>
-        <item>Support - recyclerview-v7</item>
-        <item>Support - design-v7</item>
-        <item>Support - cardview-v7</item>
+        <item>Android X</item>
         <item>Crashlytics</item>
         <item>Butterknife</item>
         <item>Materialish Progress</item>
@@ -23,10 +20,7 @@
     </string-array>
 
     <string-array tools:ignore="all" name="lib_urls">
-        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
-        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
-        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
-        <item>https://developer.android.com/topic/libraries/support-library/index.html</item>
+        <item>https://developer.android.com/jetpack/androidx</item>
         <item>https://fabric.io/kits/android/crashlytics</item>
         <item>http://jakewharton.github.io/butterknife/</item>
         <item>https://github.com/pnikosis/materialish-progress</item>

@@ -14,6 +14,7 @@ import com.hivedi.era.ReportInterface;
 import com.kenumir.eventclip.EventClip;
 import com.wt.pinger.events.providers.FireBaseEventProvider;
 import com.wt.pinger.proto.Constants;
+import com.wt.pinger.proto.ping.PingManager;
 import com.wt.pinger.utils.PingProgram;
 import com.wt.pinger.utils.Prefs;
 
@@ -34,6 +35,7 @@ import io.fabric.sdk.android.services.concurrency.AsyncTask;
 public class App extends Application {
 
     private final static ExecutorService exec = Executors.newSingleThreadExecutor();
+    private PingManager mPingManager;
 
     @Override
     public void onCreate() {
@@ -152,5 +154,12 @@ public class App extends Application {
                 ERA.log("App.AsyncTask:onPostExecute");
             }
         }.executeOnExecutor(exec);
+    }
+
+    public synchronized PingManager getPingManager() {
+        if (mPingManager == null) {
+            mPingManager = new PingManager();
+        }
+        return mPingManager;
     }
 }

@@ -9,6 +9,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.wt.pinger.proto.ItemProto;
 import com.wt.pinger.providers.data.PingItem;
@@ -87,7 +88,7 @@ public class PingContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
-        //Console.logi("insert: " + values);
+        Console.logi("insert: " + values);
         if (uri.equals(URI_CONTENT)) {
             try {
                 PingItem newItem = new PingItem();

@@ -12,7 +12,6 @@ import com.wt.pinger.activity.PingActivity;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
 import com.wt.pinger.extra.SimpleViewHolder;
 import com.wt.pinger.providers.data.AddressItem;
-import com.wt.pinger.service.PingService;
 import com.wt.pinger.utils.Prefs;
 
 /**
@@ -65,7 +64,10 @@ public class AddressAdapter extends SimpleCursorRecyclerAdapter implements ItemT
                         @Override
                         public void onReady(Prefs prefs) {
                             if (prefs.load(Constants.PREF_START_PING_FROM_LIST, false)) {
-                                PingService.startStop(mContext, item);
+                                //PingService.startStop(mContext, item);
+                                if (mContext instanceof BaseActivity) {
+                                    ((BaseActivity) mContext).getPingManager().startStopPingWorker(mContext, item);
+                                }
                             } else {
                                 PingActivity.show(mContext, item);
                             }

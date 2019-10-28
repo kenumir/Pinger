@@ -9,8 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.loader.app.LoaderManager;
@@ -19,29 +20,25 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
-import com.squareup.otto.Subscribe;
 import com.wt.pinger.R;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
 import com.wt.pinger.extra.SimpleViewHolder;
+import com.wt.pinger.proto.BaseActivity;
 import com.wt.pinger.proto.ItemProto;
 import com.wt.pinger.providers.PingContentProvider;
 import com.wt.pinger.providers.data.AddressItem;
 import com.wt.pinger.providers.data.PingItem;
-import com.wt.pinger.service.PingService;
-import com.wt.pinger.utils.BusProvider;
 import com.wt.pinger.utils.DateTime;
 import com.wt.pinger.utils.SystemCompat;
 
 import java.util.Locale;
 
 
-public class PingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PingActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static void show(@NonNull Context ctx, @NonNull AddressItem item) {
         Intent it = new Intent(ctx, PingActivity.class);
@@ -83,8 +80,16 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         toolbar_layout = findViewById(R.id.toolbar_layout);
 
         subTitle.setText(getResources().getString(R.string.label_address, mAddressItem.addres));
-        toolbar.setNavigationOnClickListener(v -> finish());
-        fabAction.setOnClickListener(view -> startStopService());
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent back = NavUtils.getParentActivityIntent(this);
+            if (back != null) {
+                startActivity(back);
+                finish();
+            }
+        });
+        fabAction.setOnClickListener(view -> {
+            getPingManager().startStopPingWorker(PingActivity.this, mAddressItem);
+        });
         toolbar_layout.setCollapsedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
         toolbar_layout.setExpandedTitleTypeface(ResourcesCompat.getFont(this, R.font.regular));
 
@@ -128,43 +133,12 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
             }
         };
-        recycler.setHasFixedSize(true);
+        //recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(1, null, this);
         ERA.log("PingActivity.onCreate:end");
-    }
-
-    private void startStopService() {
-        PingService.startStop(PingActivity.this, mAddressItem);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        ERA.log("PingActivity.onStart");
-        BusProvider.getInstance().register(this);
-        PingService.check(this);
-    }
-
-    @Override
-    protected void onStop() {
-        ERA.log("PingActivity.onStop");
-        BusProvider.getInstance().unregister(this);
-        super.onStop();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ERA.log("PingActivity.onResume");
-        Answers.getInstance().logContentView(
-                new ContentViewEvent()
-                        .putContentId("ping-activity")
-                        .putContentName("Ping Activity")
-                        .putContentType("activity")
-        );
     }
 
     @NonNull
@@ -184,20 +158,29 @@ public class PingActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.swapCursor(null);
     }
 
-    @SuppressWarnings("unused") @Subscribe
-    public void onEventData(Integer eventId) {
-        switch(eventId) {
-            case PingService.SERVICE_STATE_IDLE:
-                updatePlayButton(false);
-                break;
-            case PingService.SERVICE_STATE_WORKING:
-                updatePlayButton(true);
-                break;
-        }
+    @Nullable
+    @Override
+    public AddressItem getAddressItem() {
+        return mAddressItem;
+    }
+
+    @Override
+    public void onWorkerStatusUpdate(boolean isWorking) {
+        super.onWorkerStatusUpdate(isWorking);
+        updatePlayButton(isWorking);
     }
 
     private void updatePlayButton(boolean isWorking) {
         fabAction.setIcon(ContextCompat.getDrawable(this, isWorking ? R.drawable.ic_stop_white_32dp : R.drawable.ic_play_arrow_white_32dp));
         fabAction.setText(isWorking ? R.string.label_stop : R.string.label_stop);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent back = NavUtils.getParentActivityIntent(this);
+        if (back != null) {
+            startActivity(back);
+            finish();
+        }
     }
 }
