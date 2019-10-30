@@ -17,6 +17,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.google.firebase.perf.metrics.AddTrace;
@@ -62,6 +63,16 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
         toolbar = findViewById(R.id.toolbar);
         tabs = findViewById(R.id.tabs);
         setSupportActionBar(toolbar);
+
+        if (BuildConfig.DEBUG) {
+            toolbar.getMenu().add("Test Exception").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Crashlytics.getInstance().crash();
+                    return false;
+                }
+            });
+        }
 
         List<AHBottomNavigationItem> items = new ArrayList<>();
         items.add(new AHBottomNavigationItem(R.string.menu_address_list, R.drawable.ic_list_white_24dp, R.color.colorPrimary));

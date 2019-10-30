@@ -45,7 +45,7 @@ public class App extends Application {
 	    fabricTrace.start();
         Fabric fabric = new Fabric.Builder(this)
                 .kits(new Crashlytics())
-                .debuggable(true)
+                //.debuggable(true)
                 .build();
         Fabric.with(fabric);
 	    fabricTrace.stop();

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -171,7 +170,7 @@ public class PingActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     private void updatePlayButton(boolean isWorking) {
-        fabAction.setIcon(ContextCompat.getDrawable(this, isWorking ? R.drawable.ic_stop_white_32dp : R.drawable.ic_play_arrow_white_32dp));
+        fabAction.setIconResource(isWorking ? R.drawable.ic_stop_white_32dp : R.drawable.ic_play_arrow_white_32dp);
         fabAction.setText(isWorking ? R.string.label_stop : R.string.label_stop);
     }
 
