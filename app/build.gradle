@@ -10,8 +10,8 @@ android {
         applicationId "com.wt.pinger"
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
-        versionCode 91
-        versionName "3.4.3"
+        versionCode 92
+        versionName "3.4.4"
 
         resConfigs "en", "pl"
         vectorDrawables.useSupportLibrary = true
