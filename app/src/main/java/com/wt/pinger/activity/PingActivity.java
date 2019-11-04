@@ -86,6 +86,7 @@ public class PingActivity extends BaseActivity implements LoaderManager.LoaderCa
                 finish();
             }
         });
+        toolbar.setNavigationContentDescription(R.string.label_back);
         fabAction.setOnClickListener(view -> {
             getPingManager().startStopPingWorker(PingActivity.this, mAddressItem);
         });

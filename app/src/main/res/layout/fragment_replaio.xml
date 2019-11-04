@@ -63,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/menu_replaio"/>
 
     </LinearLayout>
 

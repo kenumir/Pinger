@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="88dp"/>
+        android:paddingBottom="88dp"
+        android:contentDescription="@string/label_entry_list"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         style="@style/Fab"
@@ -22,6 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:contentDescription="@string/label_add_address"
         app:srcCompat="@drawable/ic_add_white_24dp"/>
 
     <LinearLayout

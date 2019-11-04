@@ -6,6 +6,8 @@
     <string name="label_delete">Delete</string>
     <string name="label_stop">Stop</string>
     <string name="label_start">Start</string>
+    <string name="label_edit">Edit</string>
+    <string name="label_back">Back</string>
 
     <string name="menu_address_list">Address</string>
     <string name="menu_cmd">Console</string>
@@ -40,12 +42,16 @@
     <string name="label_list_of_commands">List of commands</string>
 
     <string name="label_entry">Entry</string>
+    <string name="label_entry_list">Entry list</string>
     <string name="label_entry_name">Entry name</string>
     <string name="label_entry_url">Entry URL</string>
     <string name="label_entry_display_name">Display name (not required)</string>
     <string name="label_entry_packet">Packet size (empty for default)</string>
     <string name="label_entry_count">Ping count (default unlimited)</string>
     <string name="label_interval_time">Ping interval (seconds)</string>
+    <string name="label_add_command">Add command</string>
+    <string name="label_execute_stop_command">Execute/Stop command</string>
+    <string name="label_add_address">Add address</string>
 
     <string name="toast_no_default_browser">No browser to show info</string>
     <string name="toast_enter_url">Enter URL</string>

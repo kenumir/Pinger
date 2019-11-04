@@ -255,13 +255,10 @@ public class ConsoleFragment extends Fragment implements LoaderManager.LoaderCal
 
 		adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_cmd, null, new String[]{"data"}, new int[]{R.id.cmd_item}, 0);
 		list.setAdapter(adapter);
-		cmdBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				list.setSelectionAfterHeaderView();
-				cmdBtn.setImageResource(R.drawable.ic_clear_black_24dp);
-				CmdService.executeCmd(getActivity(), edit.getText().toString());
-			}
+		cmdBtn.setOnClickListener(view -> {
+			list.setSelectionAfterHeaderView();
+			cmdBtn.setImageResource(R.drawable.ic_clear_black_24dp);
+			CmdService.executeCmd(getActivity(), edit.getText().toString());
 		});
 		edit.setText("");
 		TextKeyListener.clear(edit.getText());

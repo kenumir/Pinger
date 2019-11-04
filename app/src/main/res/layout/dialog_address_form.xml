@@ -8,9 +8,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText1Lay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/label_entry_url">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,16 +21,17 @@
             android:hint="@string/label_entry_url"
             android:nextFocusRight="@+id/editText0">
             <requestFocus />
-        </EditText>
+        </com.google.android.material.textfield.TextInputEditText>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText0Lay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/label_entry_display_name">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,9 +46,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText2Lay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/label_entry_packet">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,9 +67,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText3Lay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/label_entry_count">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,9 +88,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText4Lay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/label_interval_time">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

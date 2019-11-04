@@ -6,6 +6,8 @@
     <string name="label_delete">Usuń</string>
     <string name="label_stop">Stop</string>
     <string name="label_start">Start</string>
+    <string name="label_edit">Edytuj</string>
+    <string name="label_back">Powrót</string>
 
     <string name="menu_address_list">Adresy</string>
     <string name="menu_cmd">Konsola</string>
@@ -40,12 +42,16 @@
     <string name="label_list_of_commands">Lista komend</string>
 
     <string name="label_entry">Wpis</string>
+    <string name="label_entry_list">Lista wpisów</string>
     <string name="label_entry_name">Nazwa wpisu</string>
     <string name="label_entry_url">Adres URL</string>
     <string name="label_entry_display_name">Nazwa wyświetlana (nie wymagane)</string>
     <string name="label_entry_packet">Rozmiar pakietu (domyślnie puste)</string>
     <string name="label_entry_count">Ilość pakietów (domyślnie niskończona)</string>
     <string name="label_interval_time">Interwał pakietów (sekundy)</string>
+    <string name="label_add_command">Dodaj komendę</string>
+    <string name="label_execute_stop_command">Uruchom/Zatrzymaj komendę</string>
+    <string name="label_add_address">Dodaj adres</string>
 
     <string name="toast_no_default_browser">Brak przeglądarki do wyświetlenia info</string>
     <string name="toast_enter_url">Wpisz adres URL</string>
