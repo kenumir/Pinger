@@ -154,6 +154,8 @@ public class App extends Application {
                 ERA.log("App.AsyncTask:onPostExecute");
             }
         }.executeOnExecutor(exec);
+
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
     public synchronized PingManager getPingManager() {

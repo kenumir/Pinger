@@ -24,6 +24,7 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_more_horiz_gray_24dp"
             android:clickable="true"
+            android:focusable="true"
             android:background="?attr/selectableItemBackground"
             tools:ignore="ContentDescription"/>
 
@@ -38,6 +39,7 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_playlist_add_gray_24dp"
             android:clickable="true"
+            android:focusable="true"
             android:background="?attr/selectableItemBackground"
             tools:ignore="ContentDescription"/>
 
@@ -68,6 +70,7 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_send_black_24dp"
             android:clickable="true"
+            android:focusable="true"
             android:background="?attr/selectableItemBackground"
             tools:ignore="ContentDescription"/>
 

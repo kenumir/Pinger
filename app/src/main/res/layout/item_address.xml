@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:focusable="true"
     android:background="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:textColor="@color/textPrimary"/>
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/address_text2"
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
-            android:textColor="@color/textSecondary"/>
+            android:textColor="?android:attr/textColorSecondary"/>
 
     </LinearLayout>
 
@@ -41,6 +42,7 @@
         app:srcCompat="@drawable/ic_create_black_24dp"
         android:padding="16dp"
         android:clickable="true"
+        android:focusable="true"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerInside"
         tools:ignore="ContentDescription"/>

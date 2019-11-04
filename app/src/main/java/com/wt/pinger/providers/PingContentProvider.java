@@ -151,7 +151,7 @@ public class PingContentProvider extends ContentProvider {
                         if (addressId == 0 || d.addressId == null || d.addressId == 0) {
                             res.addRow(new Object[]{d._id, d.time, d.seq, d.ttl, d.info, d.timestamp, d.addressId});
                         } else {
-                            if (d.addressId == addressId) {
+                            if (d.addressId.equals(addressId)) {
                                 res.addRow(new Object[]{d._id, d.time, d.seq, d.ttl, d.info, d.timestamp, d.addressId});
                             }
                         }

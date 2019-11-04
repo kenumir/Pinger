@@ -38,7 +38,7 @@ public class PingWorkerService extends Service {
         } else if (ACTION_STOP_PING.equals(action)) {
             AddressItem address = ItemProto.fromIntent(intent, AddressItem.class);
             if (address != null) {
-                getPingManager().stopPingWorker(address);
+                getPingManager().stopPingWorker(address._id);
             } else {
                 Console.loge("PingWorkerService: onStartCommand: ACTION_STOP_PING no ping address");
             }

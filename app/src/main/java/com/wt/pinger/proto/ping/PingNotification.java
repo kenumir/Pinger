@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.wt.pinger.R;
 import com.wt.pinger.activity.PingActivity;
@@ -93,7 +94,7 @@ public class PingNotification {
                     .setShowActionsInCompactView(0)
                     .setCancelButtonIntent(PendingIntent.getService(mService, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT))
             )
-            .setColor(0xFF3F51B5)
+            .setColor(ContextCompat.getColor(mService, R.color.colorPrimary))
             .setColorized(true)
             .setDeleteIntent(PendingIntent.getService(mService, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT))
             .setContentIntent(PendingIntent.getActivity(mService, 1, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT))

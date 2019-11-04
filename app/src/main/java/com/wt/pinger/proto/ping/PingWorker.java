@@ -2,6 +2,8 @@ package com.wt.pinger.proto.ping;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 
 import androidx.annotation.NonNull;
@@ -26,10 +28,12 @@ public class PingWorker implements PingProgram.OnPingListener {
     private PingWorkerService mPingWorkerService;
     private Integer lastSequenceNum = null;
     private PingNotification mPingNotification;
+    private Runnable mOnFinish;
 
-    public PingWorker(@NonNull PingWorkerService service, @NonNull AddressItem a) {
+    public PingWorker(@NonNull PingWorkerService service, @NonNull AddressItem a, @NonNull Runnable onSelfFinish) {
         mAddressItem = a;
         mPingWorkerService = service;
+        mOnFinish = onSelfFinish;
         mPingNotification = new PingNotification(service, a);
         mPingProgram = new PingProgram.Builder()
                 .listener(this)
@@ -128,9 +132,14 @@ public class PingWorker implements PingProgram.OnPingListener {
         mPingWorkerService.getContentResolver().insert(PingContentProvider.URI_CONTENT, data.toContentValues(true));
         mPingWorkerService.stopForeground(true);
         releaseWakeLocks();
+        if (mOnFinish != null) {
+            new Handler(Looper.getMainLooper()).post(mOnFinish);
+            mOnFinish = null;
+        }
     }
 
     public void terminate() {
+        mOnFinish = null;
         mPingProgram.terminate();
     }
 

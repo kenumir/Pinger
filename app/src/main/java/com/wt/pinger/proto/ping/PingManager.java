@@ -36,11 +36,27 @@ public class PingManager {
     }
 
     public synchronized void newWorkerInstance(@NonNull AddressItem a, @NonNull PingWorkerService service) {
-        stopPingWorker(a);
-        workerInstances.put(a._id, new PingWorker(service, a));
+        //stopPingWorker(a);
+        for(long _id : workerInstances.keySet()) {
+            stopPingWorker(_id);
+        }
+        workerInstances.put(a._id, new PingWorker(service, a, () -> {
+            PingWorker w = workerInstances.get(a._id);
+            if (w != null) {
+                workerInstances.remove(a._id);
+                for(OnPingWorkerListener l : mListeners) {
+                    AddressItem a2 = l.getAddressItem();
+                    if (a2 != null && a._id.equals(a2._id)) {
+                        l.onWorkerStatusUpdate(false);
+                    }
+                }
+            }
+        }));
         for(OnPingWorkerListener l : mListeners) {
             AddressItem a2 = l.getAddressItem();
-            l.onWorkerStatusUpdate(a2 != null && a2._id.equals(a._id));
+            if (a2 != null && a._id.equals(a2._id)) {
+                l.onWorkerStatusUpdate(true);
+            }
         }
     }
 
@@ -55,18 +71,18 @@ public class PingManager {
         if (workerInstances.get(a._id) == null) {
             startPingWorker(ctx, a);
         } else {
-            stopPingWorker(a);
+            stopPingWorker(a._id);
         }
     }
 
-    public synchronized void stopPingWorker(@NonNull AddressItem a) {
-        PingWorker w = workerInstances.get(a._id);
+    public synchronized void stopPingWorker(long _id) {
+        PingWorker w = workerInstances.get(_id);
         if (w != null) {
             w.terminate();
-            workerInstances.remove(a._id);
+            workerInstances.remove(_id);
             for(OnPingWorkerListener l : mListeners) {
                 AddressItem a2 = l.getAddressItem();
-                if (a2 != null && a._id.equals(a2._id)) {
+                if (a2 != null && _id == a2._id) {
                     l.onWorkerStatusUpdate(false);
                 }
             }
