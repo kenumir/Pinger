@@ -2,14 +2,18 @@ package com.wt.pinger.proto.ping;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hivedi.console.Console;
+import com.hivedi.era.ERA;
 import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.proto.Constants;
@@ -29,6 +33,7 @@ public class PingWorker implements PingProgram.OnPingListener {
     private Integer lastSequenceNum = null;
     private PingNotification mPingNotification;
     private Runnable mOnFinish;
+    private long lastExtendSessionTimestamp = 0;
 
     public PingWorker(@NonNull PingWorkerService service, @NonNull AddressItem a, @NonNull Runnable onSelfFinish) {
         mAddressItem = a;
@@ -100,6 +105,18 @@ public class PingWorker implements PingProgram.OnPingListener {
             }
 
             lastSequenceNum = data.seq;
+
+            // once per 25 min
+            if (lastExtendSessionTimestamp > 0 && SystemClock.elapsedRealtime() - lastExtendSessionTimestamp > 25 * 60_000) {
+                Bundle b = new Bundle();
+                b.putLong(FirebaseAnalytics.Param.EXTEND_SESSION, 1L);
+                try {
+                    FirebaseAnalytics.getInstance(mPingWorkerService.getApplicationContext()).logEvent("ping_service_working", b);
+                } catch (Exception e) {
+                    ERA.logException(e);
+                }
+                lastExtendSessionTimestamp = SystemClock.elapsedRealtime();
+            }
         }
     }
 
