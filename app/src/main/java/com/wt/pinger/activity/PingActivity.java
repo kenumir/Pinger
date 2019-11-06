@@ -172,7 +172,7 @@ public class PingActivity extends BaseActivity implements LoaderManager.LoaderCa
 
     private void updatePlayButton(boolean isWorking) {
         fabAction.setIconResource(isWorking ? R.drawable.ic_stop_white_32dp : R.drawable.ic_play_arrow_white_32dp);
-        fabAction.setText(isWorking ? R.string.label_stop : R.string.label_stop);
+        fabAction.setText(isWorking ? R.string.label_stop : R.string.label_start);
     }
 
     @Override
