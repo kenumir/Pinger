@@ -48,6 +48,7 @@ public class PingWorker implements PingProgram.OnPingListener {
                 .interval(mAddressItem.interval != null ? mAddressItem.interval : 0)
                 .build();
         mPingProgram.start();
+        lastExtendSessionTimestamp = SystemClock.elapsedRealtime();
     }
 
     @Override
@@ -107,7 +108,7 @@ public class PingWorker implements PingProgram.OnPingListener {
             lastSequenceNum = data.seq;
 
             // once per 25 min
-            if (lastExtendSessionTimestamp > 0 && SystemClock.elapsedRealtime() - lastExtendSessionTimestamp > 25 * 60_000) {
+            if (SystemClock.elapsedRealtime() - lastExtendSessionTimestamp > 25 * 60_000) {
                 Bundle b = new Bundle();
                 b.putLong(FirebaseAnalytics.Param.EXTEND_SESSION, 1L);
                 try {
