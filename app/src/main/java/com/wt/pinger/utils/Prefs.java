@@ -3,9 +3,12 @@ package com.wt.pinger.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.wt.pinger.proto.UserTheme;
 
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -132,6 +135,19 @@ public class Prefs {
 
     public Set<String> load(@NonNull String key, Set<String> defaultValue) {
         return pref.getStringSet(key, defaultValue);
+    }
+
+    public void saveTheme(@UserTheme int theme) {
+        save("theme", theme);
+    }
+
+    @UserTheme
+    public int loadTheme() {
+        int theme = load("theme", UserTheme.DEFAULT);
+        if (Build.VERSION.SDK_INT >= 29 && theme == UserTheme.FOLLOW_BATTERY) {
+            theme = UserTheme.FOLLOW_SYSTEM;
+        }
+        return theme;
     }
 
 }

@@ -3,6 +3,7 @@ package com.wt.pinger.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -24,6 +26,7 @@ import com.wt.pinger.BuildConfig;
 import com.wt.pinger.R;
 import com.wt.pinger.proto.CheckableRelativeLayout;
 import com.wt.pinger.proto.Constants;
+import com.wt.pinger.proto.UserTheme;
 import com.wt.pinger.utils.Networking;
 import com.wt.pinger.utils.Prefs;
 
@@ -37,6 +40,8 @@ public class MoreFragment extends Fragment {
     private TextView text2c;
     private CheckableRelativeLayout settingRunFromList;
     private CheckableRelativeLayout settingMemberOldSessions;
+    private CheckableRelativeLayout settingTheme;
+    private TextView settingThemeValue;
 
     public MoreFragment() {}
 
@@ -46,8 +51,10 @@ public class MoreFragment extends Fragment {
         View res = inflater.inflate(R.layout.fragment_more, container, false);
 
         text2c = res.findViewById(R.id.text2c) ;
-        settingRunFromList = res.findViewById(R.id.settingRunFromList) ;
-        settingMemberOldSessions = res.findViewById(R.id.settingMemberOldSessions) ;
+        settingRunFromList = res.findViewById(R.id.settingRunFromList);
+        settingMemberOldSessions = res.findViewById(R.id.settingMemberOldSessions);
+        settingTheme = res.findViewById(R.id.settingTheme);
+        settingThemeValue = res.findViewById(R.id.settingThemeValue);
 
         res.findViewById(R.id.itemRate).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,12 +172,96 @@ public class MoreFragment extends Fragment {
             }
         });
 
+
+        settingTheme.setOnClickListener(view -> {
+            final Prefs prefs = Prefs.get(getActivity());
+            int sel = prefs.loadTheme();
+            switch(sel) {
+                case UserTheme.DEFAULT: sel = 0; break;
+                case UserTheme.FOLLOW_SYSTEM: sel = 1; break;
+                case UserTheme.FOLLOW_BATTERY: sel = 1; break;
+                case UserTheme.LIGHT: sel = 2; break;
+                case UserTheme.DARK: sel = 3; break;
+            }
+
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.settings_theme)
+                    .items(
+                            getResources().getString(R.string.theme_default),
+                            Build.VERSION.SDK_INT >= 29 ?
+                                    getResources().getString(R.string.theme_follow_system) :
+                                    getResources().getString(R.string.theme_battery),
+                            getResources().getString(R.string.theme_light),
+                            getResources().getString(R.string.theme_dark)
+                    )
+                    .itemsCallbackSingleChoice(sel, (dialog, itemView, which, text) -> {
+                        int mode = Build.VERSION.SDK_INT >= 29 ? AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM : AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+                        switch(which) {
+                            case 0:
+                                prefs.saveTheme(UserTheme.DEFAULT);
+                                mode = Build.VERSION.SDK_INT >= 29 ? AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM : AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+                                break;
+                            case 1:
+                                if (Build.VERSION.SDK_INT >= 29) {
+                                    prefs.saveTheme(UserTheme.FOLLOW_SYSTEM);
+                                } else {
+                                    prefs.saveTheme(UserTheme.FOLLOW_BATTERY);
+                                }
+                                mode = Build.VERSION.SDK_INT >= 29 ? AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM : AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+                                break;
+                            case 2:
+                                prefs.saveTheme(UserTheme.LIGHT);
+                                mode = AppCompatDelegate.MODE_NIGHT_NO;
+                                break;
+                            case 3:
+                                prefs.saveTheme(UserTheme.DARK);
+                                mode = AppCompatDelegate.MODE_NIGHT_YES;
+                                break;
+                        }
+                        int themeName = R.string.theme_default;
+                        switch(prefs.loadTheme()) {
+                            case UserTheme.FOLLOW_SYSTEM:
+                                themeName = R.string.theme_follow_system;
+                                break;
+                            case UserTheme.FOLLOW_BATTERY:
+                                themeName = R.string.theme_battery;
+                                break;
+                            case UserTheme.LIGHT:
+                                themeName = R.string.theme_light;
+                                break;
+                            case UserTheme.DARK:
+                                themeName = R.string.theme_dark;
+                                break;
+                        }
+                        settingThemeValue.setText(themeName);
+                        AppCompatDelegate.setDefaultNightMode(mode);
+                        return false;
+                    })
+                    .build().show();
+        });
+
         Prefs.getAsync(getActivity(), new Prefs.OnPrefsReady() {
             @Override
             public void onReady(Prefs prefs) {
                 if (isAdded()) {
                     settingRunFromList.setChecked(prefs.load(Constants.PREF_START_PING_FROM_LIST, false), true);
                     settingMemberOldSessions.setChecked(prefs.load(Constants.PREF_MEMBER_OLD_SESSIONS, true), true);
+                    int themeName = R.string.theme_default;
+                    switch(prefs.loadTheme()) {
+                        case UserTheme.FOLLOW_SYSTEM:
+                            themeName = R.string.theme_follow_system;
+                            break;
+                        case UserTheme.FOLLOW_BATTERY:
+                            themeName = R.string.theme_battery;
+                            break;
+                        case UserTheme.LIGHT:
+                            themeName = R.string.theme_light;
+                            break;
+                        case UserTheme.DARK:
+                            themeName = R.string.theme_dark;
+                            break;
+                    }
+                    settingThemeValue.setText(themeName);
                 }
             }
         });

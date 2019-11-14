@@ -81,4 +81,11 @@
     <string name="settings_start_ping_desc">Execute ping command when click list item</string>
     <string name="settings_member_old_sessions">Remember previous sessions</string>
     <string name="settings_member_old_sessions_desc">Do not delete previous ping sessions</string>
+
+    <string name="settings_theme">Theme</string>
+    <string name="theme_default">Default</string>
+    <string name="theme_follow_system">Follow system</string>
+    <string name="theme_battery">Follow battery settings</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
 </resources>

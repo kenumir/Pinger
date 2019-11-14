@@ -81,4 +81,11 @@
     <string name="settings_start_ping_desc">Kliknięcie pozycji listy spowoduje uruchomienie polecnia ping</string>
     <string name="settings_member_old_sessions">Pamiętaj poprzednie sesje</string>
     <string name="settings_member_old_sessions_desc">Nie kasuj poprzednich sesji ping</string>
+
+    <string name="settings_theme">Temat graficzny</string>
+    <string name="theme_default">Domyślny</string>
+    <string name="theme_follow_system">Zgodnie z ustawieniami systemu</string>
+    <string name="theme_battery">Zgodnie z ustawieniami oszczędzania baterii</string>
+    <string name="theme_light">Jasny</string>
+    <string name="theme_dark">Ciemny</string>
 </resources>
