@@ -6,8 +6,6 @@ import android.os.SystemClock;
 import com.crashlytics.android.Crashlytics;
 import com.github.anrwatchdog.ANRError;
 import com.github.anrwatchdog.ANRWatchDog;
-import com.google.firebase.perf.FirebasePerformance;
-import com.google.firebase.perf.metrics.Trace;
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.hivedi.era.ReportInterface;
@@ -40,15 +38,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Trace fabricTrace = FirebasePerformance.getInstance().newTrace("fabric_init");
-	    fabricTrace.start();
         Fabric fabric = new Fabric.Builder(this)
                 .kits(new Crashlytics())
-                //.debuggable(true)
                 .build();
         Fabric.with(fabric);
-	    fabricTrace.stop();
         Crashlytics.setLong("Build Time", BuildConfig.APP_BUILD_TIMESTAMP);
         ERA.registerAdapter(new ReportInterface() {
             @Override
@@ -94,8 +87,7 @@ public class App extends Application {
                 Prefs prefs = Prefs.get(App.this);
 
                 ERA.log("App.AsyncTask:Prefs init");
-                Trace uuidTrace = FirebasePerformance.getInstance().newTrace("load_uuid");
-	            uuidTrace.start();
+
                 // UUID
                 String uuid = prefs.load(Constants.PREF_UUID, (String) null);
                 if (uuid == null) {
@@ -105,14 +97,11 @@ public class App extends Application {
                 } else {
                     ERA.log("App.AsyncTask:UUID load");
                 }
-	            uuidTrace.stop();
 
                 if (!BuildConfig.DEBUG) {
                     Crashlytics.setUserIdentifier(uuid);
                 }
 
-	            Trace pingTrace = FirebasePerformance.getInstance().newTrace("ping_detect");
-	            pingTrace.start();
                 File pingFile = new File("/system/bin/ping");
                 if (pingFile.exists()) {
                     PingProgram.setPingExec("/system/bin/ping");
@@ -138,7 +127,6 @@ public class App extends Application {
                         PingProgram.setPingExec(null);
                     }
                 }
-	            pingTrace.stop();
                 ERA.log("App.AsyncTask:Setup ping program");
 
                 long initTime = prefs.load(Constants.PREF_FIRST_INIT_TIME, 0L);

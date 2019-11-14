@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
 import com.wt.pinger.R;
 import com.wt.pinger.extra.SimpleCursorRecyclerAdapter;
@@ -56,7 +55,6 @@ public class PingActivity extends BaseActivity implements LoaderManager.LoaderCa
     private AddressItem mAddressItem;
 
     @Override
-    @AddTrace(name = "PingActivity_onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("PingActivity.onCreate:begin");

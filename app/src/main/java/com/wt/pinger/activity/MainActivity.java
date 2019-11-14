@@ -20,7 +20,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
-import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.console.Console;
 import com.hivedi.era.ERA;
 import com.kenumir.eventclip.EventClip;
@@ -54,7 +53,6 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
     private InstallReferrerClient mReferrerClient;
 
     @Override
-    @AddTrace(name = "MainActivity_onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("MainActivity.onCreate:begin");

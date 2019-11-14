@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.perf.metrics.AddTrace;
 import com.hivedi.era.ERA;
 import com.wt.pinger.R;
 import com.wt.pinger.proto.StartActivityObserver;
@@ -17,7 +16,6 @@ public class StartActivity extends AppCompatActivity {
     //private ProgressWheel progress;
 
     @Override
-    @AddTrace(name = "StartActivity_onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ERA.log("StartActivity.onCreate:begin");

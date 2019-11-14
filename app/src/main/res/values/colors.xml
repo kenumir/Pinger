@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="silver">#FFEEEEEE</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
 
     <array name="menu_parent_background_colors">
         <item>?colorPrimary</item>
