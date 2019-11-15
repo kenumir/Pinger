@@ -60,16 +60,6 @@
                 android:value=".activity.MainActivity" />
         </activity>
 
-        <!-- receiver -->
-        <receiver
-            android:name=".receivers.AppInstallReferrerReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver">
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER"/>
-            </intent-filter>
-        </receiver>
-
         <!-- service -->
         <service
             android:name=".service.CmdService"

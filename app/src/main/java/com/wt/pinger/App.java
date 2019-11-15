@@ -1,6 +1,7 @@
 package com.wt.pinger;
 
 import android.app.Application;
+import android.os.Build;
 import android.os.SystemClock;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -18,6 +19,7 @@ import com.wt.pinger.proto.UserTheme;
 import com.wt.pinger.proto.ping.PingManager;
 import com.wt.pinger.utils.PingProgram;
 import com.wt.pinger.utils.Prefs;
+import com.wt.pinger.utils.VariousUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -121,9 +123,14 @@ public class App extends Application {
                     ERA.log("App.AsyncTask:UUID load");
                 }
 
-                if (!BuildConfig.DEBUG) {
-                    Crashlytics.setUserIdentifier(uuid);
+                Crashlytics.setUserIdentifier(uuid);
+                Crashlytics.setString("Installer Package", VariousUtils.getAppInstallerPackage(getApplicationContext()));
+                Crashlytics.setString("App Fingerprint", VariousUtils.getAppFingerprint(getApplicationContext()));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    Crashlytics.setString("App Standby Bucket Name", VariousUtils.getAppStandbyBucketName(getApplicationContext()));
                 }
+                Crashlytics.setBool("Test Lab Device", VariousUtils.isTestLabDevice(getApplicationContext()));
+                Crashlytics.setBool("Background Restricted", VariousUtils.isBackgroundRestricted(getApplicationContext()));
 
                 File pingFile = new File("/system/bin/ping");
                 if (pingFile.exists()) {

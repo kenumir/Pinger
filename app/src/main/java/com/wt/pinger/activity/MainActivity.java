@@ -8,6 +8,7 @@ import android.os.RemoteException;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -110,14 +111,21 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
                     .replace(R.id.mainFrame, mainFragments[0])
                     .commit();
             UserSync.get().saveUser(this);
+
+            Prefs.getAsync(this, prefs -> {
+                if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
+                    mReferrerClient = InstallReferrerClient.newBuilder(MainActivity.this).build();
+                    try {
+                        mReferrerClient.startConnection(MainActivity.this);
+                    } catch (Exception e) {
+                        ERA.logException(e);
+                    }
+                }
+            });
+
         }
 
-        mReferrerClient = InstallReferrerClient.newBuilder(this).build();
-        try {
-            mReferrerClient.startConnection(this);
-        } catch (Exception e) {
-            ERA.logException(e);
-        }
+
 
         ERA.log("MainActivity.onCreate:end");
     }
@@ -149,7 +157,7 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         saveInstanceStateCalled = true;
         super.onSaveInstanceState(outState);
     }
@@ -173,13 +181,10 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
                         Console.logi("onInstallReferrerSetupFinished: InstallReferrer=" + response.getInstallReferrer());
                     }
                     ERA.log("onInstallReferrerSetupFinished: InstallReferrer=" + response.getInstallReferrer());
-                    Prefs.getAsync(ctx, new Prefs.OnPrefsReady() {
-                        @Override
-                        public void onReady(Prefs prefs) {
-                            if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
-                                prefs.save(Constants.PREF_REFERRER, response.getInstallReferrer());
-                                UserSync.get().saveUser(ctx);
-                            }
+                    Prefs.getAsync(ctx, prefs -> {
+                        if (!prefs.load(Constants.PREF_REFERRER_SAVED, false)) {
+                            prefs.save(Constants.PREF_REFERRER, response.getInstallReferrer());
+                            UserSync.get().saveUser(ctx);
                         }
                     });
                     mReferrerClient.endConnection();
@@ -195,6 +200,12 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
                 break;
             default:
                 ERA.log("onInstallReferrerSetupFinished: responseCode=" + responseCode + ", response not found");
+            case InstallReferrerClient.InstallReferrerResponse.DEVELOPER_ERROR:
+                ERA.log("onInstallReferrerSetupFinished: responseCode=" + responseCode + ", DEVELOPER_ERROR");
+                break;
+            case InstallReferrerClient.InstallReferrerResponse.SERVICE_DISCONNECTED:
+                ERA.log("onInstallReferrerSetupFinished: responseCode=" + responseCode + ", SERVICE_DISCONNECTED");
+                break;
         }
     }
 
