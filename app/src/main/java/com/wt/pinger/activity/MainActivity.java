@@ -32,7 +32,6 @@ import com.wt.pinger.fragment.AddressFragment;
 import com.wt.pinger.fragment.ConsoleFragment;
 import com.wt.pinger.fragment.MoreFragment;
 import com.wt.pinger.fragment.MyIPFragment;
-import com.wt.pinger.fragment.ReplaioFragment;
 import com.wt.pinger.proto.BaseActivity;
 import com.wt.pinger.proto.Constants;
 import com.wt.pinger.utils.Prefs;
@@ -47,7 +46,7 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
     private AHBottomNavigation tabs;
 
     private final Fragment[] mainFragments = new Fragment[]{
-            new AddressFragment(), new ConsoleFragment(), new MyIPFragment(), new ReplaioFragment(), new MoreFragment()
+            new AddressFragment(), new ConsoleFragment(), new MyIPFragment(), new MoreFragment()
     };
 
     private boolean saveInstanceStateCalled = false;
@@ -77,7 +76,6 @@ public class MainActivity extends BaseActivity implements InstallReferrerStateLi
         items.add(new AHBottomNavigationItem(R.string.menu_address_list, R.drawable.ic_list_white_24dp, R.color.colorPrimary));
         items.add(new AHBottomNavigationItem(R.string.menu_cmd, R.drawable.ic_rate_review_white_24dp, R.color.colorPrimary));
         items.add(new AHBottomNavigationItem(R.string.menu_info, R.drawable.ic_info_outline_white_24dp, R.color.colorPrimary));
-        items.add(new AHBottomNavigationItem(R.string.menu_replaio, R.drawable.replaio_icon_status_bar, R.color.colorPrimary));
         items.add(new AHBottomNavigationItem(R.string.menu_more, R.drawable.ic_menu_white_24dp, R.color.colorPrimary));
         tabs.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
         tabs.addItems(items);
