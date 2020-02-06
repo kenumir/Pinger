@@ -4,7 +4,7 @@ ext.versions = [
         targetSdkVersion: 28,
 
         libraryFirebase: [
-                analytics: '17.2.1',
+                analytics: '17.2.2',
                 perf: '19.0.1'
         ],
         installreferrer: '1.0',
